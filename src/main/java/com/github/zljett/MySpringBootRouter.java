@@ -13,12 +13,9 @@ public class MySpringBootRouter extends RouteBuilder {
 
     @Override
     public void configure() {
-        from("timer:hello?period={{timer.period}}").routeId("main-route")
-            .transform().method("myBean", "saySomething")
-            .filter(simple("${body} contains 'foo'"))
-                .to("log:foo")
-            .end()
-            .to("stream:out");
+        from("file:{{sourceFolder}}?noop=true").routeId("main-route")
+            .log("hello")
+            .to("file:{{destinationFolder}}");
     }
-
 }
+// &fileName=testMessageOne
