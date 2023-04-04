@@ -22,24 +22,20 @@ public class MySpringBootApplicationTest {
 
 	@Test
 	public void test() throws Exception {
-		MockEndpoint mock = camelContext.getEndpoint("mock:stream:out", MockEndpoint.class);
+		MockEndpoint mock = camelContext.getEndpoint("mock:file:{{destinationFolder}}", MockEndpoint.class);
 
-		AdviceWith.adviceWith(camelContext, "hello",
-				// intercepting an exchange on route
-				r -> {
-					// replacing consumer with direct component
+		AdviceWith.adviceWith(camelContext, "main-route", r -> {
 					r.replaceFromWith("direct:start");
-					// mocking producer
-					r.mockEndpoints("stream*");
+					// mock all so they will not produce any output
+					r.mockEndpoints();
 				}
 		);
 
 		// setting expectations
 		mock.expectedMessageCount(1);
-		mock.expectedBodiesReceived("Hello World");
 
 		// invoking consumer
-		producerTemplate.sendBody("direct:start", null);
+		producerTemplate.sendBody("direct:start", "Test Test Test");
 
 		// asserting mock is satisfied
 		mock.assertIsSatisfied();

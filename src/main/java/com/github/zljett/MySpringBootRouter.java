@@ -18,4 +18,3 @@ public class MySpringBootRouter extends RouteBuilder {
             .to("file:{{destinationFolder}}");
     }
 }
-// &fileName=testMessageOne
