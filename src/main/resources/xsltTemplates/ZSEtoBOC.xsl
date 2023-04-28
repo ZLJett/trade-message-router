@@ -6,8 +6,8 @@
             <TradeInfo>
                 <xsl:attribute name="from"><xsl:value-of select="/trade_messages/Trade_Message[1]/sender_info/lower-case(sender_ID)"/></xsl:attribute>
                 <xsl:attribute name="to"><xsl:value-of select="/trade_messages/Trade_Message[1]/recipient_info/lower-case(recipient_ID)"/></xsl:attribute>
-                <TradeType></TradeType>
-                <TradeID></TradeID>
+                <TradeType/>
+                <TradeID/>
             </TradeInfo>
             <Trades>
             <xsl:for-each select="/trade_messages/Trade_Message">

@@ -7,11 +7,11 @@
             <Trade_Message>
                 <sender_info>
                     <sender_ID><xsl:value-of select="/BOS_StandardMessage/TradeInfo/upper-case(@from)"/></sender_ID>
-                    <sender_BrokerID></sender_BrokerID>
+                    <sender_BrokerID/>
                 </sender_info>
                 <recipient_info>
                     <recipient_ID><xsl:value-of select="/BOS_StandardMessage/TradeInfo/upper-case(@to)"/></recipient_ID>
-                    <recipient_BrokerID></recipient_BrokerID>
+                    <recipient_BrokerID/>
                 </recipient_info>
                 <trade_info>
                     <buysell><xsl:value-of select="TradeType"/></buysell>
