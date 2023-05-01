@@ -76,7 +76,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.camel.springboot</groupId>
-      <artifactId>camel-xslt-starter</artifactId>
+      <artifactId>camel-xslt-saxon-starter</artifactId>
     </dependency>
 
     <!-- Database -->

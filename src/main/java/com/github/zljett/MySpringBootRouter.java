@@ -15,7 +15,7 @@ public class MySpringBootRouter extends RouteBuilder {
     public void configure() {
         from("file:{{sourceFolder}}?noop=true").routeId("main-route")
             .log("start to one")
-            .to("xslt:{{translationTemplate}}")
+            .to("xslt-saxon:{{translationTemplate}}")
             .log("one to end")
             .to("file:{{destinationFolder}}");
     }
