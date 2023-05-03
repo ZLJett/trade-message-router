@@ -16,7 +16,9 @@ public class MySpringBootRouter extends RouteBuilder {
         from("file:{{sourceFolder}}?noop=true").routeId("main-route")
             .log("start to one")
             .to("xslt-saxon:{{BOCtoZSE-translationTemplate}}")
-            .log("one to end")
+//            .log("one to end")
+            .log("to test")
+            .to("direct:routeOne")
             .to("file:{{destinationFolder}}");
     }
 }
