@@ -8,17 +8,17 @@ import org.springframework.stereotype.Component;
  * <p/>
  * Use <tt>@Component</tt> to make Camel auto-detect this route when starting.
  */
-@Component
-public class MySpringBootRouter extends RouteBuilder {
-
-    @Override
-    public void configure() {
-        from("file:{{sourceFolder}}?noop=true").routeId("main-route")
-            .log("start to one")
-            .to("xslt-saxon:{{BOCtoZSE-translationTemplate}}")
-            .log("to test")
-            .to("direct:routeOne")
-            .log("back from test")
-            .to("file:{{destinationFolder}}");
-    }
-}
+//@Component
+//public class MySpringBootRouter extends RouteBuilder {
+//
+//    @Override
+//    public void configure() {
+//        from("file:{{sourceFolder}}?noop=true").routeId("main-route")
+//            .log("start to one")
+//            .to("xslt-saxon:{{BOCtoZSE-translationTemplate}}")
+//            .log("to test")
+//            .to("direct:routeOne")
+//            .log("back from test")
+//            .to("file:{{destinationFolder}}");
+//    }
+//}
