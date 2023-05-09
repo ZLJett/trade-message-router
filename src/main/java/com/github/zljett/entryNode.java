@@ -14,8 +14,11 @@ public class entryNode extends RouteBuilder {
         from("file:{{sourceFolder}}?noop=true").routeId("main-route")
             .log("start to one")
             .to("xslt-saxon:{{BOCtoZSE-translationTemplate}}")
+            .log("to bean")
+            .bean(new TestBean())
+            .log("back from bean")
             .log("to test")
-            .to("direct:routeOne")
+            .to("direct:testRoute")
             .log("back from test")
             .to("file:{{destinationFolder}}");
     }
