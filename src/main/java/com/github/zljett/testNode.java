@@ -13,6 +13,7 @@ public class testNode extends RouteBuilder {
   public void configure() {
     from("direct:testRoute").routeId("test-route")
         .log("test route hit")
-        .log("Header value: ${header.CamelFileName}");
+        .log("Header value: ${header.CamelFileName}")
+        .log("Header value: ${header.TestHeaderOne}");
   }
 }

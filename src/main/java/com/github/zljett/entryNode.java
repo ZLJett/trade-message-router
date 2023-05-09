@@ -20,6 +20,7 @@ public class entryNode extends RouteBuilder {
             .log("to test")
             .to("direct:testRoute")
             .log("back from test")
+            .log("test to end")
             .to("file:{{destinationFolder}}");
     }
 }
