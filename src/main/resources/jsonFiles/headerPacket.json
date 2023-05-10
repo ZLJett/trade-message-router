@@ -1,10 +1,10 @@
 {
-    "BOC_STANDARD_XML_ZSE": [
-        {"TestHeaderOne":"BOC-test-value-one"},
-        {"TestHeaderTwo":"BOC-test-value-two"}
-    ],
-    "ZSE_TRD_MSG_BOC": [
-        {"TestHeaderOne":"ZSE-test-value-one"},
-        {"TestHeaderTwo":"ZSE-test-value-two"}
-    ]
+    "BOC_STANDARD_XML_ZSE": {
+        "TestHeaderOne":"BOC-test-value-one",
+        "TestHeaderTwo":"BOC-test-value-two"
+    },
+    "ZSE_TRD_MSG_BOC": {
+        "TestHeaderOne":"ZSE-test-value-one",
+        "TestHeaderTwo":"ZSE-test-value-two"
+    }
 }
