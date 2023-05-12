@@ -14,6 +14,9 @@ public class testNode extends RouteBuilder {
     from("direct:testRoute").routeId("test-route")
         .log("test route hit")
         .log("Header value: ${header.CamelFileName}")
-        .log("Header value: ${header.TestHeaderOne}");
+        .log("Header value: ${header.TestHeaderOne}")
+        .log("Header value: ${header.TestHeaderTwo}")
+        .log("Header value: ${header.TestHeaderThree}")
+        .log("Header value: ${header.TestHeaderFour}");
   }
 }
