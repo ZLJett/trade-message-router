@@ -14,6 +14,6 @@ public class exitNode extends RouteBuilder {
   public void configure() {
     from("direct:exitRoute").routeId("exit-route")
         .log("exit route start")
-        .to("file:{{destinationFolder}}");
+        .toD("${header.ExitDestination}");
   }
 }

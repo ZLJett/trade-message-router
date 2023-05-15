@@ -13,7 +13,7 @@ public class translationNode extends RouteBuilder {
   public void configure() {
     from("direct:translationRoute").routeId("translation-route")
         .log("translation route start")
-        .to("xslt-saxon:{{BOCtoZSE-translationTemplate}}")
+        .toD("${header.TranslationInstructions}")
         .log("translation route end");
   }
 }

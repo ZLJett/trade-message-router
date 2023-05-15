@@ -1,13 +1,12 @@
 {
     "BOC_STANDARD_XML_ZSE": {
-        "RoutingPath": "direct:testRoute,direct:translationRoute,direct:exitRoute",
-        "TestHeaderOne":"BOC-test-value-one",
-        "TestHeaderTwo":"BOC-test-value-two",
-        "TestHeaderThree":"BOC-test-value-three",
-        "TestHeaderFour":"BOC-test-value-four"
+        "RoutingPath":"direct:translationRoute,direct:exitRoute",
+        "TranslationInstructions":"xslt-saxon:xsltTemplates/BOCtoZSE.xsl",
+        "ExitDestination":"file:src/main/resources/testToFolder"
     },
     "ZSE_TRD_MSG_BOC": {
-        "TestHeaderOne":"ZSE-test-value-one",
-        "TestHeaderTwo":"ZSE-test-value-two"
+        "RoutingPath":"direct:translationRoute,direct:exitRoute",
+        "TranslationInstructions":"xslt-saxon:xsltTemplates/ZSEtoBOC.xsl",
+        "ExitDestination":"file:src/main/resources/testToFolder"
     }
 }
