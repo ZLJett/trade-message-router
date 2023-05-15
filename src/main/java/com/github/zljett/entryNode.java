@@ -12,15 +12,10 @@ public class entryNode extends RouteBuilder {
     @Override
     public void configure() {
         from("file:{{sourceFolder}}?noop=true").routeId("main-route")
-            .log("start to one")
-            .to("xslt-saxon:{{BOCtoZSE-translationTemplate}}")
             .log("to bean")
             .bean("instructionsBean","attachHeadersPacket")
             .log("back from bean")
-            .log("to test")
-            .to("direct:testRoute")
-            .log("back from test")
-            .log("test to end")
-            .to("file:{{destinationFolder}}");
+            .log("send with routing slip")
+            .routingSlip(header("RoutingPath"));
     }
 }

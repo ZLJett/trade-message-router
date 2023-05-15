@@ -1,5 +1,6 @@
 {
     "BOC_STANDARD_XML_ZSE": {
+        "RoutingPath": "direct:testRoute,direct:translationRoute,direct:exitRoute",
         "TestHeaderOne":"BOC-test-value-one",
         "TestHeaderTwo":"BOC-test-value-two",
         "TestHeaderThree":"BOC-test-value-three",

@@ -12,6 +12,8 @@ public class translationNode extends RouteBuilder {
   @Override
   public void configure() {
     from("direct:translationRoute").routeId("translation-route")
-        .log("translation route hit");
+        .log("translation route start")
+        .to("xslt-saxon:{{BOCtoZSE-translationTemplate}}")
+        .log("translation route end");
   }
 }

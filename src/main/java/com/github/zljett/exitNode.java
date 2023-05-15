@@ -13,6 +13,7 @@ public class exitNode extends RouteBuilder {
   @Override
   public void configure() {
     from("direct:exitRoute").routeId("exit-route")
-        .log("exit route hit");
+        .log("exit route start")
+        .to("file:{{destinationFolder}}");
   }
 }
