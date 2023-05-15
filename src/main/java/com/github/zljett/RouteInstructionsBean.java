@@ -18,12 +18,19 @@ import java.util.Map;
  */
 @Component("instructionsBean")
 public class RouteInstructionsBean {
-  @Value("${headerPacket}")
-  String headerPacketLocation;
+  @Value("${headerPacketFilePath}")
+  String headerPacketFileLocation;
   public void attachHeadersPacket(String body, @Headers Map<String, String> headers) throws IOException {
-    String packetName = "BOC_STANDARD_XML_ZSE";
+    // Pull the sender and recipient from the filename so can select the correct header packet to attach to the message
+    String messageFileName = headers.get("CamelFileName");
+    String[] splitFileName = messageFileName.split("_");
+    String packetName = splitFileName[0] + "to" + splitFileName[3] + "_HeaderPacket";
+    // Split the message ID from the file extension to get the message ID number and add ID as header
+    String messageID = splitFileName[4].split("[.]")[0];
+    headers.put("MessageId", messageID);
+
 //    TODO: add comments on each section, i.e. this creates a tree so don't have to load the full object
-    String jsonString = new String(Files.readAllBytes(Paths.get(headerPacketLocation)));
+    String jsonString = new String(Files.readAllBytes(Paths.get(headerPacketFileLocation)));
     ObjectMapper mapper = new ObjectMapper();
     JsonNode rootNode = mapper.readTree(jsonString);
     JsonNode packetNode = rootNode.path(packetName);

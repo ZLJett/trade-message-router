@@ -1,10 +1,10 @@
 {
-    "BOC_STANDARD_XML_ZSE": {
+    "BOCtoZSE_HeaderPacket": {
         "RoutingPath":"direct:translationRoute,direct:exitRoute",
         "TranslationInstructions":"xslt-saxon:xsltTemplates/BOCtoZSE.xsl",
         "ExitDestination":"file:src/main/resources/testToFolder"
     },
-    "ZSE_TRD_MSG_BOC": {
+    "ZSEtoBOC_HeaderPacket": {
         "RoutingPath":"direct:translationRoute,direct:exitRoute",
         "TranslationInstructions":"xslt-saxon:xsltTemplates/ZSEtoBOC.xsl",
         "ExitDestination":"file:src/main/resources/testToFolder"
