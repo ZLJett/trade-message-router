@@ -13,8 +13,11 @@ public class changeFilenameNode extends RouteBuilder {
   public void configure() {
     from("direct:changeFilenameRoute").routeId("changeFilename-route")
         .log("changeFilename route start")
-        .setHeader("CamelFileName",
-            simple("${header.RecipientFilenameFormat}_${header.RecipientClientCode}_${header.MessageId}.xml"))
+        .setHeader("CamelFileName", simple(
+            "${header.RecipientFilenameFormat}" +
+                "_${header.RecipientClientCode}" +
+                "_${header.MessageId}" +
+                ".${header.MessageExtension}"))
         .log("changeFilename route end");
   }
 }

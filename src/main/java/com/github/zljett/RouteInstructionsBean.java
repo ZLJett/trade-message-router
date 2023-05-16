@@ -25,11 +25,14 @@ public class RouteInstructionsBean {
     String messageFileName = headers.get("CamelFileName");
     String[] splitFileName = messageFileName.split("_");
     String packetName = splitFileName[0] + "to" + splitFileName[3] + "_HeaderPacket";
-    // Split the message ID from the file extension to get the message ID number and add ID as header
-    String messageID = splitFileName[4].split("[.]")[0];
+    // Pull message ID and file extension and add both as headers
+    String[] messageIdAndExtension = splitFileName[4].split("[.]");
+    String messageID = messageIdAndExtension[0];
+    String messageExtension = messageIdAndExtension[1];
     headers.put("MessageId", messageID);
-
-//    TODO: add comments on each section, i.e. this creates a tree so don't have to load the full object
+    headers.put("MessageExtension", messageExtension);
+    // Bring in headerPackets file as string and use Jackson JsonNode so only have to deserialize relevant packet
+    // rather than full file, then add each JSON object as a header
     String jsonString = new String(Files.readAllBytes(Paths.get(headerPacketFileLocation)));
     ObjectMapper mapper = new ObjectMapper();
     JsonNode rootNode = mapper.readTree(jsonString);
