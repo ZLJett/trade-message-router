@@ -1,12 +1,16 @@
 {
     "BOCtoZSE_HeaderPacket": {
-        "RoutingPath":"direct:translationRoute,direct:exitRoute",
+        "RecipientClientCode":"ZSE",
+        "RoutingPath":"direct:translationRoute,direct:changeFilenameRoute,direct:exitRoute",
         "TranslationInstructions":"xslt-saxon:xsltTemplates/BOCtoZSE.xsl",
-        "ExitDestination":"file:src/main/resources/testToFolder"
+        "RecipientFilenameFormat":"ZSE_TRD_MSG",
+        "RecipientAddress":"file:src/main/resources/testToFolder"
     },
     "ZSEtoBOC_HeaderPacket": {
-        "RoutingPath":"direct:translationRoute,direct:exitRoute",
+        "RecipientClientCode":"BOC",
+        "RoutingPath":"direct:translationRoute,direct:changeFilenameRoute,direct:exitRoute",
         "TranslationInstructions":"xslt-saxon:xsltTemplates/ZSEtoBOC.xsl",
-        "ExitDestination":"file:src/main/resources/testToFolder"
+        "RecipientFilenameFormat":"BOC_STD_MSG",
+        "RecipientAddress":"file:src/main/resources/testToFolder"
     }
 }
