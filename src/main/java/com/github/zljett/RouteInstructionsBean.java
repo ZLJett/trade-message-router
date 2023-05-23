@@ -7,9 +7,8 @@ import org.apache.camel.Headers;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,9 +32,8 @@ public class RouteInstructionsBean {
     headers.put("MessageExtension", messageExtension);
     // Bring in headerPackets file as string and use Jackson JsonNode so only have to deserialize relevant packet
     // rather than full file, then add each JSON object as a header
-    String jsonString = new String(Files.readAllBytes(Paths.get(headerPacketFileLocation)));
     ObjectMapper mapper = new ObjectMapper();
-    JsonNode rootNode = mapper.readTree(jsonString);
+    JsonNode rootNode = mapper.readTree(new File(headerPacketFileLocation));
     JsonNode packetNode = rootNode.path(packetName);
     HashMap<String, String> headersMap = mapper.convertValue(packetNode, new TypeReference<>() {});
     headersMap.keySet().forEach(key -> headers.put(key, headersMap.get(key)));
