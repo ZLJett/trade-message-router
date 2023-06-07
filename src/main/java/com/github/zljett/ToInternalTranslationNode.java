@@ -12,8 +12,8 @@ public class ToInternalTranslationNode extends RouteBuilder {
   @Override
   public void configure() {
     from("direct:toInternalTranslationRoute").routeId("internal-translation-route")
-        .log("translation route start")
+        .log("to internal translation route start")
         .toD("${header.ToInternalTranslationInstructions}")
-        .log("translation route end");
+        .log("to internal translation route end");
   }
 }
