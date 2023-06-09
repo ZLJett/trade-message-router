@@ -23,13 +23,18 @@ public class RouteInstructionsBean {
     // Pull the sender and recipient from the filename so can select the correct header packet to attach to the message
     String messageFileName = headers.get("CamelFileName");
     String[] splitFileName = messageFileName.split("_");
-    String packetName = splitFileName[0] + "to" + splitFileName[3] + "_HeaderPacket";
+    String senderClientCode = splitFileName[0];
+    String recipientClientCode = splitFileName[3];
+    String packetName = "to" + recipientClientCode + "_HeaderPacket";
     // Pull message ID and file extension and add both as headers
     String[] messageIdAndExtension = splitFileName[4].split("[.]");
     String messageID = messageIdAndExtension[0];
     String messageExtension = messageIdAndExtension[1];
     headers.put("MessageId", messageID);
     headers.put("MessageExtension", messageExtension);
+    // Based on sender add header with translation instructions for sender-to-internal format
+    String toInternalTranslationInstructions = "xslt-saxon:xsltTemplates/" + senderClientCode + "toInternal.xsl";
+    headers.put("ToInternalTranslationInstructions", toInternalTranslationInstructions);
     // Bring in headerPackets file as string and use Jackson JsonNode so only have to deserialize relevant packet
     // rather than full file, then add each JSON object as a header
     ObjectMapper mapper = new ObjectMapper();
