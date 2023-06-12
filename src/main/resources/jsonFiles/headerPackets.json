@@ -1,0 +1,22 @@
+{
+    "fromBOC_HeaderPacket": {
+        "ToInternalTranslationInstructions": "xslt-saxon:xsltTemplates/BOCtoInternal.xsl"
+    },
+    "toBOC_HeaderPacket": {
+        "RoutingPath":"direct:toInternalTranslationRoute,direct:ToRecipientFilenameFormatRoute,direct:toRecipientTranslationRoute,direct:exitRoute",
+        "ToRecipientTranslationInstructions": "xslt-saxon:xsltTemplates/InternaltoBOC.xsl",
+        "RecipientClientCode":"BOC",
+        "RecipientFilenameFormat":"BOC_STD_MSG",
+        "RecipientAddress":"file:src/main/resources/testToFolder"
+    },
+    "fromZSE_HeaderPacket": {
+        "ToInternalTranslationInstructions": "xslt-saxon:xsltTemplates/ZSEtoInternal.xsl"
+    },
+    "toZSE_HeaderPacket": {
+        "RoutingPath":"direct:toInternalTranslationRoute,direct:ToRecipientFilenameFormatRoute,direct:toRecipientTranslationRoute,direct:exitRoute",
+        "ToRecipientTranslationInstructions": "xslt-saxon:xsltTemplates/InternaltoZSE.xsl",
+        "RecipientClientCode":"ZSE",
+        "RecipientFilenameFormat":"ZSE_TRD_MSG",
+        "RecipientAddress":"file:src/main/resources/testToFolder"
+    }
+}
