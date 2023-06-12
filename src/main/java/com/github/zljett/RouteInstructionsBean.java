@@ -20,27 +20,30 @@ public class RouteInstructionsBean {
   @Value("${headerPacketFilePath}")
   String headerPacketFileLocation;
   public void attachHeadersPacket(String body, @Headers Map<String, String> headers) throws IOException {
-    // Pull the sender and recipient from the filename so can select the correct header packet to attach to the message
+    // Pull the sender and recipient from the filename so can select the correct header packets to attach to the message
     String messageFileName = headers.get("CamelFileName");
     String[] splitFileName = messageFileName.split("_");
     String senderClientCode = splitFileName[0];
     String recipientClientCode = splitFileName[3];
-    String packetName = "to" + recipientClientCode + "_HeaderPacket";
+    String senderPacketName = "from" + senderClientCode + "_HeaderPacket";
+    String recipientPacketName = "to" + recipientClientCode + "_HeaderPacket";
     // Pull message ID and file extension and add both as headers
     String[] messageIdAndExtension = splitFileName[4].split("[.]");
     String messageID = messageIdAndExtension[0];
     String messageExtension = messageIdAndExtension[1];
     headers.put("MessageId", messageID);
     headers.put("MessageExtension", messageExtension);
-    // Based on sender add header with translation instructions for sender-to-internal format
-    String toInternalTranslationInstructions = "xslt-saxon:xsltTemplates/" + senderClientCode + "toInternal.xsl";
-    headers.put("ToInternalTranslationInstructions", toInternalTranslationInstructions);
     // Bring in headerPackets file as string and use Jackson JsonNode so only have to deserialize relevant packet
-    // rather than full file, then add each JSON object as a header
+    // rather than full file. Then add each packet's JSON key/value pairs as a headers
     ObjectMapper mapper = new ObjectMapper();
     JsonNode rootNode = mapper.readTree(new File(headerPacketFileLocation));
-    JsonNode packetNode = rootNode.path(packetName);
-    HashMap<String, String> headersMap = mapper.convertValue(packetNode, new TypeReference<>() {});
-    headersMap.keySet().forEach(key -> headers.put(key, headersMap.get(key)));
+    // Add sender header packet
+    JsonNode senderPacketNode = rootNode.path(senderPacketName);
+    HashMap<String, String> senderHeadersMap = mapper.convertValue(senderPacketNode, new TypeReference<>() {});
+    senderHeadersMap.keySet().forEach(key -> headers.put(key, senderHeadersMap.get(key)));
+    // Add recipient header packet
+    JsonNode recipientPacketNode = rootNode.path(recipientPacketName);
+    HashMap<String, String> recipientHeadersMap = mapper.convertValue(recipientPacketNode, new TypeReference<>() {});
+    recipientHeadersMap.keySet().forEach(key -> headers.put(key, recipientHeadersMap.get(key)));
   }
 }

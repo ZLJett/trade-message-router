@@ -26,5 +26,11 @@
         "RecipientClientCode":"ZSE",
         "RecipientFilenameFormat":"ZSE_TRD_MSG",
         "RecipientAddress":"file:src/main/resources/testToFolder"
+    },
+    "fromBOC_HeaderPacket": {
+        "ToInternalTranslationInstructions": "xslt-saxon:xsltTemplates/BOCtoInternal.xsl"
+    },
+    "fromZSE_HeaderPacket": {
+        "ToInternalTranslationInstructions": "xslt-saxon:xsltTemplates/ZSEtoInternal.xsl"
     }
 }
