@@ -11,7 +11,7 @@ public class entryNode extends RouteBuilder {
 
     @Override
     public void configure() {
-        from("file:{{sourceFolder}}?noop=true").routeId("main-route")
+        from("{{fileComponentSourceFolder}}").routeId("entry-route")
             .log("to bean")
             .bean("instructionsBean","attachHeadersPacket")
             .log("back from bean")
