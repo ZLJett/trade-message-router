@@ -1,0 +1,5 @@
+# Ignore Target directory
+/target/
+
+# Ignore secret properties file
+/src/main/resources/secrets.properties
