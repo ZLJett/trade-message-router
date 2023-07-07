@@ -13,11 +13,8 @@ public class testNode extends RouteBuilder {
   public void configure() {
     from("direct:testRoute").routeId("test-route")
         .log("test route start")
+        .log("Property value: {{ftpComponentTradeMessageServer}}")
         .log("Header value: ${header.CamelFileName}")
-//        .log("Header value: ${header.TestHeaderOne}")
-//        .log("Header value: ${header.TestHeaderTwo}")
-//        .log("Header value: ${header.TestHeaderThree}")
-//        .log("Header value: ${header.TestHeaderFour}")
         .log("test route end");
   }
 }
