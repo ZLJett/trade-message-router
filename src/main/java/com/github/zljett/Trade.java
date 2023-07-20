@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 
 /**
- *  Class for persisting data from each individual trade in each message
+ * Class for persisting data from each individual trade in each message
  */
 @Entity
 @Table(name = "trade")
@@ -15,6 +15,14 @@ public class Trade {
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "trade_id")
   private int tradeId;
+
+  @JsonProperty("Sender_ID")
+  @Column(name = "sender_id")
+  private String senderId;
+
+  @JsonProperty("Recipient_ID")
+  @Column(name = "recipient_id")
+  private String recipientId;
 
   @JsonProperty("FDIC_ID")
   @Column(name = "fdic_id")

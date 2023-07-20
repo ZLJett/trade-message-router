@@ -17,6 +17,8 @@
         </Recipient_Info>
         <Trades><xsl:for-each select="/trade_messages/Trade_Message">
             <Trade>
+                <Sender_ID><xsl:value-of select="/trade_messages/Trade_Message[1]/sender_info/sender_ID"/></Sender_ID>
+                <Recipient_ID><xsl:value-of select="/trade_messages/Trade_Message[1]/recipient_info/recipient_ID"/></Recipient_ID>
                 <Trade_Type><xsl:value-of select="trade_info/buysell"/></Trade_Type>
                 <Asset_Type><xsl:value-of select="trade_info/asset_type"/></Asset_Type>
                 <Asset_ID><xsl:value-of select="trade_info/asset_ID"/></Asset_ID>

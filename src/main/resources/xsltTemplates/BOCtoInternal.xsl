@@ -17,6 +17,8 @@
         </Recipient_Info>
         <Trades><xsl:for-each select="/BOS_StandardMessage/Trades/Trade">
             <Trade>
+                <Sender_ID><xsl:value-of select="/BOS_StandardMessage/TradeInfo/upper-case(@from)"/></Sender_ID>
+                <Recipient_ID><xsl:value-of select="/BOS_StandardMessage/TradeInfo/upper-case(@to)"/></Recipient_ID>
                 <Trade_Type><xsl:value-of select="TradeType"/></Trade_Type>
                 <Asset_Type><xsl:value-of select="AssetType"/></Asset_Type>
                 <Asset_ID><xsl:value-of select="AssetName"/></Asset_ID>
