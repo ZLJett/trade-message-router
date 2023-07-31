@@ -3,12 +3,15 @@ package com.github.zljett;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.camel.Exchange;
 import org.apache.camel.Headers;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +22,7 @@ import java.util.Map;
 public class RouteInstructionsBean {
   @Value("${headerPacketFilePath}")
   String headerPacketFileLocation;
-  public void attachHeadersPacket(String body, @Headers Map<String, String> headers) throws IOException {
+  public void attachHeadersPacket(String body, @Headers Map<String, String> headers, Exchange exchange) throws IOException {
     // Pull the sender and recipient from the filename so can select the correct header packets to attach to the message
     String messageFileName = headers.get("CamelFileName");
     String[] splitFileName = messageFileName.split("_");
@@ -33,6 +36,11 @@ public class RouteInstructionsBean {
     String messageExtension = messageIdAndExtension[1];
     headers.put("MessageId", messageID);
     headers.put("MessageExtension", messageExtension);
+    // Set date and time message received as a header
+    LocalDateTime timeReceived = LocalDateTime.now();
+    DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String formattedDate = timeReceived.format(dateTimeFormat);
+    headers.put("DateReceived", formattedDate);
     // Bring in headerPackets file as string and use Jackson JsonNode so only have to deserialize relevant packet
     // rather than full file. Then add each packet's JSON key/value pairs as a headers
     ObjectMapper mapper = new ObjectMapper();

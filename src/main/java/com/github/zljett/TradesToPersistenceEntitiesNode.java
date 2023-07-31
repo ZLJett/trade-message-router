@@ -4,9 +4,9 @@ import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 
 /**
- * This node should be considered as a single Node with the TradeDataPersistenceAsynchronousRoute class
- * and the TradeDataPersistenceNode as they exist together to make the operation of persisting trade data
- * asynchronous from the main route
+ * This node should be considered as a single Node with the TradeDataPersistenceAsynchronousRoute class,
+ * PersistMessageDataNode, and the TradeDataPersistenceNode as they exist together to make the operation of
+ * persisting message and trade data asynchronous from the main route
  */
 @Component
 public class TradesToPersistenceEntitiesNode extends RouteBuilder {
@@ -17,8 +17,8 @@ public class TradesToPersistenceEntitiesNode extends RouteBuilder {
         .log("seda trades to persistence entities route start")
         .split().tokenizeXML("Trade").streaming()
         // Unmarshalling XML for each trade in the message into trade entity pojo
-        .unmarshal().jacksonXml(Trade.class)
+        .unmarshal().jacksonXml(TradeEntity.class)
         .log("seda trades to persistence entities route route end")
-        .to("seda:TradeDataPersistenceRoute?concurrentConsumers=10");
+        .to("seda:PersistTradeDataRoute?concurrentConsumers=10");
   }
 }

@@ -9,12 +9,12 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "trade")
-public class Trade {
+public class TradeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "trade_id")
-  private int tradeId;
+  private Long tradeId;
 
   @JsonProperty("Sender_ID")
   @Column(name = "sender_id")
