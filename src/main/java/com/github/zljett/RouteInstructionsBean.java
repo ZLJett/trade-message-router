@@ -3,7 +3,6 @@ package com.github.zljett;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.camel.Exchange;
 import org.apache.camel.Headers;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -22,7 +21,7 @@ import java.util.Map;
 public class RouteInstructionsBean {
   @Value("${headerPacketFilePath}")
   String headerPacketFileLocation;
-  public void attachHeadersPacket(String body, @Headers Map<String, String> headers, Exchange exchange) throws IOException {
+  public void attachHeadersPacket(String body, @Headers Map<String, String> headers) throws IOException {
     // Pull the sender and recipient from the filename so can select the correct header packets to attach to the message
     String messageFileName = headers.get("CamelFileName");
     String[] splitFileName = messageFileName.split("_");

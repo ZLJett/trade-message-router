@@ -47,4 +47,12 @@ public class TradeEntity {
   @JsonProperty("Asset_Type")
   @Column(name = "asset_type")
   private String assetType;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "message_id")
+  private MessageEntity messageId;
+
+  public void setMessageId(MessageEntity message) {
+    this.messageId = message;
+  }
 }

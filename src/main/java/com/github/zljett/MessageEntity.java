@@ -26,6 +26,10 @@ public class MessageEntity {
   @Column(name = "file_size_bytes")
   private long fileSizeInBytes;
 
+  public Long getMessageId() {
+    return messageId;
+  }
+
   public void setMessageName(String messageName) {
     this.messageName = messageName;
   }
