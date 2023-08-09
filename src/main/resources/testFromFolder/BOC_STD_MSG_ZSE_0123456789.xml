@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--(v1.0, 3/25/23) Example input message-->
-<BOS_StandardMessage>
+<BOC_StandardMessage>
     <MESSAGE_ID>472934012</MESSAGE_ID>
     <TradeInfo from="bcd" to="jax">
         <TradeType>Swap</TradeType>
@@ -43,7 +43,7 @@
             <TradeType>Sell</TradeType>
             <AssetType>Stock</AssetType>
             <AssetName>GOOG</AssetName>
-            <AssetStandardIDNumber>TR02409438284</AssetStandardIDNumber>
+            <AssetStandardIDNumber>TR02409438289</AssetStandardIDNumber>
             <Currency>USD</Currency>
             <TradeValue>25.1</TradeValue>
         </Trade>
@@ -56,4 +56,4 @@
             <TradeValue>999999999.99</TradeValue>
         </Trade>
     </Trades>
-</BOS_StandardMessage>
+</BOC_StandardMessage>

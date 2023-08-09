@@ -90,7 +90,7 @@
 			<buysell>Sell</buysell>
 			<asset_type>Stock</asset_type>
 			<asset_ID>GOOG</asset_ID>
-			<FDIC_ID>TR02409438284</FDIC_ID>
+			<FDIC_ID>TR02409438289</FDIC_ID>
 			<from_cur>USD</from_cur>
 			<to_cur>USD</to_cur>
 			<amount>25.10</amount>

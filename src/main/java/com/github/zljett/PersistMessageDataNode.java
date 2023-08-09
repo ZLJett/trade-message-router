@@ -13,12 +13,12 @@ public class PersistMessageDataNode extends RouteBuilder {
 
   @Override
   public void configure() {
-    from("seda:PersistMessageDataRoute?concurrentConsumers=10").routeId("persist-message-data-route")
+    from("seda:PersistMessageDataRoute?concurrentConsumers=1").routeId("persist-message-data-route")
         .log("seda persist message data route start")
         // Persist message metadata
         .bean("messagePersistenceBean","persistMessageData")
         // Persist trade data in each message
-        .to("seda:TradesToPersistenceEntitiesRoute?concurrentConsumers=10")
+        .to("seda:TradesToPersistenceEntitiesRoute?concurrentConsumers=1")
         .log("seda persist message data route end");
   }
 }

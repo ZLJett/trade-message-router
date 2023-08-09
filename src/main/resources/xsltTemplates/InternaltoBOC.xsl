@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="/">
-    <BOS_StandardMessage>
+    <BOC_StandardMessage>
         <MESSAGE_ID><xsl:value-of select="/Internal_XML_Format/Message_ID"/></MESSAGE_ID>
         <TradeInfo>
             <xsl:attribute name="from"><xsl:value-of select="/Internal_XML_Format/Sender_Info/lower-case(Sender_ID)"/></xsl:attribute>
@@ -21,6 +21,6 @@
                 </Trade>
             </xsl:for-each>
         </Trades>
-    </BOS_StandardMessage>
+    </BOC_StandardMessage>
 </xsl:template>
 </xsl:stylesheet>

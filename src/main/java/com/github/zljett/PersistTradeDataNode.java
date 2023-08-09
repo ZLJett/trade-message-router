@@ -15,7 +15,6 @@ public class PersistTradeDataNode extends RouteBuilder {
   public void configure() {
     from("seda:PersistTradeDataRoute?concurrentConsumers=10").routeId("persist-trade-data-route")
         .log("seda persist trade data route start")
-        .log("${threadName} -- " + "${body}")
         .to("jpa:com.github.zljett.TradeEntity")
         .log("seda persist trade data route end");
   }

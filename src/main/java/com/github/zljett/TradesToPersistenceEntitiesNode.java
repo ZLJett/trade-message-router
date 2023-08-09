@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * This node should be considered as a single Node with the TradeDataPersistenceAsynchronousRoute class,
- * PersistMessageDataNode, and the TradeDataPersistenceNode as they exist together to make the operation of
+ * PersistMessageDataNode, and the PersistTradeDataNode as they exist together to make the operation of
  * persisting message and trade data asynchronous from the main route
  */
 @Component
@@ -13,7 +13,7 @@ public class TradesToPersistenceEntitiesNode extends RouteBuilder {
 
   @Override
   public void configure() {
-    from("seda:TradesToPersistenceEntitiesRoute?concurrentConsumers=10").routeId("trades-to-persistence-entities-route")
+    from("seda:TradesToPersistenceEntitiesRoute?concurrentConsumers=1").routeId("trades-to-persistence-entities-route")
         .log("seda trades to persistence entities route start")
         .split().tokenizeXML("Trade").streaming()
         // Unmarshalling XML for each trade in the message into trade entity pojo
