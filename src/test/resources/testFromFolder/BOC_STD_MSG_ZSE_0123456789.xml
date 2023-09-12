@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--(v1.0, 3/25/23) Example input message-->
+<BOC_StandardMessage>
+    <MESSAGE_ID>472934012</MESSAGE_ID>
+    <TradeInfo from="bcd" to="jax">
+        <TradeType>Swap</TradeType>
+        <TradeID>XJF041942814</TradeID>
+    </TradeInfo>
+    <Trades>
+        <Trade>
+            <TradeType>Buy</TradeType>
+            <AssetType>Stock</AssetType>
+            <AssetName>GME</AssetName>
+            <AssetStandardIDNumber>TR02409438284</AssetStandardIDNumber>
+            <Currency>CAD</Currency>
+            <TradeValue>45678.912</TradeValue>
+        </Trade>
+        <Trade>
+            <TradeType>Buy</TradeType>
+            <AssetType>Stock</AssetType>
+            <AssetName>BYND</AssetName>
+            <AssetStandardIDNumber>TR47093783018</AssetStandardIDNumber>
+            <Currency>CAD</Currency>
+            <TradeValue>111111.22</TradeValue>
+        </Trade>
+        <Trade>
+            <TradeType>Buy</TradeType>
+            <AssetType>Stock</AssetType>
+            <AssetName>TLSA</AssetName>
+            <AssetStandardIDNumber>TR92739591849</AssetStandardIDNumber>
+            <Currency>CAD</Currency>
+            <TradeValue>420420.699</TradeValue>
+        </Trade>
+        <Trade>
+            <TradeType>Sell</TradeType>
+            <AssetType>Option</AssetType>
+            <AssetName>SPY</AssetName>
+            <AssetStandardIDNumber>TR19293821945</AssetStandardIDNumber>
+            <Currency>CAD</Currency>
+            <TradeValue>45678.912</TradeValue>
+        </Trade>
+        <Trade>
+            <TradeType>Sell</TradeType>
+            <AssetType>Stock</AssetType>
+            <AssetName>GOOG</AssetName>
+            <AssetStandardIDNumber>TR02409438289</AssetStandardIDNumber>
+            <Currency>USD</Currency>
+            <TradeValue>25.1</TradeValue>
+        </Trade>
+        <Trade>
+            <TradeType>Buy</TradeType>
+            <AssetType>Option</AssetType>
+            <AssetName>GME</AssetName>
+            <AssetStandardIDNumber>TR984219887483</AssetStandardIDNumber>
+            <Currency>USD</Currency>
+            <TradeValue>999999999.99</TradeValue>
+        </Trade>
+    </Trades>
+</BOC_StandardMessage>
