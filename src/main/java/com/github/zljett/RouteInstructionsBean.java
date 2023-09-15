@@ -21,6 +21,14 @@ import java.util.Map;
 public class RouteInstructionsBean {
   @Value("${headerPacketFilePath}")
   String headerPacketFileLocation;
+
+  public RouteInstructionsBean() {
+  }
+
+  public RouteInstructionsBean(String headerPacketFileLocation) {
+    this.headerPacketFileLocation = headerPacketFileLocation;
+  }
+
   public void attachHeadersPacket(String body, @Headers Map<String, String> headers) throws IOException {
     // Pull the sender and recipient from the filename so can select the correct header packets to attach to the message
     String messageFileName = headers.get("CamelFileName");
