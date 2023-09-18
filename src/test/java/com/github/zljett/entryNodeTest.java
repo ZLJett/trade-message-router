@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 @SpringBootTest
 @CamelSpringBootTest
 @UseAdviceWith
@@ -36,6 +38,8 @@ class entryNodeTest {
     mock.expectedHeaderReceived("MessageId","0123456789");
     mock.expectedHeaderReceived("MessageExtension","xml");
     mock.assertIsSatisfied();
+    String dateHeader = mock.getExchanges().get(0).getIn().getHeader("DateReceived").toString();
+    assertFalse(dateHeader.isEmpty());
   }
 
   @Test

@@ -47,7 +47,7 @@ public class RouteInstructionsBean {
     LocalDateTime timeReceived = LocalDateTime.now();
     DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     String formattedDate = timeReceived.format(dateTimeFormat);
-    headers.put("DateReceived", formattedDate);
+    headers.put("DateReceived",formattedDate);
     // Bring in headerPackets file as string and use Jackson JsonNode so only have to deserialize relevant packet
     // rather than full file. Then add each packet's JSON key/value pairs as a headers
     ObjectMapper mapper = new ObjectMapper();
