@@ -5,31 +5,26 @@ import org.apache.camel.builder.AdviceWith;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.spring.junit5.CamelSpringBootTest;
 import org.apache.camel.test.spring.junit5.UseAdviceWith;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.File;
 import java.util.logging.Logger;
 
+import static org.apache.camel.language.constant.ConstantLanguage.constant;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(properties = {"fullMessagePersistenceFolderFilePath=file:src/test/resources/fullMessagePersistenceFolder"})
+@SpringBootTest
 @CamelSpringBootTest
 @UseAdviceWith
-class PersistFullMessageNodeTest {
+class exitNodeTest {
 
   @Autowired
   private CamelContext camelContext;
 
-  private final String testMessageName = "BOC_STD_MSG_ZSE_0123456789.xml";
-
-  private final File persistedTestMessage = new File("src/test/resources/fullMessagePersistenceFolder/" + testMessageName);
-
-  @AfterEach
-  public void removeTestFilesFromTestDirectory() {
+  public void removeTestFilesFromTestDirectory(File persistedTestMessage, String testMessageName) {
     boolean testFileDeleted = persistedTestMessage.delete();
     Logger logger = Logger.getLogger((PersistFullMessageNodeTest.class.getName()));
     if (testFileDeleted) {
@@ -39,11 +34,13 @@ class PersistFullMessageNodeTest {
     }
   }
 
-  @Test
-  @DisplayName("Should put Message into Full Message Persistence Directory")
-  public void shouldPutMessageIntoFullMessagePersistenceDirectory() throws Exception {
-    AdviceWith.adviceWith(camelContext, "persist-full-message-route", r -> {
+  @ParameterizedTest(name = "Test {index}: Should put Message: {0}, into Recipient Directory")
+  @ValueSource(strings = {"ZSE_TRD_MSG_BOC_987654321.xml", "BOC_STD_MSG_ZSE_0123456789.xml"})
+  public void shouldPutMessageIntoRecipientDirectory(String testMessageName) throws Exception {
+    AdviceWith.adviceWith(camelContext, "exit-route", r -> {
           r.replaceFromWith("file:src/test/resources/testFromFolder?fileName=" + testMessageName + "&noop=true");
+          // Add header needed to tell the .toD endpoint where to 'send' the message, i.e. the recipient's "address"
+          r.weaveAddFirst().setHeader("RecipientAddress", constant("file:src/test/resources/testToFolder"));
           r.weaveAddLast().to("mock:routeResult");
         }
     );
@@ -55,7 +52,9 @@ class PersistFullMessageNodeTest {
     MockEndpoint mock = camelContext.getEndpoint("mock:routeResult", MockEndpoint.class);
     mock.expectedMessageCount(1);
     mock.assertIsSatisfied();
-    // Check if correct test message is in test full message persistence directory
+    // Check if correct test message is in test recipient directory
+    final File persistedTestMessage = new File("src/test/resources/testToFolder/" + testMessageName);
     assertTrue(persistedTestMessage.exists());
+    removeTestFilesFromTestDirectory(persistedTestMessage, testMessageName);
   }
 }
