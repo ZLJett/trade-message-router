@@ -33,9 +33,9 @@ class PersistFullMessageNodeTest {
     boolean testFileDeleted = persistedTestMessage.delete();
     Logger logger = Logger.getLogger((PersistFullMessageNodeTest.class.getName()));
     if (testFileDeleted) {
-      logger.info("Test message: " + testMessageName + " has been deleted from test directory");
+      logger.info("Test message: " + testMessageName + " has been deleted from test full message persistence directory");
     } else {
-      logger.info("Failed to delete test message: " + testMessageName + " from test directory");
+      logger.info("Failed to delete test message: " + testMessageName + " from test full message persistence directory");
     }
   }
 

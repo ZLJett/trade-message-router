@@ -24,13 +24,13 @@ class exitNodeTest {
   @Autowired
   private CamelContext camelContext;
 
-  public void removeTestFilesFromTestDirectory(File persistedTestMessage, String testMessageName) {
-    boolean testFileDeleted = persistedTestMessage.delete();
-    Logger logger = Logger.getLogger((PersistFullMessageNodeTest.class.getName()));
+  public void removeTestFilesFromTestDirectory(File receivedTestMessage, String testMessageName) {
+    boolean testFileDeleted = receivedTestMessage.delete();
+    Logger logger = Logger.getLogger((exitNodeTest.class.getName()));
     if (testFileDeleted) {
-      logger.info("Test message: " + testMessageName + " has been deleted from test directory");
+      logger.info("Test message: " + testMessageName + " has been deleted from test recipient directory");
     } else {
-      logger.info("Failed to delete test message: " + testMessageName + " from test directory");
+      logger.info("Failed to delete test message: " + testMessageName + " from test recipient directory");
     }
   }
 
@@ -53,8 +53,8 @@ class exitNodeTest {
     mock.expectedMessageCount(1);
     mock.assertIsSatisfied();
     // Check if correct test message is in test recipient directory
-    final File persistedTestMessage = new File("src/test/resources/testToFolder/" + testMessageName);
-    assertTrue(persistedTestMessage.exists());
-    removeTestFilesFromTestDirectory(persistedTestMessage, testMessageName);
+    final File receivedTestMessage = new File("src/test/resources/testToFolder/" + testMessageName);
+    assertTrue(receivedTestMessage.exists());
+    removeTestFilesFromTestDirectory(receivedTestMessage, testMessageName);
   }
 }
