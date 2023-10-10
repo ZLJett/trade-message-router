@@ -1,6 +1,7 @@
 package com.github.zljett;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 /**
  * Class for persisting data from each individual message
@@ -30,6 +31,10 @@ public class MessageEntity {
     return messageId;
   }
 
+  public void setMessageId(Long messageId) {
+    this.messageId = messageId;
+  }
+
   public void setMessageName(String messageName) {
     this.messageName = messageName;
   }
@@ -44,5 +49,13 @@ public class MessageEntity {
 
   public void setFileSizeInBytes(long fileSize) {
     this.fileSizeInBytes = fileSize;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof MessageEntity)) return false;
+    MessageEntity that = (MessageEntity) o;
+    return numberOfTrades == that.numberOfTrades && fileSizeInBytes == that.fileSizeInBytes && Objects.equals(messageId, that.messageId) && Objects.equals(messageName, that.messageName) && Objects.equals(dateReceived, that.dateReceived);
   }
 }

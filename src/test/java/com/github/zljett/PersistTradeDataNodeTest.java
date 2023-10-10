@@ -33,19 +33,7 @@ class PersistTradeDataNodeTest {
   @DisplayName("Should Persist Trade Entity in Database")
   public void shouldPersistTadeEntity() throws Exception {
     // Create test Trade Entity modeled on first trade in example trade messages
-    TradeEntity testTradeEntity = new TradeEntity();
-    // The TradeId field's actual value is generated automatically when the entity is persisted, the value below is
-    // what it should be given that this entity is the only item in the test database and is used to make an accurate
-    // comparison with the Trade Entity pulled out of the database later.
-    testTradeEntity.setTradeId(1L);
-    testTradeEntity.setSenderId("BCD");
-    testTradeEntity.setRecipientId("JAX");
-    testTradeEntity.setFdicId("TR02409438284");
-    testTradeEntity.setAssetId("GME");
-    testTradeEntity.setCurrency("CAD");
-    testTradeEntity.setTradeValue("45678.912");
-    testTradeEntity.setTradeType("Buy");
-    testTradeEntity.setAssetType("Stock");
+    TradeEntity testTradeEntity = createTestTradeEntity();
     // The field setMessageId is intentionally left empty as its value is contingent on an entirely separate database entry
     AdviceWith.adviceWith(camelContext, "persist-trade-data-route", r -> {
           r.replaceFromWith("direct:testInput");
@@ -65,5 +53,22 @@ class PersistTradeDataNodeTest {
     Optional<TradeEntity> persistedTradeEntity = tradeRepository.findById(1L);
     // The orElse method pulls the Trade Entity out of its Optional object wrapper, or if null a blank Trade Entity
     assertTrue((persistedTradeEntity.orElse(new TradeEntity())).equals(testTradeEntity));
+  }
+
+  private static TradeEntity createTestTradeEntity() {
+    TradeEntity testTradeEntity = new TradeEntity();
+    // The TradeId field's actual value is generated automatically when the entity is persisted, the value below is
+    // what it should be given that this entity is the only item in the test database and is used to make an accurate
+    // comparison with the Trade Entity pulled out of the database later.
+    testTradeEntity.setTradeId(1L);
+    testTradeEntity.setSenderId("BCD");
+    testTradeEntity.setRecipientId("JAX");
+    testTradeEntity.setFdicId("TR02409438284");
+    testTradeEntity.setAssetId("GME");
+    testTradeEntity.setCurrency("CAD");
+    testTradeEntity.setTradeValue("45678.912");
+    testTradeEntity.setTradeType("Buy");
+    testTradeEntity.setAssetType("Stock");
+    return testTradeEntity;
   }
 }
