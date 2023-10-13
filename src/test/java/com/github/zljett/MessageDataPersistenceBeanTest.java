@@ -45,7 +45,7 @@ class MessageDataPersistenceBeanTest {
     String testMessageBody = readString(testMessageBodyFilepath);
     Map<String, String> testMessageHeaders = new HashMap<>();
     testMessageHeaders.put("CamelFileName", testMessageName);
-    // Both date/time and File length are variable so are set to these fixed values for the purposes of this test
+    // Both date/time and file length are variable in production so are set to these fixed values for the purposes of this test
     String testFormattedDate = "2023-10-10 09:37:52";
     testMessageHeaders.put("DateReceived", testFormattedDate);
     long testFileLength = 3281L;
@@ -60,7 +60,7 @@ class MessageDataPersistenceBeanTest {
     assertTrue((testMessageHeaders.get("MessagePrimaryKey")).equals("1"));
   }
 
-  private static MessageEntity createExpectedMessageEntity(String testMessageName, String testFormattedDate, long testFileLength) {
+  public static MessageEntity createExpectedMessageEntity(String testMessageName, String testFormattedDate, long testFileLength) {
     MessageEntity expectedMessageEntity = new MessageEntity();
     // The MessageId field's actual value is generated automatically when the entity is persisted, the value below is
     // what it should be given that this entity is the only item in the test database and is used to make an accurate
