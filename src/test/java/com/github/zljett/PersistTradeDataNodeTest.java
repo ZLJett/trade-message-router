@@ -32,9 +32,8 @@ class PersistTradeDataNodeTest {
   @Test
   @DisplayName("Should Persist Trade Entity in Database")
   public void shouldPersistTadeEntity() throws Exception {
-    // Create test Trade Entity modeled on first trade in example trade messages
-    TradeEntity testTradeEntity = createTestTradeEntity();
-    // The field setMessageId is intentionally left empty as its value is contingent on an entirely separate database entry
+    // Create expected Trade Entity modeled on first trade in example trade messages
+    TradeEntity expectedTradeEntity = createExpectedTradeEntity();
     AdviceWith.adviceWith(camelContext, "persist-trade-data-route", r -> {
           r.replaceFromWith("direct:testInput");
           r.weaveAddLast().to("mock:routeResult");
@@ -47,15 +46,15 @@ class PersistTradeDataNodeTest {
     // This makes sure the message completes the route before the below assertion is run
     MockEndpoint mock = camelContext.getEndpoint("mock:routeResult", MockEndpoint.class);
     mock.expectedMessageCount(1);
-    // Pass into route the test Trade Entity created above
-    producerTemplate.sendBody("direct:testInput", testTradeEntity);
+    // Pass into route the expected Trade Entity created above
+    producerTemplate.sendBody("direct:testInput", expectedTradeEntity);
     mock.assertIsSatisfied();
     Optional<TradeEntity> persistedTradeEntity = tradeRepository.findById(1L);
     // The orElse method pulls the Trade Entity out of its Optional object wrapper, or if null a blank Trade Entity
-    assertTrue((persistedTradeEntity.orElse(new TradeEntity())).equals(testTradeEntity));
+    assertTrue((persistedTradeEntity.orElse(new TradeEntity())).equals(expectedTradeEntity));
   }
 
-  private static TradeEntity createTestTradeEntity() {
+  private static TradeEntity createExpectedTradeEntity() {
     TradeEntity testTradeEntity = new TradeEntity();
     // The TradeId field's actual value is generated automatically when the entity is persisted, the value below is
     // what it should be given that this entity is the only item in the test database and is used to make an accurate
@@ -69,6 +68,8 @@ class PersistTradeDataNodeTest {
     testTradeEntity.setTradeValue("45678.912");
     testTradeEntity.setTradeType("Buy");
     testTradeEntity.setAssetType("Stock");
+    // The field setMessageId is set to null as its value is contingent on an entirely separate database entry
+    testTradeEntity.setMessageId(null);
     return testTradeEntity;
   }
 }

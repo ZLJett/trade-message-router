@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Internal_XML_Format>
+    <Message_ID>472934012</Message_ID>
+    <Trade_Info>
+        <Trade_Type>Swap</Trade_Type>
+        <Trade_ID>XJF041942814</Trade_ID>
+    </Trade_Info>
+    <Sender_Info>
+        <Sender_ID>BCD</Sender_ID>
+        <Sender_BrokerID>BCD461389877</Sender_BrokerID>
+    </Sender_Info>
+    <Recipient_Info>
+        <Recipient_ID>JAX</Recipient_ID>
+        <Recipient_BrokerID>JAX439827504</Recipient_BrokerID>
+    </Recipient_Info>
+    <Trades>
+        <Trade>
+            <Sender_ID>BCD</Sender_ID>
+            <Recipient_ID>JAX</Recipient_ID>
+            <Trade_Type>Buy</Trade_Type>
+            <Asset_Type>Stock</Asset_Type>
+            <Asset_ID>GME</Asset_ID>
+            <FDIC_ID>TR02409438284</FDIC_ID>
+            <Currency>CAD</Currency>
+            <Trade_Value>45678.912</Trade_Value>
+        </Trade>
+    </Trades>
+</Internal_XML_Format>

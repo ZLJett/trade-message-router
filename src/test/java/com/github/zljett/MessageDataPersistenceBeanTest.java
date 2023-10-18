@@ -60,7 +60,7 @@ class MessageDataPersistenceBeanTest {
     assertTrue((testMessageHeaders.get("MessagePrimaryKey")).equals("1"));
   }
 
-  public static MessageEntity createExpectedMessageEntity(String testMessageName, String testFormattedDate, long testFileLength) {
+  private static MessageEntity createExpectedMessageEntity(String testMessageName, String testFormattedDate, long testFileLength) {
     MessageEntity expectedMessageEntity = new MessageEntity();
     // The MessageId field's actual value is generated automatically when the entity is persisted, the value below is
     // what it should be given that this entity is the only item in the test database and is used to make an accurate

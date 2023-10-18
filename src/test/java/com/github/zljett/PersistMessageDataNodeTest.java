@@ -15,7 +15,6 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.Optional;
 
-import static com.github.zljett.MessageDataPersistenceBeanTest.createExpectedMessageEntity;
 import static org.apache.camel.language.constant.ConstantLanguage.constant;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -58,6 +57,22 @@ class PersistMessageDataNodeTest {
     Optional<MessageEntity> persistedMessageEntity = messageRepository.findById(1L);
     // The orElse method pulls the Message Entity out of its Optional object wrapper, or if null a blank Message Entity
     assertTrue((persistedMessageEntity.orElse(new MessageEntity())).equals(expectedMessageEntity));
+  }
+
+  private static MessageEntity createExpectedMessageEntity(String testMessageName, String testFormattedDate, long testFileLength) {
+    MessageEntity expectedMessageEntity = new MessageEntity();
+    // The MessageId field's actual value is generated automatically when the entity is persisted, the value below is
+    // what it should be given that this entity is the only item in the test database and is used to make an accurate
+    // comparison with the Message Entity pulled out of the database later.
+    expectedMessageEntity.setMessageId(1L);
+    String[] splitMessageName = testMessageName.split("\\.");
+    String expectedMessageName = splitMessageName[0];
+    expectedMessageEntity.setMessageName(expectedMessageName);
+    expectedMessageEntity.setDateReceived(testFormattedDate);
+    // The input test message has 6 trades
+    expectedMessageEntity.setNumberOfTrades(6);
+    expectedMessageEntity.setFileSizeInBytes(testFileLength);
+    return expectedMessageEntity;
   }
 
   @Test
