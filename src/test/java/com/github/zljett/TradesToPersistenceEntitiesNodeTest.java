@@ -97,7 +97,7 @@ class TradesToPersistenceEntitiesNodeTest {
     String expectedMessageName = splitMessageName[0];
     expectedMessageEntity.setMessageName(expectedMessageName);
     expectedMessageEntity.setDateReceived(testFormattedDate);
-    // The input test message has 1 trades
+    // The input test message has 1 trade
     expectedMessageEntity.setNumberOfTrades(1);
     expectedMessageEntity.setFileSizeInBytes(testFileLength);
     return expectedMessageEntity;
