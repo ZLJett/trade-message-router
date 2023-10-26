@@ -92,6 +92,10 @@ public class TradeEntity {
     this.messageId = message;
   }
 
+  public MessageEntity getMessageId() {
+    return messageId;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
