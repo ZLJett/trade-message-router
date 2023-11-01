@@ -94,6 +94,7 @@ public class SendTradeMessagesTest {
     MockEndpoint tradesBeforeDataPersistenceMock = camelContext.getEndpoint("mock:tradesBeforeDataPersistence", MockEndpoint.class);
     MockEndpoint tradesAfterDataPersistenceMock = camelContext.getEndpoint("mock:tradesAfterDataPersistence", MockEndpoint.class);
     MockEndpoint completeRouteResultMock = camelContext.getEndpoint("mock:completeRouteResult", MockEndpoint.class);
+    // These make sure the message completes the route before the below assertions are run
     completeRouteResultMock.expectedMessageCount(1);
     completeRouteResultMock.assertIsSatisfied();
     tradesAfterDataPersistenceMock.expectedMessageCount(expectedMessageNumTrades);

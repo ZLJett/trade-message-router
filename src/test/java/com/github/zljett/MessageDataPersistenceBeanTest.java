@@ -60,6 +60,15 @@ class MessageDataPersistenceBeanTest {
     assertTrue((testMessageHeaders.get("MessagePrimaryKey")).equals("1"));
   }
 
+  @Test
+  @DisplayName("Should Count Correct Number of Trades in a Message")
+  public void shouldCountCorrectNumberOfTradesInMessage() throws Exception {
+    String testMessageBody = readString(testMessageBodyFilepath);
+    int tradesInTestMessage = messageDataPersistenceBean.countTradesInMessage(testMessageBody);
+    // The input test message has 6 trades
+    assertEquals(tradesInTestMessage,6);
+  }
+
   private static MessageEntity createExpectedMessageEntity(String testMessageName, String testFormattedDate, long testFileLength) {
     MessageEntity expectedMessageEntity = new MessageEntity();
     // The MessageId field's actual value is generated automatically when the entity is persisted, the value below is
@@ -74,14 +83,5 @@ class MessageDataPersistenceBeanTest {
     expectedMessageEntity.setNumberOfTrades(6);
     expectedMessageEntity.setFileSizeInBytes(testFileLength);
     return expectedMessageEntity;
-  }
-
-  @Test
-  @DisplayName("Should Count Correct Number of Trades in a Message")
-  public void shouldCountCorrectNumberOfTradesInMessage() throws Exception {
-    String testMessageBody = readString(testMessageBodyFilepath);
-    int tradesInTestMessage = messageDataPersistenceBean.countTradesInMessage(testMessageBody);
-    // The input test message has 6 trades
-    assertEquals(tradesInTestMessage,6);
   }
 }

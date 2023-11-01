@@ -28,17 +28,6 @@ class PersistFullMessageNodeTest {
 
   private final File persistedTestMessage = new File("src/test/resources/fullMessagePersistenceFolder/" + testMessageName);
 
-  @AfterEach
-  public void removeTestFilesFromTestDirectory() {
-    boolean testFileDeleted = persistedTestMessage.delete();
-    Logger logger = Logger.getLogger((PersistFullMessageNodeTest.class.getName()));
-    if (testFileDeleted) {
-      logger.info("Test message: " + testMessageName + " has been deleted from test full message persistence directory");
-    } else {
-      logger.info("Failed to delete test message: " + testMessageName + " from test full message persistence directory");
-    }
-  }
-
   @Test
   @DisplayName("Should put Message into Full Message Persistence Directory")
   public void shouldPutMessageIntoFullMessagePersistenceDirectory() throws Exception {
@@ -57,5 +46,16 @@ class PersistFullMessageNodeTest {
     mock.assertIsSatisfied();
     // Check if correct test message is in test full message persistence directory
     assertTrue(persistedTestMessage.exists());
+  }
+
+  @AfterEach
+  public void removeTestFilesFromTestDirectory() {
+    boolean testFileDeleted = persistedTestMessage.delete();
+    Logger logger = Logger.getLogger((PersistFullMessageNodeTest.class.getName()));
+    if (testFileDeleted) {
+      logger.info("Test message: " + testMessageName + " has been deleted from test full message persistence directory");
+    } else {
+      logger.info("Failed to delete test message: " + testMessageName + " from test full message persistence directory");
+    }
   }
 }

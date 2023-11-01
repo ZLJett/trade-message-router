@@ -13,7 +13,6 @@ class RouteInstructionsBeanTest {
 
   String headerPacketFileLocation = "src/main/resources/jsonFiles/headerPackets.json";
 
-  // This test covers the headers added inside the attachHeadersPacket method that are not from any of the headers packets
   @Test
   @DisplayName("Should Attach the Correct Headers for all Message")
   public void shouldAttachCorrectHeadersFor_allMessages() throws IOException {

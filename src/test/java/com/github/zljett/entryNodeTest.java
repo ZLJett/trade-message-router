@@ -23,7 +23,6 @@ class entryNodeTest {
   @Autowired
   private CamelContext camelContext;
 
-  // This test covers the headers added inside the attachHeadersPacket method that are not from any of the headers packets
   @Test
   @DisplayName("Should Have the Correct Headers for all Message")
   public void shouldHaveCorrectHeadersFor_allMessages() throws Exception {

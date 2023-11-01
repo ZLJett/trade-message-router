@@ -43,24 +43,6 @@ public class SendTradeMessagesWithoutDataPersistenceTest {
       entry("BOC_STD_MSG_ZSE_0123456789.xml", "ZSE_TRD_MSG_ZSE_0123456789.xml")
   );
 
-  public void removeTestMessagesFromTestDirectories(File persistedTestMessage, String testMessageName, File receivedTestMessage, String expectedMessageName) {
-    Logger logger = Logger.getLogger((SendTradeMessagesTest.class.getName()));
-    // Delete test message from full message persistence directory
-    boolean persistedTestMessageDeleted = persistedTestMessage.delete();
-    if (persistedTestMessageDeleted) {
-      logger.info("Test message: " + testMessageName + " has been deleted from test full message persistence directory");
-    } else {
-      logger.info("Failed to delete test message: " + testMessageName + " from test full message persistence directory");
-    }
-    // Delete test message from recipient directory
-    boolean receivedTestMessageDeleted = receivedTestMessage.delete();
-    if (receivedTestMessageDeleted) {
-      logger.info("Test message: " + expectedMessageName + " has been deleted from test recipient directory");
-    } else {
-      logger.info("Failed to delete test message: " + expectedMessageName + " from test recipient directory");
-    }
-  }
-
   @ParameterizedTest(name = "Test {index}: Should Produce Correct Output For Sent Message: {0}")
   @ValueSource(strings = {"ZSE_TRD_MSG_BOC_987654321.xml", "BOC_STD_MSG_ZSE_0123456789.xml"})
   public void shouldProduceCorrectOutputForEachSentMessage(String testMessageName) throws Exception {
@@ -82,7 +64,7 @@ public class SendTradeMessagesWithoutDataPersistenceTest {
         }
     );
     camelContext.start();
-    // This makes sure the message completes the route before the below assertion is run
+    // This makes sure the message completes the route before the below assertions are run
     MockEndpoint mock = camelContext.getEndpoint("mock:routeResult", MockEndpoint.class);
     mock.expectedMessageCount(1);
     mock.assertIsSatisfied();
@@ -100,5 +82,23 @@ public class SendTradeMessagesWithoutDataPersistenceTest {
     assertTrue(receivedMessageBody.equals(correctExpectedMessageBody));
     // Clear out test directories
     removeTestMessagesFromTestDirectories(persistedTestMessage, testMessageName, receivedTestMessage, expectedMessageName);
+  }
+
+  public void removeTestMessagesFromTestDirectories(File persistedTestMessage, String testMessageName, File receivedTestMessage, String expectedMessageName) {
+    Logger logger = Logger.getLogger((SendTradeMessagesTest.class.getName()));
+    // Delete test message from full message persistence directory
+    boolean persistedTestMessageDeleted = persistedTestMessage.delete();
+    if (persistedTestMessageDeleted) {
+      logger.info("Test message: " + testMessageName + " has been deleted from test full message persistence directory");
+    } else {
+      logger.info("Failed to delete test message: " + testMessageName + " from test full message persistence directory");
+    }
+    // Delete test message from recipient directory
+    boolean receivedTestMessageDeleted = receivedTestMessage.delete();
+    if (receivedTestMessageDeleted) {
+      logger.info("Test message: " + expectedMessageName + " has been deleted from test recipient directory");
+    } else {
+      logger.info("Failed to delete test message: " + expectedMessageName + " from test recipient directory");
+    }
   }
 }

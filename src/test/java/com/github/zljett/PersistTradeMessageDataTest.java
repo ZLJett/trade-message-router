@@ -80,7 +80,7 @@ public class PersistTradeMessageDataTest {
     // As starting a Camel Context starts all routes this stops the Entry Route and prevents it from running and
     // sending messages automatically
     camelContext.getRouteController().stopRoute("entry-route");
-    // This makes sure the message completes the route before the below assertion is run
+    // This makes sure the message completes the route before the below assertions are run
     MockEndpoint tradesBeforePersistenceMock = camelContext.getEndpoint("mock:tradesBeforePersistence", MockEndpoint.class);
     MockEndpoint tradesAfterPersistenceMock = camelContext.getEndpoint("mock:routeResult", MockEndpoint.class);
     tradesAfterPersistenceMock.expectedMessageCount(numTradesInTestMessage);

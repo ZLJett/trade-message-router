@@ -44,7 +44,6 @@ class ToRecipientFilenameFormatNodeTest {
     // As starting a Camel Context starts all routes this stops the Entry Route and prevents it from running and
     // sending messages automatically
     camelContext.getRouteController().stopRoute("entry-route");
-    // This makes sure the message completes the route before the below assertion is run
     MockEndpoint mock = camelContext.getEndpoint("mock:routeResult", MockEndpoint.class);
     mock.expectedMessageCount(1);
     // Check if setHeader endpoint generated the correct filename for a message going to BOC and set the new name
@@ -73,7 +72,6 @@ class ToRecipientFilenameFormatNodeTest {
     // As starting a Camel Context starts all routes this stops the Entry Route and prevents it from running and
     // sending messages automatically
     camelContext.getRouteController().stopRoute("entry-route");
-    // This makes sure the message completes the route before the below assertion is run
     MockEndpoint mock = camelContext.getEndpoint("mock:routeResult", MockEndpoint.class);
     mock.expectedMessageCount(1);
     // Check if setHeader endpoint generated the correct filename for a message going to ZSE and set the new name

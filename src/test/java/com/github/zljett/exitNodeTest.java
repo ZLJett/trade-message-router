@@ -24,16 +24,6 @@ class exitNodeTest {
   @Autowired
   private CamelContext camelContext;
 
-  public void removeTestFilesFromTestDirectory(File receivedTestMessage, String testMessageName) {
-    boolean testFileDeleted = receivedTestMessage.delete();
-    Logger logger = Logger.getLogger((exitNodeTest.class.getName()));
-    if (testFileDeleted) {
-      logger.info("Test message: " + testMessageName + " has been deleted from test recipient directory");
-    } else {
-      logger.info("Failed to delete test message: " + testMessageName + " from test recipient directory");
-    }
-  }
-
   @ParameterizedTest(name = "Test {index}: Should put Message: {0}, into Recipient Directory")
   @ValueSource(strings = {"ZSE_TRD_MSG_BOC_987654321.xml", "BOC_STD_MSG_ZSE_0123456789.xml"})
   public void shouldPutMessageIntoRecipientDirectory(String testMessageName) throws Exception {
@@ -56,5 +46,15 @@ class exitNodeTest {
     final File receivedTestMessage = new File("src/test/resources/testToFolder/" + testMessageName);
     assertTrue(receivedTestMessage.exists());
     removeTestFilesFromTestDirectory(receivedTestMessage, testMessageName);
+  }
+
+  public void removeTestFilesFromTestDirectory(File receivedTestMessage, String testMessageName) {
+    boolean testFileDeleted = receivedTestMessage.delete();
+    Logger logger = Logger.getLogger((exitNodeTest.class.getName()));
+    if (testFileDeleted) {
+      logger.info("Test message: " + testMessageName + " has been deleted from test recipient directory");
+    } else {
+      logger.info("Failed to delete test message: " + testMessageName + " from test recipient directory");
+    }
   }
 }
