@@ -13,7 +13,7 @@ public class PersistFullMessageNode extends RouteBuilder {
   public void configure() {
     from("direct:persistFullMessageRoute").routeId("persist-full-message-route")
         .log("to persist full message route start")
-        .to("{{fullMessagePersistenceFolderFilePath}}")
+        .to("{{full.message.persistence.folder.filepath}}")
         .log("to persist full message route end");
   }
 }

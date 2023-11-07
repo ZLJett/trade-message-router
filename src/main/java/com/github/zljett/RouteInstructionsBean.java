@@ -17,9 +17,9 @@ import java.util.Map;
 /**
  * Bean to add "Routing Slip" and "Instructions Slip" to message headers
  */
-@Component("instructionsBean")
+@Component("RouteInstructionsBean")
 public class RouteInstructionsBean {
-  @Value("${headerPacketFilePath}")
+  @Value("${header.packet.filepath}")
   String headerPacketFileLocation;
 
   public RouteInstructionsBean() {

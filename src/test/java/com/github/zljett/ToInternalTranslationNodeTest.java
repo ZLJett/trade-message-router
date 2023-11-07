@@ -32,9 +32,9 @@ class ToInternalTranslationNodeTest {
   public void shouldTranslate_BocXmlFormatMessageTo_InternalXmlFormat() throws Exception {
     AdviceWith.adviceWith(camelContext, "internal-translation-route", r -> {
           // Pulls specifically a message coming from BOC
-          r.replaceFromWith("file:src/test/resources/testFromFolder?fileName=BOC_STD_MSG_ZSE_0123456789.xml&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestSenderFolder?fileName=BOC_STD_MSG_ZSE_0123456789.xml&noop=true");
           // Add header needed to give route's XSLT endpoint the appropriate XSLT template for this test message
-          r.weaveAddFirst().setHeader("ToInternalTranslationInstructions", constant("xslt-saxon:xsltTemplates/BOCtoInternal.xsl"));
+          r.weaveAddFirst().setHeader("ToInternalTranslationInstructions", constant("xslt-saxon:XsltTemplates/BocToInternalXsltTemplate.xsl"));
           r.weaveAddLast().to("mock:routeResult");
         }
     );
@@ -48,7 +48,7 @@ class ToInternalTranslationNodeTest {
     mock.assertIsSatisfied();
     // Check if XSLT endpoint's output XML string matches the correct XML for test message
     String testOutputXml = (String) mock.getExchanges().get(0).getIn().getBody();
-    Path correctXmlTranslationFilepath = Paths.get("src/test/resources/testSenderToInternalComparisonXmlFiles/BocToInternalCorrectTranslation.xml");
+    Path correctXmlTranslationFilepath = Paths.get("src/test/resources/TestSenderToInternalComparisonXmlFiles/BocToInternalCorrectTranslation.xml");
     String correctTranslationBocToInternalXml = readString(correctXmlTranslationFilepath);
     assertTrue(testOutputXml.equals(correctTranslationBocToInternalXml));
   }
@@ -58,9 +58,9 @@ class ToInternalTranslationNodeTest {
   public void shouldTranslate_ZseXmlFormatMessageTo_InternalXmlFormat() throws Exception {
     AdviceWith.adviceWith(camelContext, "internal-translation-route", r -> {
           // Pulls specifically a message coming from ZSE
-          r.replaceFromWith("file:src/test/resources/testFromFolder?fileName=ZSE_TRD_MSG_BOC_987654321.xml&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestSenderFolder?fileName=ZSE_TRD_MSG_BOC_987654321.xml&noop=true");
           // Add header needed to give route's XSLT endpoint the appropriate XSLT template for this test message
-          r.weaveAddFirst().setHeader("ToInternalTranslationInstructions", constant("xslt-saxon:xsltTemplates/ZSEtoInternal.xsl"));
+          r.weaveAddFirst().setHeader("ToInternalTranslationInstructions", constant("xslt-saxon:XsltTemplates/ZseToInternalXsltTemplate.xsl"));
           r.weaveAddLast().to("mock:routeResult");
         }
     );
@@ -74,7 +74,7 @@ class ToInternalTranslationNodeTest {
     mock.assertIsSatisfied();
     // Check if XSLT endpoint's output XML string matches the correct XML for test message
     String testOutputXml = (String) mock.getExchanges().get(0).getIn().getBody();
-    Path correctXmlTranslationFilepath = Paths.get("src/test/resources/testSenderToInternalComparisonXmlFiles/ZseToInternalCorrectTranslation.xml");
+    Path correctXmlTranslationFilepath = Paths.get("src/test/resources/TestSenderToInternalComparisonXmlFiles/ZseToInternalCorrectTranslation.xml");
     String correctTranslationZseToInternalXml = readString(correctXmlTranslationFilepath);
     assertTrue(testOutputXml.equals(correctTranslationZseToInternalXml));
   }

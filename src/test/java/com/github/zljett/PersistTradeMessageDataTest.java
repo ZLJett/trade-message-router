@@ -40,8 +40,8 @@ public class PersistTradeMessageDataTest {
 
   private final Map<String, String> testMessagesFilenames = Map.ofEntries(
       // Name of each sent test message and the corresponding file to use for the test
-      entry("ZSE_TRD_MSG_BOC_987654321.xml", "TestMessageInInternalXMLFormat_fromZSE.xml"),
-      entry("BOC_STD_MSG_ZSE_0123456789.xml", "TestMessageInInternalXMLFormat_fromBoc.xml")
+      entry("ZSE_TRD_MSG_BOC_987654321.xml", "TestMessageInInternalXmlFormat_fromZSE.xml"),
+      entry("BOC_STD_MSG_ZSE_0123456789.xml", "TestMessageInInternalXmlFormat_fromBoc.xml")
   );
 
   private final Map<String, Long> testMessagesFileLengths  = Map.ofEntries(
@@ -65,7 +65,7 @@ public class PersistTradeMessageDataTest {
     long testMessageFileLength = testMessagesFileLengths.get(testMessageName);
     int numTradesInTestMessage = testMessagesTradeCount.get(testMessageName);
     AdviceWith.adviceWith(camelContext, "message-data-persistence-asynchronous-route", r -> {
-          r.replaceFromWith("file:src/test/resources/testInternalXmlFormatMessages?fileName=" + testMessageFilename + "&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestInternalXmlFormatMessages?fileName=" + testMessageFilename + "&noop=true");
           // Add headers needed for message data persistence
           r.weaveAddFirst().setHeader("CamelFileName", constant(testMessageName));
           r.weaveAddFirst().setHeader("DateReceived", constant(testFormattedDate));

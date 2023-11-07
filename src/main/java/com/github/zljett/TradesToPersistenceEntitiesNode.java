@@ -19,7 +19,7 @@ public class TradesToPersistenceEntitiesNode extends RouteBuilder {
         // Unmarshalling XML for each trade in the message into trade entity pojo
         .unmarshal().jacksonXml(TradeEntity.class)
         // Add value to message_id field of TradeEntity
-        .bean("addForeignKeyBean", "setTradeForeignKey")
+        .bean("AddParentMessagePrimaryKeyToTradeEntityBean", "setTradeForeignKeyToParentMessagePrimaryKey")
         .log("seda trades to persistence entities route route end")
         .to("seda:PersistTradeDataRoute?concurrentConsumers=10");
   }

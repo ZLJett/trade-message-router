@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Bean to persist message metadata
  */
-@Component("messagePersistenceBean")
+@Component("MessageDataPersistenceBean")
 public class MessageDataPersistenceBean {
 
   @Autowired

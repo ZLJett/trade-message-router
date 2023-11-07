@@ -18,16 +18,16 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @CamelSpringBootTest
 @UseAdviceWith
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class entryNodeTest {
+class EntryNodeTest {
 
   @Autowired
   private CamelContext camelContext;
 
   @Test
-  @DisplayName("Should Have the Correct Headers for all Message")
+  @DisplayName("Should Have the Correct Headers Common to all Messages")
   public void shouldHaveCorrectHeadersFor_allMessages() throws Exception {
     AdviceWith.adviceWith(camelContext, "entry-route", r -> {
-          r.replaceFromWith("file:src/test/resources/testFromFolder?fileName=BOC_STD_MSG_ZSE_0123456789.xml&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestSenderFolder?fileName=BOC_STD_MSG_ZSE_0123456789.xml&noop=true");
           r.weaveByType(RoutingSlipDefinition.class).replace().to("mock:routeResult");
         }
     );
@@ -46,14 +46,14 @@ class entryNodeTest {
   public void shouldHaveCorrectHeadersFor_fromBocRoute() throws Exception {
     AdviceWith.adviceWith(camelContext, "entry-route", r -> {
           // Pulls specifically a message coming from BOC
-          r.replaceFromWith("file:src/test/resources/testFromFolder?fileName=BOC_STD_MSG_ZSE_0123456789.xml&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestSenderFolder?fileName=BOC_STD_MSG_ZSE_0123456789.xml&noop=true");
           r.weaveByType(RoutingSlipDefinition.class).replace().to("mock:routeResult");
         }
     );
     camelContext.start();
     MockEndpoint mock = camelContext.getEndpoint("mock:routeResult", MockEndpoint.class);
     mock.expectedMessageCount(1);
-    mock.expectedHeaderReceived("ToInternalTranslationInstructions","xslt-saxon:xsltTemplates/BOCtoInternal.xsl");
+    mock.expectedHeaderReceived("ToInternalTranslationInstructions","xslt-saxon:XsltTemplates/BocToInternalXsltTemplate.xsl");
     mock.assertIsSatisfied();
   }
 
@@ -62,17 +62,17 @@ class entryNodeTest {
   public void shouldHaveCorrectHeadersFor_toBocRoute() throws Exception {
     AdviceWith.adviceWith(camelContext, "entry-route", r -> {
           // Pulls specifically a message going to BOC
-          r.replaceFromWith("file:src/test/resources/testFromFolder?fileName=ZSE_TRD_MSG_BOC_987654321.xml&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestSenderFolder?fileName=ZSE_TRD_MSG_BOC_987654321.xml&noop=true");
           r.weaveByType(RoutingSlipDefinition.class).replace().to("mock:routeResult");
         }
     );
     camelContext.start();
     MockEndpoint mock = camelContext.getEndpoint("mock:routeResult", MockEndpoint.class);
     mock.expectedHeaderReceived("RoutingPath","direct:persistFullMessageRoute,direct:toInternalTranslationRoute,direct:MessageDataPersistenceAsynchronousRoute,direct:toRecipientFilenameFormatRoute,direct:toRecipientTranslationRoute,direct:exitRoute");
-    mock.expectedHeaderReceived("ToRecipientTranslationInstructions","xslt-saxon:xsltTemplates/InternaltoBOC.xsl");
+    mock.expectedHeaderReceived("ToRecipientTranslationInstructions","xslt-saxon:XsltTemplates/InternalToBocXsltTemplate.xsl");
     mock.expectedHeaderReceived("RecipientClientCode","BOC");
     mock.expectedHeaderReceived("RecipientFilenameFormat","BOC_STD_MSG");
-    mock.expectedHeaderReceived("RecipientAddress","file:src/main/resources/testToFolder");
+    mock.expectedHeaderReceived("RecipientAddress","file:src/main/resources/RecipientFolder");
     mock.assertIsSatisfied();
   }
 
@@ -81,14 +81,14 @@ class entryNodeTest {
   public void shouldHaveCorrectHeadersFor_fromZseRoute() throws Exception {
     AdviceWith.adviceWith(camelContext, "entry-route", r -> {
           // Pulls specifically a message coming from ZSE
-          r.replaceFromWith("file:src/test/resources/testFromFolder?fileName=ZSE_TRD_MSG_BOC_987654321.xml&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestSenderFolder?fileName=ZSE_TRD_MSG_BOC_987654321.xml&noop=true");
           r.weaveByType(RoutingSlipDefinition.class).replace().to("mock:routeResult");
         }
     );
     camelContext.start();
     MockEndpoint mock = camelContext.getEndpoint("mock:routeResult", MockEndpoint.class);
     mock.expectedMessageCount(1);
-    mock.expectedHeaderReceived("ToInternalTranslationInstructions","xslt-saxon:xsltTemplates/ZSEtoInternal.xsl");
+    mock.expectedHeaderReceived("ToInternalTranslationInstructions","xslt-saxon:XsltTemplates/ZseToInternalXsltTemplate.xsl");
     mock.assertIsSatisfied();
   }
 
@@ -97,7 +97,7 @@ class entryNodeTest {
   public void shouldHaveCorrectHeadersFor_ToZseRoute() throws Exception {
     AdviceWith.adviceWith(camelContext, "entry-route", r -> {
           // Pulls specifically a message going to ZSE
-          r.replaceFromWith("file:src/test/resources/testFromFolder?fileName=BOC_STD_MSG_ZSE_0123456789.xml&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestSenderFolder?fileName=BOC_STD_MSG_ZSE_0123456789.xml&noop=true");
           r.weaveByType(RoutingSlipDefinition.class).replace().to("mock:routeResult");
         }
     );
@@ -105,10 +105,10 @@ class entryNodeTest {
     MockEndpoint mock = camelContext.getEndpoint("mock:routeResult", MockEndpoint.class);
     mock.expectedMessageCount(1);
     mock.expectedHeaderReceived("RoutingPath","direct:persistFullMessageRoute,direct:toInternalTranslationRoute,direct:MessageDataPersistenceAsynchronousRoute,direct:toRecipientFilenameFormatRoute,direct:toRecipientTranslationRoute,direct:exitRoute");
-    mock.expectedHeaderReceived("ToRecipientTranslationInstructions","xslt-saxon:xsltTemplates/InternaltoZSE.xsl");
+    mock.expectedHeaderReceived("ToRecipientTranslationInstructions","xslt-saxon:XsltTemplates/InternalToZseXsltTemplate.xsl");
     mock.expectedHeaderReceived("RecipientClientCode","ZSE");
     mock.expectedHeaderReceived("RecipientFilenameFormat","ZSE_TRD_MSG");
-    mock.expectedHeaderReceived("RecipientAddress","file:src/main/resources/testToFolder");
+    mock.expectedHeaderReceived("RecipientAddress","file:src/main/resources/RecipientFolder");
     mock.assertIsSatisfied();
   }
 }

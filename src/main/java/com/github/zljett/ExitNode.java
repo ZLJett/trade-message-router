@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * Exit Node
  */
 @Component
-public class exitNode extends RouteBuilder {
+public class ExitNode extends RouteBuilder {
 
   @Override
   public void configure() {

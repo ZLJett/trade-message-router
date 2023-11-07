@@ -31,14 +31,14 @@ class TradesToPersistenceEntitiesNodeTest {
   public void shouldCreateTradeEntityFor_EachTradeInInternalFormatXMLMessage() throws Exception {
     final String testMessageName = "ZSE_TRD_MSG_BOC_987654321.xml";
     final String testFormattedDate = "2023-10-10 09:37:52";
-    // This is the size in bytes of TestMessageInInternalXMLFormat_WithSingleTrade.xml
+    // This is the size in bytes of TestMessageInInternalXmlFormat_WithSingleTrade.xml
     final long testFileLength = 907L;
     // To fully test the TradesToPersistenceEntitiesNode,specifically the AddForeignKeyToTradeEntityBean, there must be
     // an existing entry in the database for the trade's parent message for the bean to use to set the messageId field
     // of the Trade Entity with the foreign key tying the trade to its parent message.
     AdviceWith.adviceWith(camelContext, "persist-message-data-route", r -> {
           // Pulls a message in Internal XML format that only has a single trade
-          r.replaceFromWith("file:src/test/resources/testInternalXmlFormatMessages?fileName=TestMessageInInternalXMLFormat_WithSingleTrade.xml&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestInternalXmlFormatMessages?fileName=TestMessageInInternalXmlFormat_WithSingleTrade.xml&noop=true");
           // Add headers needed for MessageDataPersistenceBean
           r.weaveAddFirst().setHeader("CamelFileName", constant(testMessageName));
           r.weaveAddFirst().setHeader("DateReceived", constant(testFormattedDate));

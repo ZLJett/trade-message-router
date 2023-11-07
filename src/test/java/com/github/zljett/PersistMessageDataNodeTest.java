@@ -36,7 +36,7 @@ class PersistMessageDataNodeTest {
     String testFormattedDate = "2023-10-10 09:37:52";
     AdviceWith.adviceWith(camelContext, "persist-message-data-route", r -> {
           // Pulls a message in Internal XML format
-          r.replaceFromWith("file:src/test/resources/testInternalXmlFormatMessages?fileName=TestMessageInInternalXmlFormat.xml&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestInternalXmlFormatMessages?fileName=TestMessageInInternalXmlFormat.xml&noop=true");
           // Add headers needed for MessageDataPersistenceBean
           r.weaveAddFirst().setHeader("CamelFileName", constant(testMessageName));
           r.weaveAddFirst().setHeader("DateReceived", constant(testFormattedDate));
@@ -67,7 +67,7 @@ class PersistMessageDataNodeTest {
     String testFormattedDate = "2023-10-10 09:37:52";
     AdviceWith.adviceWith(camelContext, "persist-message-data-route", r -> {
           // Pulls a message in Internal XML format
-          r.replaceFromWith("file:src/test/resources/testInternalXmlFormatMessages?fileName=TestMessageInInternalXmlFormat.xml&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestInternalXmlFormatMessages?fileName=TestMessageInInternalXmlFormat.xml&noop=true");
           // Add headers needed for MessageDataPersistenceBean
           r.weaveAddFirst().setHeader("CamelFileName", constant(testMessageName));
           r.weaveAddFirst().setHeader("DateReceived", constant(testFormattedDate));

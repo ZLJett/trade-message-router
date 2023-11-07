@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--(v1.0, 3/25/23) Example input message-->
 <BOC_StandardMessage>
     <MESSAGE_ID>472934012</MESSAGE_ID>
     <TradeInfo from="bcd" to="jax">

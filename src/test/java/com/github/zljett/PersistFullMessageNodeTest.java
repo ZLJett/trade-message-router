@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(properties = {"fullMessagePersistenceFolderFilePath=file:src/test/resources/fullMessagePersistenceFolder"})
+@SpringBootTest(properties = {"full.message.persistence.folder.filepath=file:src/test/resources/TestFullMessagePersistenceFolder"})
 @CamelSpringBootTest
 @UseAdviceWith
 class PersistFullMessageNodeTest {
@@ -26,13 +26,13 @@ class PersistFullMessageNodeTest {
 
   private final String testMessageName = "BOC_STD_MSG_ZSE_0123456789.xml";
 
-  private final File persistedTestMessage = new File("src/test/resources/fullMessagePersistenceFolder/" + testMessageName);
+  private final File persistedTestMessage = new File("src/test/resources/TestFullMessagePersistenceFolder/" + testMessageName);
 
   @Test
   @DisplayName("Should put Message into Full Message Persistence Directory")
   public void shouldPutMessageIntoFullMessagePersistenceDirectory() throws Exception {
     AdviceWith.adviceWith(camelContext, "persist-full-message-route", r -> {
-          r.replaceFromWith("file:src/test/resources/testFromFolder?fileName=" + testMessageName + "&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestSenderFolder?fileName=" + testMessageName + "&noop=true");
           r.weaveAddLast().to("mock:routeResult");
         }
     );

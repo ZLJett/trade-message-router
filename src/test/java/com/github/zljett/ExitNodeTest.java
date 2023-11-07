@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @CamelSpringBootTest
 @UseAdviceWith
-class exitNodeTest {
+class ExitNodeTest {
 
   @Autowired
   private CamelContext camelContext;
@@ -28,9 +28,9 @@ class exitNodeTest {
   @ValueSource(strings = {"ZSE_TRD_MSG_BOC_987654321.xml", "BOC_STD_MSG_ZSE_0123456789.xml"})
   public void shouldPutMessageIntoRecipientDirectory(String testMessageName) throws Exception {
     AdviceWith.adviceWith(camelContext, "exit-route", r -> {
-          r.replaceFromWith("file:src/test/resources/testFromFolder?fileName=" + testMessageName + "&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestSenderFolder?fileName=" + testMessageName + "&noop=true");
           // Add header needed to tell the .toD endpoint where to 'send' the message, i.e. the recipient's "address"
-          r.weaveAddFirst().setHeader("RecipientAddress", constant("file:src/test/resources/testToFolder"));
+          r.weaveAddFirst().setHeader("RecipientAddress", constant("file:src/test/resources/TestRecipientFolder"));
           r.weaveAddLast().to("mock:routeResult");
         }
     );
@@ -43,14 +43,14 @@ class exitNodeTest {
     mock.expectedMessageCount(1);
     mock.assertIsSatisfied();
     // Check if correct test message is in test recipient directory
-    final File receivedTestMessage = new File("src/test/resources/testToFolder/" + testMessageName);
+    final File receivedTestMessage = new File("src/test/resources/TestRecipientFolder/" + testMessageName);
     assertTrue(receivedTestMessage.exists());
     removeTestFilesFromTestDirectory(receivedTestMessage, testMessageName);
   }
 
   public void removeTestFilesFromTestDirectory(File receivedTestMessage, String testMessageName) {
     boolean testFileDeleted = receivedTestMessage.delete();
-    Logger logger = Logger.getLogger((exitNodeTest.class.getName()));
+    Logger logger = Logger.getLogger((ExitNodeTest.class.getName()));
     if (testFileDeleted) {
       logger.info("Test message: " + testMessageName + " has been deleted from test recipient directory");
     } else {

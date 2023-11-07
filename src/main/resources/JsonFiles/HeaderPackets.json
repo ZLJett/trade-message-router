@@ -1,22 +1,22 @@
 {
     "fromBOC_HeaderPacket": {
-        "ToInternalTranslationInstructions": "xslt-saxon:xsltTemplates/BOCtoInternal.xsl"
+        "ToInternalTranslationInstructions": "xslt-saxon:XsltTemplates/BocToInternalXsltTemplate.xsl"
     },
     "toBOC_HeaderPacket": {
         "RoutingPath":"direct:persistFullMessageRoute,direct:toInternalTranslationRoute,direct:MessageDataPersistenceAsynchronousRoute,direct:toRecipientFilenameFormatRoute,direct:toRecipientTranslationRoute,direct:exitRoute",
-        "ToRecipientTranslationInstructions": "xslt-saxon:xsltTemplates/InternaltoBOC.xsl",
+        "ToRecipientTranslationInstructions": "xslt-saxon:XsltTemplates/InternalToBocXsltTemplate.xsl",
         "RecipientClientCode":"BOC",
         "RecipientFilenameFormat":"BOC_STD_MSG",
-        "RecipientAddress":"file:src/main/resources/testToFolder"
+        "RecipientAddress":"file:src/main/resources/RecipientFolder"
     },
     "fromZSE_HeaderPacket": {
-        "ToInternalTranslationInstructions": "xslt-saxon:xsltTemplates/ZSEtoInternal.xsl"
+        "ToInternalTranslationInstructions": "xslt-saxon:XsltTemplates/ZseToInternalXsltTemplate.xsl"
     },
     "toZSE_HeaderPacket": {
         "RoutingPath":"direct:persistFullMessageRoute,direct:toInternalTranslationRoute,direct:MessageDataPersistenceAsynchronousRoute,direct:toRecipientFilenameFormatRoute,direct:toRecipientTranslationRoute,direct:exitRoute",
-        "ToRecipientTranslationInstructions": "xslt-saxon:xsltTemplates/InternaltoZSE.xsl",
+        "ToRecipientTranslationInstructions": "xslt-saxon:XsltTemplates/InternalToZseXsltTemplate.xsl",
         "RecipientClientCode":"ZSE",
         "RecipientFilenameFormat":"ZSE_TRD_MSG",
-        "RecipientAddress":"file:src/main/resources/testToFolder"
+        "RecipientAddress":"file:src/main/resources/RecipientFolder"
     }
 }

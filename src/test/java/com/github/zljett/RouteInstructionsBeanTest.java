@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RouteInstructionsBeanTest {
 
-  String headerPacketFileLocation = "src/main/resources/jsonFiles/headerPackets.json";
+  String headerPacketFileLocation = "src/main/resources/JsonFiles/HeaderPackets.json";
 
   @Test
   @DisplayName("Should Attach the Correct Headers for all Message")
@@ -38,7 +38,7 @@ class RouteInstructionsBeanTest {
     RouteInstructionsBean routeInstructionsBean = new RouteInstructionsBean(headerPacketFileLocation);
     routeInstructionsBean.attachHeadersPacket("", inputHeaders);
     // Checks that the headers from the fromBOC header packet where added correctly
-    assertTrue((inputHeaders.get("ToInternalTranslationInstructions")).equals("xslt-saxon:xsltTemplates/BOCtoInternal.xsl"));
+    assertTrue((inputHeaders.get("ToInternalTranslationInstructions")).equals("xslt-saxon:XsltTemplates/BocToInternalXsltTemplate.xsl"));
   }
 
   @Test
@@ -52,10 +52,10 @@ class RouteInstructionsBeanTest {
     routeInstructionsBean.attachHeadersPacket("", inputHeaders);
     // Checks that the headers from the toBOC header packet where added correctly
     assertTrue(inputHeaders.get("RoutingPath").equals("direct:persistFullMessageRoute,direct:toInternalTranslationRoute,direct:MessageDataPersistenceAsynchronousRoute,direct:toRecipientFilenameFormatRoute,direct:toRecipientTranslationRoute,direct:exitRoute"));
-    assertTrue(inputHeaders.get("ToRecipientTranslationInstructions").equals("xslt-saxon:xsltTemplates/InternaltoBOC.xsl"));
+    assertTrue(inputHeaders.get("ToRecipientTranslationInstructions").equals("xslt-saxon:XsltTemplates/InternalToBocXsltTemplate.xsl"));
     assertTrue(inputHeaders.get("RecipientClientCode").equals("BOC"));
     assertTrue(inputHeaders.get("RecipientFilenameFormat").equals("BOC_STD_MSG"));
-    assertTrue(inputHeaders.get("RecipientAddress").equals("file:src/main/resources/testToFolder"));
+    assertTrue(inputHeaders.get("RecipientAddress").equals("file:src/main/resources/RecipientFolder"));
   }
 
   @Test
@@ -68,7 +68,7 @@ class RouteInstructionsBeanTest {
     RouteInstructionsBean routeInstructionsBean = new RouteInstructionsBean(headerPacketFileLocation);
     routeInstructionsBean.attachHeadersPacket("", inputHeaders);
     // Checks that the headers from the fromZSE header packet where added correctly
-    assertTrue(inputHeaders.get("ToInternalTranslationInstructions").equals("xslt-saxon:xsltTemplates/ZSEtoInternal.xsl"));
+    assertTrue(inputHeaders.get("ToInternalTranslationInstructions").equals("xslt-saxon:XsltTemplates/ZseToInternalXsltTemplate.xsl"));
   }
 
   @Test
@@ -82,9 +82,9 @@ class RouteInstructionsBeanTest {
     routeInstructionsBean.attachHeadersPacket("", inputHeaders);
     // Checks that the headers from the toZSE header packet where added correctly
     assertTrue(inputHeaders.get("RoutingPath").equals("direct:persistFullMessageRoute,direct:toInternalTranslationRoute,direct:MessageDataPersistenceAsynchronousRoute,direct:toRecipientFilenameFormatRoute,direct:toRecipientTranslationRoute,direct:exitRoute"));
-    assertTrue(inputHeaders.get("ToRecipientTranslationInstructions").equals("xslt-saxon:xsltTemplates/InternaltoZSE.xsl"));
+    assertTrue(inputHeaders.get("ToRecipientTranslationInstructions").equals("xslt-saxon:XsltTemplates/InternalToZseXsltTemplate.xsl"));
     assertTrue(inputHeaders.get("RecipientClientCode").equals("ZSE"));
     assertTrue(inputHeaders.get("RecipientFilenameFormat").equals("ZSE_TRD_MSG"));
-    assertTrue(inputHeaders.get("RecipientAddress").equals("file:src/main/resources/testToFolder"));
+    assertTrue(inputHeaders.get("RecipientAddress").equals("file:src/main/resources/RecipientFolder"));
   }
 }

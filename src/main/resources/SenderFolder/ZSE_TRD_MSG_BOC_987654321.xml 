@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--(v1.0, 3/25/23) Example input message-->
 <trade_messages format="ZSE-TRADE-MESSAGE" message-id="472934012">
 	<Trade_Message>
 		<sender_info>

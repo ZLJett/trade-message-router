@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * This tests the full system from sender message pickup to final delivery, including message and trade data persistence.
  */
 @SpringBootTest(properties =
-    {"fullMessagePersistenceFolderFilePath=file:src/test/resources/fullMessagePersistenceFolder",
+    {"full.message.persistence.folder.filepath=file:src/test/resources/TestFullMessagePersistenceFolder",
      "spring.jpa.properties.hibernate.enable_lazy_load_no_trans=true"})
 @CamelSpringBootTest
 @UseAdviceWith
@@ -73,9 +73,9 @@ public class SendTradeMessagesTest {
     String expectedMessageFormattedDate = "2023-10-10 09:37:52";
     long expectedMessageFileLength = expectedMessagesFileLengths.get(testMessageName);
     int expectedMessageNumTrades = expectedMessagesTradeCount.get(testMessageName);
-    String recipientAddress = "file:src/test/resources/testToFolder";
+    String recipientAddress = "file:src/test/resources/TestRecipientFolder";
     AdviceWith.adviceWith(camelContext, "entry-route", r -> {
-          r.replaceFromWith("file:src/test/resources/testFromFolder?fileName=" + testMessageName + "&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestSenderFolder?fileName=" + testMessageName + "&noop=true");
           // Change destination address header to point to test recipient directory
           r.weaveByType(RoutingSlipDefinition.class).before().setHeader("RecipientAddress", constant(recipientAddress));
           r.weaveByType(RoutingSlipDefinition.class).before().setHeader("DateReceived", constant(expectedMessageFormattedDate));
@@ -101,7 +101,7 @@ public class SendTradeMessagesTest {
     tradesAfterDataPersistenceMock.assertIsSatisfied();
 
     // Check if correct test message is in test full message persistence directory
-    final File persistedTestMessage = new File("src/test/resources/fullMessagePersistenceFolder/" + testMessageName);
+    final File persistedTestMessage = new File("src/test/resources/TestFullMessagePersistenceFolder/" + testMessageName);
     assertTrue(persistedTestMessage.exists());
 
     // Check if persisted message metadata matches the correct metadata for the test message
@@ -137,13 +137,13 @@ public class SendTradeMessagesTest {
     }
 
     // Check if correct test message is in test recipient directory
-    final File receivedTestMessage = new File("src/test/resources/testToFolder/" + expectedMessageName);
+    final File receivedTestMessage = new File("src/test/resources/TestRecipientFolder/" + expectedMessageName);
     assertTrue(receivedTestMessage.exists());
 
     // Check if the XML string in the message's body matches the correct XML for test message
     Path receivedMessageBodyFilepath = Paths.get(receivedTestMessage.toString());
     String receivedMessageBody = readString(receivedMessageBodyFilepath);
-    Path correctExpectedMessageBodyFilepath = Paths.get("src/test/resources/testCorrectExpectedMessages/" + expectedMessageName);
+    Path correctExpectedMessageBodyFilepath = Paths.get("src/test/resources/TestCorrectExpectedMessages/" + expectedMessageName);
     String correctExpectedMessageBody = readString(correctExpectedMessageBodyFilepath);
     assertTrue(receivedMessageBody.equals(correctExpectedMessageBody));
 

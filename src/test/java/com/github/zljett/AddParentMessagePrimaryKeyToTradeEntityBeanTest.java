@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(properties = {"spring.jpa.properties.hibernate.enable_lazy_load_no_trans=true"})
 @CamelSpringBootTest
 @UseAdviceWith
-class AddForeignKeyToTradeEntityBeanTest {
+class AddParentMessagePrimaryKeyToTradeEntityBeanTest {
   
   @Autowired
   private CamelContext camelContext;
@@ -30,7 +30,7 @@ class AddForeignKeyToTradeEntityBeanTest {
   MessageDataPersistenceBean messageDataPersistenceBean;
 
   @Autowired
-  AddForeignKeyToTradeEntityBean addForeignKeyToTradeEntityBean;
+  AddParentMessagePrimaryKeyToTradeEntityBean addParentMessagePrimaryKeyToTradeEntityBean;
 
   @Test
   @DisplayName("Should add the Parent Message's Primary Key to the Trade Entity")
@@ -43,10 +43,10 @@ class AddForeignKeyToTradeEntityBeanTest {
     String testMessageName = "ZSE_TRD_MSG_BOC_987654321.xml";
     // Date/time is variable in production so is set to a fixed value for the purposes of this test
     String testFormattedDate = "2023-10-10 09:37:52";
-    // This is the size in bytes of TestMessageInInternalXMLFormat_WithSingleTrade.xml
+    // This is the size in bytes of TestMessageInInternalXmlFormat_WithSingleTrade.xml
     long testFileLength = 907L;
     // This test message has the single trade with the data that the below test and expected Trade Entities are based on
-    final Path testMessageBodyFilepath = Paths.get("src/test/resources/testInternalXmlFormatMessages/TestMessageInInternalXMLFormat_WithSingleTrade.xml");
+    final Path testMessageBodyFilepath = Paths.get("src/test/resources/TestInternalXmlFormatMessages/TestMessageInInternalXmlFormat_WithSingleTrade.xml");
     String persistedMessagePrimaryKey = persistTestMessageEntity(testMessageBodyFilepath, testMessageName, testFormattedDate, testFileLength);
     // Create a Trade Entity with a null messageId field to be passed into bean
     TradeEntity testTradeEntity = createTestTradeEntity();
@@ -56,7 +56,7 @@ class AddForeignKeyToTradeEntityBeanTest {
     // Create the expected Trade Entity to compare to the Trade Entity returned by the bean
     TradeEntity expectedTradeEntity = createExpectedTradeEntity(testMessageName, testFormattedDate,testFileLength);
     // Give bean minimum required information to test its core function
-    addForeignKeyToTradeEntityBean.setTradeForeignKey(testTradeEntity, inputMessageHeaders);
+    addParentMessagePrimaryKeyToTradeEntityBean.setTradeForeignKeyToParentMessagePrimaryKey(testTradeEntity, inputMessageHeaders);
     // Check if Trade Entity produced by bean matches the correct Trade Entity
     assertTrue(testTradeEntity.equals(expectedTradeEntity));
   }

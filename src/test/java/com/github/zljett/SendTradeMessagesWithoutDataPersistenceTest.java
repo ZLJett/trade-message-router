@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Integration Test for whole message processing route excluding the message data persistence SEDA route. This tests
  * the full message processing route from sender message pickup to final delivery.
  */
-@SpringBootTest(properties = {"fullMessagePersistenceFolderFilePath=file:src/test/resources/fullMessagePersistenceFolder"})
+@SpringBootTest(properties = {"full.message.persistence.folder.filepath=file:src/test/resources/TestFullMessagePersistenceFolder"})
 @CamelSpringBootTest
 @UseAdviceWith
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -47,9 +47,9 @@ public class SendTradeMessagesWithoutDataPersistenceTest {
   @ValueSource(strings = {"ZSE_TRD_MSG_BOC_987654321.xml", "BOC_STD_MSG_ZSE_0123456789.xml"})
   public void shouldProduceCorrectOutputForEachSentMessage(String testMessageName) throws Exception {
     String expectedMessageName = expectedMessageNames.get(testMessageName);
-    String recipientAddress = "file:src/test/resources/testToFolder";
+    String recipientAddress = "file:src/test/resources/TestRecipientFolder";
     AdviceWith.adviceWith(camelContext, "entry-route", r -> {
-          r.replaceFromWith("file:src/test/resources/testFromFolder?fileName=" + testMessageName + "&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestSenderFolder?fileName=" + testMessageName + "&noop=true");
           // Change destination address header to point to test recipient directory
           r.weaveByType(RoutingSlipDefinition.class).before().setHeader("RecipientAddress", constant(recipientAddress));
         }
@@ -69,15 +69,15 @@ public class SendTradeMessagesWithoutDataPersistenceTest {
     mock.expectedMessageCount(1);
     mock.assertIsSatisfied();
     // Check if correct test message is in test full message persistence directory
-    final File persistedTestMessage = new File("src/test/resources/fullMessagePersistenceFolder/" + testMessageName);
+    final File persistedTestMessage = new File("src/test/resources/TestFullMessagePersistenceFolder/" + testMessageName);
     assertTrue(persistedTestMessage.exists());
     // Check if correct test message is in test recipient directory
-    final File receivedTestMessage = new File("src/test/resources/testToFolder/" + expectedMessageName);
+    final File receivedTestMessage = new File("src/test/resources/TestRecipientFolder/" + expectedMessageName);
     assertTrue(receivedTestMessage.exists());
     // Check if the XML string in the message's body matches the correct XML for test message
     Path receivedMessageBodyFilepath = Paths.get(receivedTestMessage.toString());
     String receivedMessageBody = readString(receivedMessageBodyFilepath);
-    Path correctExpectedMessageBodyFilepath = Paths.get("src/test/resources/testCorrectExpectedMessages/" + expectedMessageName);
+    Path correctExpectedMessageBodyFilepath = Paths.get("src/test/resources/TestCorrectExpectedMessages/" + expectedMessageName);
     String correctExpectedMessageBody = readString(correctExpectedMessageBodyFilepath);
     assertTrue(receivedMessageBody.equals(correctExpectedMessageBody));
     // Clear out test directories
