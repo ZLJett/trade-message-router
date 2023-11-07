@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @CamelSpringBootTest
 @UseAdviceWith
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class TradesToPersistenceEntitiesNodeTest {
+class TradesToPersistenceEntitiesRouteTest {
 
   @Autowired
   private TradeRepository tradeRepository;
@@ -48,7 +48,7 @@ class TradesToPersistenceEntitiesNodeTest {
     );
     AdviceWith.adviceWith(camelContext, "trades-to-persistence-entities-route", r -> {
           r.replaceFromWith("direct:TradesToPersistenceEntitiesRoute");
-          r.weaveByToUri("seda:PersistTradeDataRoute?concurrentConsumers=10").replace().to("mock:routeResult");
+          r.weaveByToUri("seda:PersistTradeDataRoute?concurrentConsumers=10").replace().to("mock:RouteResult");
         }
     );
     camelContext.start();
@@ -56,7 +56,7 @@ class TradesToPersistenceEntitiesNodeTest {
     // sending messages automatically
     camelContext.getRouteController().stopRoute("entry-route");
     // This makes sure the message completes the route before the below assertion is run
-    MockEndpoint mock = camelContext.getEndpoint("mock:routeResult", MockEndpoint.class);
+    MockEndpoint mock = camelContext.getEndpoint("mock:RouteResult", MockEndpoint.class);
     mock.expectedMessageCount(1);
     mock.assertIsSatisfied();
     // Create expected Trade Entity to compare to entity produced by route

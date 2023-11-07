@@ -4,14 +4,14 @@ import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 
 /**
- * To Recipient Filename Format Node
+ * To Recipient Filename Format Route
  */
 @Component
-public class ToRecipientFilenameFormatNode extends RouteBuilder {
+public class ToRecipientFilenameFormatRoute extends RouteBuilder {
 
   @Override
   public void configure() {
-    from("direct:toRecipientFilenameFormatRoute").routeId("recipient-filename-format-route")
+    from("direct:ToRecipientFilenameFormatRoute").routeId("to-recipient-filename-format-route")
         .log("to recipient filename format route start")
         .setHeader("CamelFileName", simple(
             "${header.RecipientFilenameFormat}" +

@@ -72,8 +72,8 @@ public class PersistTradeMessageDataTest {
         }
     );
     AdviceWith.adviceWith(camelContext, "persist-trade-data-route", r -> {
-          r.weaveAddFirst().to("mock:tradesBeforePersistence");
-          r.weaveAddLast().to("mock:routeResult");
+          r.weaveAddFirst().to("mock:TradesBeforePersistence");
+          r.weaveAddLast().to("mock:RouteResult");
         }
     );
     camelContext.start();
@@ -81,8 +81,8 @@ public class PersistTradeMessageDataTest {
     // sending messages automatically
     camelContext.getRouteController().stopRoute("entry-route");
     // This makes sure the message completes the route before the below assertions are run
-    MockEndpoint tradesBeforePersistenceMock = camelContext.getEndpoint("mock:tradesBeforePersistence", MockEndpoint.class);
-    MockEndpoint tradesAfterPersistenceMock = camelContext.getEndpoint("mock:routeResult", MockEndpoint.class);
+    MockEndpoint tradesBeforePersistenceMock = camelContext.getEndpoint("mock:TradesBeforePersistence", MockEndpoint.class);
+    MockEndpoint tradesAfterPersistenceMock = camelContext.getEndpoint("mock:RouteResult", MockEndpoint.class);
     tradesAfterPersistenceMock.expectedMessageCount(numTradesInTestMessage);
     tradesAfterPersistenceMock.assertIsSatisfied();
     // Check if persisted message metadata matches the correct data in the expected Message Entity

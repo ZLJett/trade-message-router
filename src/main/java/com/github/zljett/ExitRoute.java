@@ -5,14 +5,14 @@ import org.springframework.stereotype.Component;
 
 
 /**
- * Exit Node
+ * Exit Route
  */
 @Component
-public class ExitNode extends RouteBuilder {
+public class ExitRoute extends RouteBuilder {
 
   @Override
   public void configure() {
-    from("direct:exitRoute").routeId("exit-route")
+    from("direct:ExitRoute").routeId("exit-route")
         .log("exit route start")
         .toD("${header.RecipientAddress}");
   }

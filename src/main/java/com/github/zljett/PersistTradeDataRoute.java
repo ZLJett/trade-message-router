@@ -4,12 +4,12 @@ import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 
 /**
- * This node should be considered as a single Node with the TradeDataPersistenceAsynchronousRoute class,
- * PersistMessageDataNode, and the TradesToPersistenceEntitiesNode as they exist together to make the
- * operation of persisting message and trade data asynchronous from the main route
+ * This route should be considered as a single route with the TradeDataPersistenceAsynchronousRoute class,
+ * PersistMessageDataRoute, and the TradesToPersistenceEntitiesRoute as they exist together to make the
+ * operation of persisting message and trade data asynchronous from the main route.
  */
 @Component
-public class PersistTradeDataNode extends RouteBuilder {
+public class PersistTradeDataRoute extends RouteBuilder {
 
   @Override
   public void configure() {

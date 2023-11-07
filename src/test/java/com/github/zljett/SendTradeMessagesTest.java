@@ -82,18 +82,18 @@ public class SendTradeMessagesTest {
         }
     );
     AdviceWith.adviceWith(camelContext, "persist-trade-data-route", r -> {
-          r.weaveAddFirst().to("mock:tradesBeforeDataPersistence");
-          r.weaveAddLast().to("mock:tradesAfterDataPersistence");
+          r.weaveAddFirst().to("mock:TradesBeforeDataPersistence");
+          r.weaveAddLast().to("mock:TradesAfterDataPersistence");
         }
     );
     AdviceWith.adviceWith(camelContext, "exit-route", r -> {
-          r.weaveAddLast().to("mock:completeRouteResult");
+          r.weaveAddLast().to("mock:CompleteRouteResult");
         }
     );
     camelContext.start();
-    MockEndpoint tradesBeforeDataPersistenceMock = camelContext.getEndpoint("mock:tradesBeforeDataPersistence", MockEndpoint.class);
-    MockEndpoint tradesAfterDataPersistenceMock = camelContext.getEndpoint("mock:tradesAfterDataPersistence", MockEndpoint.class);
-    MockEndpoint completeRouteResultMock = camelContext.getEndpoint("mock:completeRouteResult", MockEndpoint.class);
+    MockEndpoint tradesBeforeDataPersistenceMock = camelContext.getEndpoint("mock:TradesBeforeDataPersistence", MockEndpoint.class);
+    MockEndpoint tradesAfterDataPersistenceMock = camelContext.getEndpoint("mock:TradesAfterDataPersistence", MockEndpoint.class);
+    MockEndpoint completeRouteResultMock = camelContext.getEndpoint("mock:CompleteRouteResult", MockEndpoint.class);
     // These make sure the message completes the route before the below assertions are run
     completeRouteResultMock.expectedMessageCount(1);
     completeRouteResultMock.assertIsSatisfied();

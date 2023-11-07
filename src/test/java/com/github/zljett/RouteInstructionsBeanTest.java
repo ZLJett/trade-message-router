@@ -51,7 +51,7 @@ class RouteInstructionsBeanTest {
     RouteInstructionsBean routeInstructionsBean = new RouteInstructionsBean(headerPacketFileLocation);
     routeInstructionsBean.attachHeadersPacket("", inputHeaders);
     // Checks that the headers from the toBOC header packet where added correctly
-    assertTrue(inputHeaders.get("RoutingPath").equals("direct:persistFullMessageRoute,direct:toInternalTranslationRoute,direct:MessageDataPersistenceAsynchronousRoute,direct:toRecipientFilenameFormatRoute,direct:toRecipientTranslationRoute,direct:exitRoute"));
+    assertTrue(inputHeaders.get("RoutingPath").equals("direct:PersistFullMessageRoute,direct:ToInternalTranslationRoute,direct:MessageDataPersistenceAsynchronousRoute,direct:ToRecipientFilenameFormatRoute,direct:ToRecipientTranslationRoute,direct:ExitRoute"));
     assertTrue(inputHeaders.get("ToRecipientTranslationInstructions").equals("xslt-saxon:XsltTemplates/InternalToBocXsltTemplate.xsl"));
     assertTrue(inputHeaders.get("RecipientClientCode").equals("BOC"));
     assertTrue(inputHeaders.get("RecipientFilenameFormat").equals("BOC_STD_MSG"));
@@ -81,7 +81,7 @@ class RouteInstructionsBeanTest {
     RouteInstructionsBean routeInstructionsBean = new RouteInstructionsBean(headerPacketFileLocation);
     routeInstructionsBean.attachHeadersPacket("", inputHeaders);
     // Checks that the headers from the toZSE header packet where added correctly
-    assertTrue(inputHeaders.get("RoutingPath").equals("direct:persistFullMessageRoute,direct:toInternalTranslationRoute,direct:MessageDataPersistenceAsynchronousRoute,direct:toRecipientFilenameFormatRoute,direct:toRecipientTranslationRoute,direct:exitRoute"));
+    assertTrue(inputHeaders.get("RoutingPath").equals("direct:PersistFullMessageRoute,direct:ToInternalTranslationRoute,direct:MessageDataPersistenceAsynchronousRoute,direct:ToRecipientFilenameFormatRoute,direct:ToRecipientTranslationRoute,direct:ExitRoute"));
     assertTrue(inputHeaders.get("ToRecipientTranslationInstructions").equals("xslt-saxon:XsltTemplates/InternalToZseXsltTemplate.xsl"));
     assertTrue(inputHeaders.get("RecipientClientCode").equals("ZSE"));
     assertTrue(inputHeaders.get("RecipientFilenameFormat").equals("ZSE_TRD_MSG"));

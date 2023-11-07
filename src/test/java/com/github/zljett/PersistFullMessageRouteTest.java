@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(properties = {"full.message.persistence.folder.filepath=file:src/test/resources/TestFullMessagePersistenceFolder"})
 @CamelSpringBootTest
 @UseAdviceWith
-class PersistFullMessageNodeTest {
+class PersistFullMessageRouteTest {
 
   @Autowired
   private CamelContext camelContext;
@@ -33,7 +33,7 @@ class PersistFullMessageNodeTest {
   public void shouldPutMessageIntoFullMessagePersistenceDirectory() throws Exception {
     AdviceWith.adviceWith(camelContext, "persist-full-message-route", r -> {
           r.replaceFromWith("file:src/test/resources/TestSenderFolder?fileName=" + testMessageName + "&noop=true");
-          r.weaveAddLast().to("mock:routeResult");
+          r.weaveAddLast().to("mock:RouteResult");
         }
     );
     camelContext.start();
@@ -41,7 +41,7 @@ class PersistFullMessageNodeTest {
     // sending messages automatically
     camelContext.getRouteController().stopRoute("entry-route");
     // This makes sure the message completes the route before the below assertion is run
-    MockEndpoint mock = camelContext.getEndpoint("mock:routeResult", MockEndpoint.class);
+    MockEndpoint mock = camelContext.getEndpoint("mock:RouteResult", MockEndpoint.class);
     mock.expectedMessageCount(1);
     mock.assertIsSatisfied();
     // Check if correct test message is in test full message persistence directory
@@ -51,7 +51,7 @@ class PersistFullMessageNodeTest {
   @AfterEach
   public void removeTestFilesFromTestDirectory() {
     boolean testFileDeleted = persistedTestMessage.delete();
-    Logger logger = Logger.getLogger((PersistFullMessageNodeTest.class.getName()));
+    Logger logger = Logger.getLogger((PersistFullMessageRouteTest.class.getName()));
     if (testFileDeleted) {
       logger.info("Test message: " + testMessageName + " has been deleted from test full message persistence directory");
     } else {

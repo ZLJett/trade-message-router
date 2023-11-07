@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @CamelSpringBootTest
 @UseAdviceWith
-class PersistTradeDataNodeTest {
+class PersistTradeDataRouteTest {
 
   @Autowired
   private TradeRepository tradeRepository;
@@ -35,8 +35,8 @@ class PersistTradeDataNodeTest {
     // Create expected Trade Entity modeled on first trade in example trade messages
     TradeEntity expectedTradeEntity = createExpectedTradeEntity();
     AdviceWith.adviceWith(camelContext, "persist-trade-data-route", r -> {
-          r.replaceFromWith("direct:testInput");
-          r.weaveAddLast().to("mock:routeResult");
+          r.replaceFromWith("direct:TestInput");
+          r.weaveAddLast().to("mock:RouteResult");
         }
     );
     camelContext.start();
@@ -44,10 +44,10 @@ class PersistTradeDataNodeTest {
     // sending messages automatically
     camelContext.getRouteController().stopRoute("entry-route");
     // This makes sure the message completes the route before the below assertion is run
-    MockEndpoint mock = camelContext.getEndpoint("mock:routeResult", MockEndpoint.class);
+    MockEndpoint mock = camelContext.getEndpoint("mock:RouteResult", MockEndpoint.class);
     mock.expectedMessageCount(1);
     // Pass into route the expected Trade Entity created above
-    producerTemplate.sendBody("direct:testInput", expectedTradeEntity);
+    producerTemplate.sendBody("direct:TestInput", expectedTradeEntity);
     mock.assertIsSatisfied();
     Optional<TradeEntity> persistedTradeEntity = tradeRepository.findById(1L);
     // The orElse method pulls the Trade Entity out of its Optional object wrapper, or if null a blank Trade Entity

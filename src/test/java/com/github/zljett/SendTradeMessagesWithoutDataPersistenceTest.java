@@ -60,12 +60,12 @@ public class SendTradeMessagesWithoutDataPersistenceTest {
         }
     );
     AdviceWith.adviceWith(camelContext, "exit-route", r -> {
-          r.weaveAddLast().to("mock:routeResult");
+          r.weaveAddLast().to("mock:RouteResult");
         }
     );
     camelContext.start();
     // This makes sure the message completes the route before the below assertions are run
-    MockEndpoint mock = camelContext.getEndpoint("mock:routeResult", MockEndpoint.class);
+    MockEndpoint mock = camelContext.getEndpoint("mock:RouteResult", MockEndpoint.class);
     mock.expectedMessageCount(1);
     mock.assertIsSatisfied();
     // Check if correct test message is in test full message persistence directory

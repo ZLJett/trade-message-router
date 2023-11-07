@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @CamelSpringBootTest
 @UseAdviceWith
-class ExitNodeTest {
+class ExitRouteTest {
 
   @Autowired
   private CamelContext camelContext;
@@ -31,7 +31,7 @@ class ExitNodeTest {
           r.replaceFromWith("file:src/test/resources/TestSenderFolder?fileName=" + testMessageName + "&noop=true");
           // Add header needed to tell the .toD endpoint where to 'send' the message, i.e. the recipient's "address"
           r.weaveAddFirst().setHeader("RecipientAddress", constant("file:src/test/resources/TestRecipientFolder"));
-          r.weaveAddLast().to("mock:routeResult");
+          r.weaveAddLast().to("mock:RouteResult");
         }
     );
     camelContext.start();
@@ -39,7 +39,7 @@ class ExitNodeTest {
     // sending messages automatically
     camelContext.getRouteController().stopRoute("entry-route");
     // This makes sure the message completes the route before the below assertion is run
-    MockEndpoint mock = camelContext.getEndpoint("mock:routeResult", MockEndpoint.class);
+    MockEndpoint mock = camelContext.getEndpoint("mock:RouteResult", MockEndpoint.class);
     mock.expectedMessageCount(1);
     mock.assertIsSatisfied();
     // Check if correct test message is in test recipient directory
@@ -50,7 +50,7 @@ class ExitNodeTest {
 
   public void removeTestFilesFromTestDirectory(File receivedTestMessage, String testMessageName) {
     boolean testFileDeleted = receivedTestMessage.delete();
-    Logger logger = Logger.getLogger((ExitNodeTest.class.getName()));
+    Logger logger = Logger.getLogger((ExitRouteTest.class.getName()));
     if (testFileDeleted) {
       logger.info("Test message: " + testMessageName + " has been deleted from test recipient directory");
     } else {

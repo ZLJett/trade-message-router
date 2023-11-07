@@ -4,10 +4,10 @@ import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 
 /**
- * Entry Node
+ * Entry Route
  */
 @Component
-public class EntryNode extends RouteBuilder {
+public class EntryRoute extends RouteBuilder {
 
     @Override
     public void configure() {

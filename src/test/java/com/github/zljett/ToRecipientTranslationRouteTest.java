@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @CamelSpringBootTest
 @UseAdviceWith
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class ToRecipientTranslationNodeTest {
+class ToRecipientTranslationRouteTest {
 
   @Autowired
   private CamelContext camelContext;
@@ -32,12 +32,12 @@ class ToRecipientTranslationNodeTest {
   @Test
   @DisplayName("Should Translate Internal XML Format Message to BOC XML Format")
   public void shouldTranslate_InternalXmlFormatMessageTo_BocXmlFormat() throws Exception {
-    AdviceWith.adviceWith(camelContext, "recipient-translation-route", r -> {
+    AdviceWith.adviceWith(camelContext, "to-recipient-translation-route", r -> {
           // Pulls a message in Internal XML format
           r.replaceFromWith("file:src/test/resources/TestInternalXmlFormatMessages?fileName=" + testMessageName + "&noop=true");
           // Add header needed to give route's XSLT endpoint the appropriate XSLT template for a message going to BOC
           r.weaveAddFirst().setHeader("ToRecipientTranslationInstructions", constant("xslt-saxon:XsltTemplates/InternalToBocXsltTemplate.xsl"));
-          r.weaveAddLast().to("mock:routeResult");
+          r.weaveAddLast().to("mock:RouteResult");
         }
     );
     camelContext.start();
@@ -45,7 +45,7 @@ class ToRecipientTranslationNodeTest {
     // sending messages automatically
     camelContext.getRouteController().stopRoute("entry-route");
     // This makes sure the message completes the route before the below assertion is run
-    MockEndpoint mock = camelContext.getEndpoint("mock:routeResult", MockEndpoint.class);
+    MockEndpoint mock = camelContext.getEndpoint("mock:RouteResult", MockEndpoint.class);
     mock.expectedMessageCount(1);
     mock.assertIsSatisfied();
     // Check if XSLT endpoint's output XML string matches the correct XML for test message
@@ -58,12 +58,12 @@ class ToRecipientTranslationNodeTest {
   @Test
   @DisplayName("Should Translate Internal XML Format Message to ZSE XML Format")
   public void shouldTranslate_InternalXmlFormatMessageTo_ZseXmlFormat() throws Exception {
-    AdviceWith.adviceWith(camelContext, "recipient-translation-route", r -> {
+    AdviceWith.adviceWith(camelContext, "to-recipient-translation-route", r -> {
           // Pulls a message in Internal XML format
           r.replaceFromWith("file:src/test/resources/TestInternalXmlFormatMessages?fileName=" + testMessageName + "&noop=true");
           // Add header needed to give route's XSLT endpoint the appropriate XSLT template for a message going to ZSE
           r.weaveAddFirst().setHeader("ToRecipientTranslationInstructions", constant("xslt-saxon:XsltTemplates/InternalToZseXsltTemplate.xsl"));
-          r.weaveAddLast().to("mock:routeResult");
+          r.weaveAddLast().to("mock:RouteResult");
         }
     );
     camelContext.start();
@@ -71,7 +71,7 @@ class ToRecipientTranslationNodeTest {
     // sending messages automatically
     camelContext.getRouteController().stopRoute("entry-route");
     // This makes sure the message completes the route before the below assertion is run
-    MockEndpoint mock = camelContext.getEndpoint("mock:routeResult", MockEndpoint.class);
+    MockEndpoint mock = camelContext.getEndpoint("mock:RouteResult", MockEndpoint.class);
     mock.expectedMessageCount(1);
     mock.assertIsSatisfied();
     // Check if XSLT endpoint's output XML string matches the correct XML for test message

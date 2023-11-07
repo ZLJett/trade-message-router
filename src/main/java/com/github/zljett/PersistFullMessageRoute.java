@@ -4,14 +4,14 @@ import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 
 /**
- * Persist Full Message Node
+ * Persist Full Message Route
  */
 @Component
-public class PersistFullMessageNode extends RouteBuilder {
+public class PersistFullMessageRoute extends RouteBuilder {
 
   @Override
   public void configure() {
-    from("direct:persistFullMessageRoute").routeId("persist-full-message-route")
+    from("direct:PersistFullMessageRoute").routeId("persist-full-message-route")
         .log("to persist full message route start")
         .to("{{full.message.persistence.folder.filepath}}")
         .log("to persist full message route end");

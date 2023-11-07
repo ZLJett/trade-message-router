@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @CamelSpringBootTest
 @UseAdviceWith
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class PersistMessageDataNodeTest {
+class PersistMessageDataRouteTest {
 
   @Autowired
   private MessageRepository messageRepository;
@@ -40,7 +40,7 @@ class PersistMessageDataNodeTest {
           // Add headers needed for MessageDataPersistenceBean
           r.weaveAddFirst().setHeader("CamelFileName", constant(testMessageName));
           r.weaveAddFirst().setHeader("DateReceived", constant(testFormattedDate));
-          r.weaveByToUri("seda:TradesToPersistenceEntitiesRoute?concurrentConsumers=1").replace().to("mock:routeResult");
+          r.weaveByToUri("seda:TradesToPersistenceEntitiesRoute?concurrentConsumers=1").replace().to("mock:RouteResult");
         }
     );
     camelContext.start();
@@ -48,7 +48,7 @@ class PersistMessageDataNodeTest {
     // sending messages automatically
     camelContext.getRouteController().stopRoute("entry-route");
     // This makes sure the message completes the route before the below assertion is run
-    MockEndpoint mock = camelContext.getEndpoint("mock:routeResult", MockEndpoint.class);
+    MockEndpoint mock = camelContext.getEndpoint("mock:RouteResult", MockEndpoint.class);
     mock.expectedMessageCount(1);
     mock.assertIsSatisfied();
     // Create expected Message Entity to compare to entity pulled from database
@@ -71,7 +71,7 @@ class PersistMessageDataNodeTest {
           // Add headers needed for MessageDataPersistenceBean
           r.weaveAddFirst().setHeader("CamelFileName", constant(testMessageName));
           r.weaveAddFirst().setHeader("DateReceived", constant(testFormattedDate));
-          r.weaveByToUri("seda:TradesToPersistenceEntitiesRoute?concurrentConsumers=1").replace().to("mock:routeResult");
+          r.weaveByToUri("seda:TradesToPersistenceEntitiesRoute?concurrentConsumers=1").replace().to("mock:RouteResult");
         }
     );
     camelContext.start();
@@ -79,7 +79,7 @@ class PersistMessageDataNodeTest {
     // sending messages automatically
     camelContext.getRouteController().stopRoute("entry-route");
     // This makes sure the message completes the route before the below assertion is run
-    MockEndpoint mock = camelContext.getEndpoint("mock:routeResult", MockEndpoint.class);
+    MockEndpoint mock = camelContext.getEndpoint("mock:RouteResult", MockEndpoint.class);
     mock.expectedMessageCount(1);
     mock.assertIsSatisfied();
     // The primary key's actual value is generated automatically when the bean persists the message entity,

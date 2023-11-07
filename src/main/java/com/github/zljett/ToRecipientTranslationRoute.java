@@ -4,14 +4,14 @@ import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 
 /**
- * To Recipient Message Format Translation Node
+ * To Recipient Message Format Translation Route
  */
 @Component
-public class ToRecipientTranslationNode extends RouteBuilder {
+public class ToRecipientTranslationRoute extends RouteBuilder {
 
   @Override
   public void configure() {
-    from("direct:toRecipientTranslationRoute").routeId("recipient-translation-route")
+    from("direct:ToRecipientTranslationRoute").routeId("to-recipient-translation-route")
         .log("to recipient translation route start")
         .toD("${header.ToRecipientTranslationInstructions}")
         .log("to recipient translation route end");
