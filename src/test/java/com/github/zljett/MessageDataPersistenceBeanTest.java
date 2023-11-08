@@ -31,7 +31,7 @@ class MessageDataPersistenceBeanTest {
   private CamelContext camelContext;
 
   @Autowired
-  MessageDataPersistenceBean messageDataPersistenceBean;
+  private MessageDataPersistenceBean messageDataPersistenceBean;
 
   final Path testMessageBodyFilepath = Paths.get("src/test/resources/TestInternalXmlFormatMessages/TestMessageInInternalXmlFormat.xml");
 

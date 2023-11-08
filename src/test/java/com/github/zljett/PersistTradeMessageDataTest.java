@@ -1,6 +1,5 @@
 package com.github.zljett;
 
-
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.AdviceWith;

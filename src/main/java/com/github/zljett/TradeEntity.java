@@ -56,6 +56,7 @@ public class TradeEntity {
   public void setTradeId(Long tradeId) {
     this.tradeId = tradeId;
   }
+
   public void setSenderId(String senderId) {
     this.senderId = senderId;
   }

@@ -12,6 +12,7 @@
   <name>Trade Message Router</name>
 
   <properties>
+    <java.version>17</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <spring.boot-version>2.7.8</spring.boot-version>
@@ -40,7 +41,6 @@
   </dependencyManagement>
 
   <dependencies>
-
     <!-- Spring Boot -->
     <dependency>
       <groupId>org.springframework.boot</groupId>

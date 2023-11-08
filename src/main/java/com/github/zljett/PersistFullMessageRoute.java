@@ -17,4 +17,3 @@ public class PersistFullMessageRoute extends RouteBuilder {
         .log("to persist full message route end");
   }
 }
-

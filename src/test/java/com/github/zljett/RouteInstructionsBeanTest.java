@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RouteInstructionsBeanTest {
 
-  String headerPacketFileLocation = "src/main/resources/JsonFiles/HeaderPackets.json";
+  private final String headerPacketFileLocation = "src/main/resources/JsonFiles/HeaderPackets.json";
 
   @Test
   @DisplayName("Should Attach the Correct Headers for all Message")

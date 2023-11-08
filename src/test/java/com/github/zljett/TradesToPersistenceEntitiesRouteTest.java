@@ -21,9 +21,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class TradesToPersistenceEntitiesRouteTest {
 
   @Autowired
-  private TradeRepository tradeRepository;
-
-  @Autowired
   private CamelContext camelContext;
 
   @Test

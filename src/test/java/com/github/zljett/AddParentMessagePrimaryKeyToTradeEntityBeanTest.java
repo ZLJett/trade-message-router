@@ -27,10 +27,10 @@ class AddParentMessagePrimaryKeyToTradeEntityBeanTest {
   private CamelContext camelContext;
 
   @Autowired
-  MessageDataPersistenceBean messageDataPersistenceBean;
+  private MessageDataPersistenceBean messageDataPersistenceBean;
 
   @Autowired
-  AddParentMessagePrimaryKeyToTradeEntityBean addParentMessagePrimaryKeyToTradeEntityBean;
+  private AddParentMessagePrimaryKeyToTradeEntityBean addParentMessagePrimaryKeyToTradeEntityBean;
 
   @Test
   @DisplayName("Should add the Parent Message's Primary Key to the Trade Entity")
