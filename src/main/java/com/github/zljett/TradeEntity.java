@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 /**
- * Class for persisting data from each individual trade in each message
+ * Class for persisting data from each individual trade in each message.
  */
 @Entity
 @Table(name = "trade")

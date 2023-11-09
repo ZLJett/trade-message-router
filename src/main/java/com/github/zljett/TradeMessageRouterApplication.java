@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TradeMessageRouterApplication {
 
     /**
-     * Main method to start this application
+     * Main method to start this application.
      */
     public static void main(String[] args) {
         SpringApplication.run(TradeMessageRouterApplication.class, args);

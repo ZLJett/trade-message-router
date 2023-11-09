@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 /**
- * Class for persisting data from each individual message
+ * Class for persisting data from each individual message.
  */
 @Entity
 @Table(name = "message")

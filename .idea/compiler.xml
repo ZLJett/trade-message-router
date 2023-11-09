@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="trade-message-test" target="11" />
+      <module name="trade-message-router" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

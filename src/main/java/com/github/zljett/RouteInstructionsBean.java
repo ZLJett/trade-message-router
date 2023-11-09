@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Bean to add "Routing Slip" and "Instructions Slip" to message headers
+ * Bean to add "Routing Slip" and "Instructions Slip" to message headers.
  */
 @Component("RouteInstructionsBean")
 public class RouteInstructionsBean {
