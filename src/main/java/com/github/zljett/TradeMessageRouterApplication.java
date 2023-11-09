@@ -4,13 +4,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MySpringBootApplication {
+public class TradeMessageRouterApplication {
 
     /**
-     * A main method to start this application.
+     * Main method to start this application
      */
     public static void main(String[] args) {
-        SpringApplication.run(MySpringBootApplication.class, args);
+        SpringApplication.run(TradeMessageRouterApplication.class, args);
     }
-
 }

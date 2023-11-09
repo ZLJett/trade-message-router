@@ -6,8 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="trade-message-test" />
+        <module name="trade-message-router" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="trade-message-test" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>
