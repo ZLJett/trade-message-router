@@ -1,5 +1,6 @@
 package com.github.zljett;
 
+import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 
@@ -14,13 +15,16 @@ public class TradesToPersistenceEntitiesRoute extends RouteBuilder {
   @Override
   public void configure() {
     from("seda:TradesToPersistenceEntitiesRoute?concurrentConsumers=1").routeId("trades-to-persistence-entities-route")
-        .log("seda trades to persistence entities route start")
+        .log(LoggingLevel.INFO, "com.github.zljett.TradesToPersistenceEntitiesRoute", "Route: ${routeId}, received Message: ${header.CamelFileName}")
         .split().tokenizeXML("Trade").streaming()
-        // Unmarshalling XML for each trade in the message into trade entity pojo
+        // Unmarshalling XML for each trade in the message into TradeEntity pojo
         .unmarshal().jacksonXml(TradeEntity.class)
         // Add value to message_id field of TradeEntity
+        .log(LoggingLevel.INFO, "com.github.zljett.TradesToPersistenceEntitiesRoute", "Route: ${routeId}, passed trade from Message: ${header.CamelFileName}, to AddParentMessagePrimaryKeyToTradeEntityBean")
         .bean("AddParentMessagePrimaryKeyToTradeEntityBean", "setTradeForeignKeyToParentMessagePrimaryKey")
-        .log("seda trades to persistence entities route route end")
-        .to("seda:PersistTradeDataRoute?concurrentConsumers=10");
+        .log(LoggingLevel.INFO, "com.github.zljett.TradesToPersistenceEntitiesRoute", "Route: ${routeId}, received back trade from Message: ${header.CamelFileName}, from AddParentMessagePrimaryKeyToTradeEntityBean")
+        // Add TradeEntity to database
+        .to("seda:PersistTradeDataRoute?concurrentConsumers=10")
+        .log(LoggingLevel.INFO, "com.github.zljett.TradesToPersistenceEntitiesRoute", "Route: ${routeId}, finished with trade from Message: ${header.CamelFileName}");
   }
 }

@@ -1,5 +1,6 @@
 package com.github.zljett;
 
+import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 
@@ -14,8 +15,8 @@ public class MessageDataPersistenceAsynchronousRoute extends RouteBuilder {
   @Override
   public void configure() {
     from("direct:MessageDataPersistenceAsynchronousRoute").routeId("message-data-persistence-asynchronous-route")
-        .log("message data persistence asynchronous route start")
+        .log(LoggingLevel.INFO, "com.github.zljett.MessageDataPersistenceAsynchronousRoute", "Route: ${routeId}, received Message: ${header.CamelFileName}")
         .to("seda:PersistMessageDataRoute?concurrentConsumers=1")
-        .log("message data persistence asynchronous route end");
+        .log(LoggingLevel.INFO, "com.github.zljett.MessageDataPersistenceAsynchronousRoute", "Route: ${routeId}, finished with Message: ${header.CamelFileName}");
   }
 }

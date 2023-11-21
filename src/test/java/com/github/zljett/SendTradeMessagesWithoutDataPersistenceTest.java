@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Integration Test for whole message processing route excluding the message data persistence SEDA route. This tests
- * the full message processing route from sender message pickup to final delivery.
+ * the full message processing route from inbound message pickup to final delivery.
  */
 @SpringBootTest(properties = {"full.message.persistence.folder.filepath=file:src/test/resources/TestFullMessagePersistenceFolder"})
 @CamelSpringBootTest
@@ -49,14 +49,14 @@ public class SendTradeMessagesWithoutDataPersistenceTest {
     String expectedMessageName = expectedMessageNames.get(testMessageName);
     String recipientAddress = "file:src/test/resources/TestRecipientFolder";
     AdviceWith.adviceWith(camelContext, "entry-route", r -> {
-          r.replaceFromWith("file:src/test/resources/TestSenderFolder?fileName=" + testMessageName + "&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestInboundFolder?fileName=" + testMessageName + "&noop=true");
           // Change destination address header to point to test recipient directory
           r.weaveByType(RoutingSlipDefinition.class).before().setHeader("RecipientAddress", constant(recipientAddress));
         }
     );
     // This stops message data persistence route(s) from running
     AdviceWith.adviceWith(camelContext, "message-data-persistence-asynchronous-route", r -> {
-          r.weaveByToUri("seda:PersistMessageDataRoute?concurrentConsumers=1").replace().log(LoggingLevel.INFO, "Skipped message data persistence route(s)");
+          r.weaveByToUri("seda:PersistMessageDataRoute?concurrentConsumers=1").replace().log(LoggingLevel.INFO, "com.github.zljett.SendTradeMessagesWithoutDataPersistenceTest","Test: SendTradeMessagesWithoutDataPersistenceTest, skipped MessageDataPersistenceAsynchronousRoute");
         }
     );
     AdviceWith.adviceWith(camelContext, "exit-route", r -> {

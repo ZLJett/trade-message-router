@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Integration Test for the complete message processing system and its associated message data persistence SEDA route.
- * This tests the full system from sender message pickup to final delivery, including message and trade data persistence.
+ * This tests the full system from inbound message pickup to final delivery, including message and trade data persistence.
  */
 @SpringBootTest(properties =
     {"full.message.persistence.folder.filepath=file:src/test/resources/TestFullMessagePersistenceFolder",
@@ -75,7 +75,7 @@ public class SendTradeMessagesTest {
     int expectedMessageNumTrades = expectedMessagesTradeCount.get(testMessageName);
     String recipientAddress = "file:src/test/resources/TestRecipientFolder";
     AdviceWith.adviceWith(camelContext, "entry-route", r -> {
-          r.replaceFromWith("file:src/test/resources/TestSenderFolder?fileName=" + testMessageName + "&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestInboundFolder?fileName=" + testMessageName + "&noop=true");
           // Change destination address header to point to test recipient directory
           r.weaveByType(RoutingSlipDefinition.class).before().setHeader("RecipientAddress", constant(recipientAddress));
           r.weaveByType(RoutingSlipDefinition.class).before().setHeader("DateReceived", constant(expectedMessageFormattedDate));

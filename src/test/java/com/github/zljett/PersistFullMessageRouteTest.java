@@ -32,7 +32,7 @@ class PersistFullMessageRouteTest {
   @DisplayName("Should put Message into Full Message Persistence Directory")
   public void shouldPutMessageIntoFullMessagePersistenceDirectory() throws Exception {
     AdviceWith.adviceWith(camelContext, "persist-full-message-route", r -> {
-          r.replaceFromWith("file:src/test/resources/TestSenderFolder?fileName=" + testMessageName + "&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestInboundFolder?fileName=" + testMessageName + "&noop=true");
           r.weaveAddLast().to("mock:RouteResult");
         }
     );

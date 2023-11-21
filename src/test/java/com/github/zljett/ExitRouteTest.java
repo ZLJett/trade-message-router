@@ -28,7 +28,7 @@ class ExitRouteTest {
   @ValueSource(strings = {"ZSE_TRD_MSG_BOC_987654321.xml", "BOC_STD_MSG_ZSE_0123456789.xml"})
   public void shouldPutMessageIntoRecipientDirectory(String testMessageName) throws Exception {
     AdviceWith.adviceWith(camelContext, "exit-route", r -> {
-          r.replaceFromWith("file:src/test/resources/TestSenderFolder?fileName=" + testMessageName + "&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestInboundFolder?fileName=" + testMessageName + "&noop=true");
           // Add header needed to tell the .toD endpoint where to 'send' the message, i.e. the recipient's "address"
           r.weaveAddFirst().setHeader("RecipientAddress", constant("file:src/test/resources/TestRecipientFolder"));
           r.weaveAddLast().to("mock:RouteResult");

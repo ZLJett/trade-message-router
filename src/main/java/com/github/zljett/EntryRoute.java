@@ -1,5 +1,6 @@
 package com.github.zljett;
 
+import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 
@@ -11,11 +12,12 @@ public class EntryRoute extends RouteBuilder {
 
     @Override
     public void configure() {
-        from("{{message.sender.folder}}").routeId("entry-route")
-            .log("to bean")
+        from("{{message.inbound.folder}}").routeId("entry-route")
+            .log(LoggingLevel.INFO, "com.github.zljett.EntryRoute", "Route: ${routeId}, received Message: ${header.CamelFileName}")
+            .log(LoggingLevel.INFO, "com.github.zljett.EntryRoute", "Route: ${routeId}, passed Message: ${header.CamelFileName}, to RouteInstructionsBean")
             .bean("RouteInstructionsBean","attachHeadersPacket")
-            .log("back from bean")
-            .log("send with routing slip")
+            .log(LoggingLevel.INFO, "com.github.zljett.EntryRoute", "Route: ${routeId}, received back Message: ${header.CamelFileName}, from RouteInstructionsBean")
+            .log(LoggingLevel.INFO, "com.github.zljett.EntryRoute", "Route: ${routeId}, sent Message: ${header.CamelFileName}, with Routing Slip to next Route in path set in the RoutingPath Header")
             .routingSlip(header("RoutingPath"));
     }
 }

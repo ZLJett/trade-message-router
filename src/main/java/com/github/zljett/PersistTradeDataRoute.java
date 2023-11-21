@@ -1,5 +1,6 @@
 package com.github.zljett;
 
+import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 
@@ -14,8 +15,8 @@ public class PersistTradeDataRoute extends RouteBuilder {
   @Override
   public void configure() {
     from("seda:PersistTradeDataRoute?concurrentConsumers=10").routeId("persist-trade-data-route")
-        .log("seda persist trade data route start")
+        .log(LoggingLevel.INFO, "com.github.zljett.PersistTradeDataRoute", "Route: ${routeId}, received trade from Message: ${header.CamelFileName}")
         .to("jpa:com.github.zljett.TradeEntity")
-        .log("seda persist trade data route end");
+        .log(LoggingLevel.INFO, "com.github.zljett.PersistTradeDataRoute", "Route: ${routeId}, finished with trade from Message: ${header.CamelFileName}");
   }
 }
