@@ -1,5 +1,9 @@
 package com.github.zljett;
 
+import com.github.zljett.entitiesandrepositories.MessageEntity;
+import com.github.zljett.entitiesandrepositories.MessageRepository;
+import com.github.zljett.entitiesandrepositories.TradeEntity;
+import com.github.zljett.entitiesandrepositories.TradeRepository;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.AdviceWith;

@@ -1,4 +1,4 @@
-package com.github.zljett;
+package com.github.zljett.routes;
 
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
@@ -13,8 +13,8 @@ public class PersistFullMessageRoute extends RouteBuilder {
   @Override
   public void configure() {
     from("direct:PersistFullMessageRoute").routeId("persist-full-message-route")
-        .log(LoggingLevel.INFO, "com.github.zljett.PersistFullMessageRoute", "Route: ${routeId}, received Message: ${header.CamelFileName}")
+        .log(LoggingLevel.INFO, "com.github.zljett.routes.PersistFullMessageRoute", "Route: ${routeId}, received Message: ${header.CamelFileName}")
         .to("{{full.message.persistence.folder.filepath}}")
-        .log(LoggingLevel.INFO, "com.github.zljett.PersistFullMessageRoute", "Route: ${routeId}, finished with Message: ${header.CamelFileName}");
+        .log(LoggingLevel.INFO, "com.github.zljett.routes.PersistFullMessageRoute", "Route: ${routeId}, finished with Message: ${header.CamelFileName}");
   }
 }

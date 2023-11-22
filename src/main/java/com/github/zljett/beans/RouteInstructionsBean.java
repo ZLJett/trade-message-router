@@ -1,4 +1,4 @@
-package com.github.zljett;
+package com.github.zljett.beans;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;

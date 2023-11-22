@@ -1,4 +1,4 @@
-package com.github.zljett;
+package com.github.zljett.routes;
 
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
@@ -13,8 +13,8 @@ public class ToInternalTranslationRoute extends RouteBuilder {
   @Override
   public void configure() {
     from("direct:ToInternalTranslationRoute").routeId("to-internal-translation-route")
-        .log(LoggingLevel.INFO, "com.github.zljett.ToInternalTranslationRoute", "Route: ${routeId}, received Message: ${header.CamelFileName}")
+        .log(LoggingLevel.INFO, "com.github.zljett.routes.ToInternalTranslationRoute", "Route: ${routeId}, received Message: ${header.CamelFileName}")
         .toD("${header.ToInternalTranslationInstructions}")
-        .log(LoggingLevel.INFO, "com.github.zljett.ToInternalTranslationRoute", "Route: ${routeId}, finished with Message: ${header.CamelFileName}");
+        .log(LoggingLevel.INFO, "com.github.zljett.routes.ToInternalTranslationRoute", "Route: ${routeId}, finished with Message: ${header.CamelFileName}");
   }
 }

@@ -1,4 +1,4 @@
-package com.github.zljett;
+package com.github.zljett.routes;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;

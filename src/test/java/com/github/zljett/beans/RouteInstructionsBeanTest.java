@@ -1,4 +1,4 @@
-package com.github.zljett;
+package com.github.zljett.beans;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

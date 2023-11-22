@@ -1,5 +1,8 @@
-package com.github.zljett;
+package com.github.zljett.beans;
 
+import com.github.zljett.entitiesandrepositories.MessageEntity;
+import com.github.zljett.entitiesandrepositories.MessageRepository;
+import com.github.zljett.entitiesandrepositories.TradeEntity;
 import org.apache.camel.Headers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package com.github.zljett;
+package com.github.zljett.routes;
 
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
@@ -13,8 +13,8 @@ public class ToRecipientTranslationRoute extends RouteBuilder {
   @Override
   public void configure() {
     from("direct:ToRecipientTranslationRoute").routeId("to-recipient-translation-route")
-        .log(LoggingLevel.INFO, "com.github.zljett.ToRecipientTranslationRoute", "Route: ${routeId}, received Message: ${header.CamelFileName}")
+        .log(LoggingLevel.INFO, "com.github.zljett.routes.ToRecipientTranslationRoute", "Route: ${routeId}, received Message: ${header.CamelFileName}")
         .toD("${header.ToRecipientTranslationInstructions}")
-        .log(LoggingLevel.INFO, "com.github.zljett.ToRecipientTranslationRoute", "Route: ${routeId}, finished with Message: ${header.CamelFileName}");
+        .log(LoggingLevel.INFO, "com.github.zljett.routes.ToRecipientTranslationRoute", "Route: ${routeId}, finished with Message: ${header.CamelFileName}");
   }
 }

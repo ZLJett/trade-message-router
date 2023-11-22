@@ -1,4 +1,4 @@
-package com.github.zljett;
+package com.github.zljett.entitiesandrepositories;
 
 import javax.persistence.*;
 import java.util.Objects;

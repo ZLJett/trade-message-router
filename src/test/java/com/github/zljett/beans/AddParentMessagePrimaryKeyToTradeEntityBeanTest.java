@@ -1,5 +1,7 @@
-package com.github.zljett;
+package com.github.zljett.beans;
 
+import com.github.zljett.entitiesandrepositories.MessageEntity;
+import com.github.zljett.entitiesandrepositories.TradeEntity;
 import org.apache.camel.CamelContext;
 import org.apache.camel.test.spring.junit5.CamelSpringBootTest;
 import org.apache.camel.test.spring.junit5.UseAdviceWith;
