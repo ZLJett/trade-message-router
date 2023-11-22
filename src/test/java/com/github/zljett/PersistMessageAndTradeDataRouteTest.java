@@ -4,6 +4,7 @@ import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.AdviceWith;
 import org.apache.camel.component.mock.MockEndpoint;
+import org.apache.camel.model.ToDefinition;
 import org.apache.camel.test.spring.junit5.CamelSpringBootTest;
 import org.apache.camel.test.spring.junit5.UseAdviceWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,21 +13,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Optional;
 
 import static java.util.Map.entry;
 import static org.apache.camel.language.constant.ConstantLanguage.constant;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Integration Test for whole message data persistence SEDA route. This tests the complete set ot routes for persisting
+ * Integration Test for whole message data persistence asynchronous system. This tests both routes for persisting
  * a message's metadata and trades in the database.
  */
 @SpringBootTest(properties = {"spring.jpa.properties.hibernate.enable_lazy_load_no_trans=true"})
 @CamelSpringBootTest
 @UseAdviceWith
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class PersistTradeMessageDataTest {
+class PersistMessageAndTradeDataRouteTest {
 
   @Autowired
   private CamelContext camelContext;
@@ -63,15 +66,15 @@ public class PersistTradeMessageDataTest {
     String testFormattedDate = "2023-10-10 09:37:52";
     long testMessageFileLength = testMessagesFileLengths.get(testMessageName);
     int numTradesInTestMessage = testMessagesTradeCount.get(testMessageName);
-    AdviceWith.adviceWith(camelContext, "message-data-persistence-asynchronous-route", r -> {
+    AdviceWith.adviceWith(camelContext, "persist-message-and-trade-data-route", r -> {
           r.replaceFromWith("file:src/test/resources/TestInternalXmlFormatMessages?fileName=" + testMessageFilename + "&noop=true");
           // Add headers needed for message data persistence
           r.weaveAddFirst().setHeader("CamelFileName", constant(testMessageName));
           r.weaveAddFirst().setHeader("DateReceived", constant(testFormattedDate));
         }
     );
-    AdviceWith.adviceWith(camelContext, "persist-trade-data-route", r -> {
-          r.weaveAddFirst().to("mock:TradesBeforePersistence");
+    AdviceWith.adviceWith(camelContext, "asynchronous-persist-message-and-trade-data-route", r -> {
+          r.weaveByType(ToDefinition.class).before().to("mock:TradesBeforePersistence");
           r.weaveAddLast().to("mock:RouteResult");
         }
     );
@@ -82,7 +85,7 @@ public class PersistTradeMessageDataTest {
     // This makes sure the message completes the route before the below assertions are run
     MockEndpoint tradesBeforePersistenceMock = camelContext.getEndpoint("mock:TradesBeforePersistence", MockEndpoint.class);
     MockEndpoint tradesAfterPersistenceMock = camelContext.getEndpoint("mock:RouteResult", MockEndpoint.class);
-    tradesAfterPersistenceMock.expectedMessageCount(numTradesInTestMessage);
+    tradesAfterPersistenceMock.expectedMessageCount(1);
     tradesAfterPersistenceMock.assertIsSatisfied();
     // Check if persisted message metadata matches the correct data in the expected Message Entity
     MessageEntity expectedMessageEntity = createExpectedMessageEntity(testMessageName, testFormattedDate,testMessageFileLength, numTradesInTestMessage);
@@ -90,13 +93,13 @@ public class PersistTradeMessageDataTest {
     Optional<MessageEntity> persistedMessage = messageRepository.findById(1L);
     MessageEntity persistedMessageEntity = persistedMessage.orElse(new MessageEntity());
     assertTrue(persistedMessageEntity.equals(expectedMessageEntity));
-    // The messageId field of the expected Trade Entities is set to a Message Entity representing the parent message of the
-    // persisted trades. The actual value contained in the messageId field is normally set by the .getReferenceByID method
-    // in the AddForeignKeyToTradeEntityBean which returns an entity proxy and not the message entity itself. But to test that
-    // a value is added to the field in the persisted entity, the property 'hibernate.enable_lazy_load_no_trans' is set to
-    // 'true', which allows a copy of the entity refenced in the proxy to be pulled and placed into the persisted entity
-    // Note: this 'field' of the expected Trade Entities is kept separate from the actual Trade Entity objects as the messageId
-    // field in both persisted and expected should be the same for all trades
+    /* The messageId field of the expected Trade Entities is set to a Message Entity representing the parent message of the
+       persisted trades. The actual value contained in the messageId field is normally set by the .getReferenceByID method
+       in the AddForeignKeyToTradeEntityBean which returns an entity proxy and not the message entity itself. But to test that
+       a value is added to the field in the persisted entity, the property 'hibernate.enable_lazy_load_no_trans' is set to
+       'true', which allows a copy of the entity refenced in the proxy to be pulled and placed into the persisted entity
+       Note: this 'field' of the expected Trade Entities is kept separate from the actual Trade Entity objects as the messageId
+       field in both persisted and expected should be the same for all trades. */
     MessageEntity expectedMessageIdField = expectedMessageEntity;
     ArrayList<TradeEntity> expectedTradeEntities = createExpectedTradeEntitiesList(tradesBeforePersistenceMock);
     // Iterate through each persisted Trade. As the message metadata was persisted first, the first primary key for the trades is 2

@@ -55,8 +55,8 @@ public class SendTradeMessagesWithoutDataPersistenceTest {
         }
     );
     // This stops message data persistence route(s) from running
-    AdviceWith.adviceWith(camelContext, "message-data-persistence-asynchronous-route", r -> {
-          r.weaveByToUri("seda:PersistMessageDataRoute?concurrentConsumers=1").replace().log(LoggingLevel.INFO, "com.github.zljett.SendTradeMessagesWithoutDataPersistenceTest","Test: SendTradeMessagesWithoutDataPersistenceTest, skipped MessageDataPersistenceAsynchronousRoute");
+    AdviceWith.adviceWith(camelContext, "persist-message-and-trade-data-route", r -> {
+          r.weaveByToUri("seda:AsynchronousPersistMessageAndTradeDataRoute?concurrentConsumers=1").replace().log(LoggingLevel.INFO, "com.github.zljett.SendTradeMessagesWithoutDataPersistenceTest","Test: SendTradeMessagesWithoutDataPersistenceTest, skipped MessageDataPersistenceAsynchronousRoute");
         }
     );
     AdviceWith.adviceWith(camelContext, "exit-route", r -> {

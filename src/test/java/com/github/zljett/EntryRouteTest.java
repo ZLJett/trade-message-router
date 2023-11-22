@@ -68,7 +68,7 @@ class EntryRouteTest {
     );
     camelContext.start();
     MockEndpoint mock = camelContext.getEndpoint("mock:RouteResult", MockEndpoint.class);
-    mock.expectedHeaderReceived("RoutingPath","direct:PersistFullMessageRoute,direct:ToInternalTranslationRoute,direct:MessageDataPersistenceAsynchronousRoute,direct:ToRecipientFilenameFormatRoute,direct:ToRecipientTranslationRoute,direct:ExitRoute");
+    mock.expectedHeaderReceived("RoutingPath","direct:PersistFullMessageRoute,direct:ToInternalTranslationRoute,direct:PersistMessageAndTradeDataRoute,direct:ToRecipientFilenameFormatRoute,direct:ToRecipientTranslationRoute,direct:ExitRoute");
     mock.expectedHeaderReceived("ToRecipientTranslationInstructions","xslt-saxon:XsltTemplates/InternalToBocXsltTemplate.xsl");
     mock.expectedHeaderReceived("RecipientClientCode","BOC");
     mock.expectedHeaderReceived("RecipientFilenameFormat","BOC_STD_MSG");
@@ -104,7 +104,7 @@ class EntryRouteTest {
     camelContext.start();
     MockEndpoint mock = camelContext.getEndpoint("mock:RouteResult", MockEndpoint.class);
     mock.expectedMessageCount(1);
-    mock.expectedHeaderReceived("RoutingPath","direct:PersistFullMessageRoute,direct:ToInternalTranslationRoute,direct:MessageDataPersistenceAsynchronousRoute,direct:ToRecipientFilenameFormatRoute,direct:ToRecipientTranslationRoute,direct:ExitRoute");
+    mock.expectedHeaderReceived("RoutingPath","direct:PersistFullMessageRoute,direct:ToInternalTranslationRoute,direct:PersistMessageAndTradeDataRoute,direct:ToRecipientFilenameFormatRoute,direct:ToRecipientTranslationRoute,direct:ExitRoute");
     mock.expectedHeaderReceived("ToRecipientTranslationInstructions","xslt-saxon:XsltTemplates/InternalToZseXsltTemplate.xsl");
     mock.expectedHeaderReceived("RecipientClientCode","ZSE");
     mock.expectedHeaderReceived("RecipientFilenameFormat","ZSE_TRD_MSG");

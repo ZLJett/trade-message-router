@@ -5,6 +5,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.builder.AdviceWith;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.model.RoutingSlipDefinition;
+import org.apache.camel.model.ToDefinition;
 import org.apache.camel.test.spring.junit5.CamelSpringBootTest;
 import org.apache.camel.test.spring.junit5.UseAdviceWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -81,8 +82,8 @@ public class SendTradeMessagesTest {
           r.weaveByType(RoutingSlipDefinition.class).before().setHeader("DateReceived", constant(expectedMessageFormattedDate));
         }
     );
-    AdviceWith.adviceWith(camelContext, "persist-trade-data-route", r -> {
-          r.weaveAddFirst().to("mock:TradesBeforeDataPersistence");
+    AdviceWith.adviceWith(camelContext, "asynchronous-persist-message-and-trade-data-route", r -> {
+          r.weaveByType(ToDefinition.class).before().to("mock:TradesBeforePersistence");
           r.weaveAddLast().to("mock:TradesAfterDataPersistence");
         }
     );
@@ -97,7 +98,7 @@ public class SendTradeMessagesTest {
     // These make sure the message completes the route before the below assertions are run
     completeRouteResultMock.expectedMessageCount(1);
     completeRouteResultMock.assertIsSatisfied();
-    tradesAfterDataPersistenceMock.expectedMessageCount(expectedMessageNumTrades);
+    tradesAfterDataPersistenceMock.expectedMessageCount(1);
     tradesAfterDataPersistenceMock.assertIsSatisfied();
 
     // Check if correct test message is in test full message persistence directory
