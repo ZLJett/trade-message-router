@@ -15,7 +15,7 @@ public class EntryRoute extends RouteBuilder {
         from("{{message.inbound.folder}}").routeId("entry-route")
             .log(LoggingLevel.INFO, "com.github.zljett.routes.EntryRoute", "Route: ${routeId}, received Message: ${header.CamelFileName}")
             .log(LoggingLevel.INFO, "com.github.zljett.routes.EntryRoute", "Route: ${routeId}, passed Message: ${header.CamelFileName}, to RouteInstructionsBean")
-            .bean("RouteInstructionsBean","attachHeadersPacket")
+            .bean("RouteInstructionsBean","attachFilenameDataAndHeaderPacketsToMessage")
             .log(LoggingLevel.INFO, "com.github.zljett.routes.EntryRoute", "Route: ${routeId}, received back Message: ${header.CamelFileName}, from RouteInstructionsBean")
             .log(LoggingLevel.INFO, "com.github.zljett.routes.EntryRoute", "Route: ${routeId}, sent Message: ${header.CamelFileName}, with Routing Slip to next Route in path set in the RoutingPath Header")
             .routingSlip(header("RoutingPath"));

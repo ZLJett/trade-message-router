@@ -7,6 +7,7 @@ import org.apache.camel.Headers;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -21,45 +22,61 @@ import java.util.Map;
 public class RouteInstructionsBean {
 
   @Value("${header.packet.filepath}")
-  String headerPacketFileLocation;
+  private String headerPacketFileLocation;
 
-  public RouteInstructionsBean() {
+  private static final DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+  private HashMap<String, HashMap<String, String>> headerPackets;
+
+  @PostConstruct
+  public void convertHeaderPacketJsonToMap() throws IOException {
+    // Cache HeaderPackets file as HashMap when RouteInstructionsBean class is first instantiated
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode rootNode = mapper.readTree(new File(headerPacketFileLocation));
+    headerPackets = mapper.convertValue(rootNode, new TypeReference<>() {});
   }
 
-  public RouteInstructionsBean(String headerPacketFileLocation) {
-    this.headerPacketFileLocation = headerPacketFileLocation;
+  public void attachFilenameDataAndHeaderPacketsToMessage(String body, @Headers Map<String, String> headers) {
+    // Pull header packet names and other necessary message processing information from the message's filename
+    HashMap<String, String> parsedFileNameData = parseFileName(headers);
+    headers.put("MessageId", parsedFileNameData.get("messageID"));
+    headers.put("MessageExtension", parsedFileNameData.get("messageExtension"));
+    // Set date and time message received as a header
+    LocalDateTime timeReceived = LocalDateTime.now();
+    String formattedDate = timeReceived.format(dateTimeFormat);
+    headers.put("DateReceived",formattedDate);
+    // Add sender and recipient header packets to message
+    String senderHeaderPacketName = parsedFileNameData.get("senderPacketName");
+    String recipientHeaderPacketName = parsedFileNameData.get("recipientPacketName");
+    attachHeaderPackets(headers, senderHeaderPacketName, recipientHeaderPacketName);
   }
 
-  public void attachHeadersPacket(String body, @Headers Map<String, String> headers) throws IOException {
-    // Pull the sender and recipient from the filename so can select the correct header packets to attach to the message
-    String messageFileName = headers.get("CamelFileName");
+  private HashMap<String, String> parseFileName(Map<String, String> messageHeaders) {
+    HashMap<String, String> parsedFileNameData = new HashMap<>();
+    // Pull the sender and recipient from the filename to create the correct header packet names
+    String messageFileName = messageHeaders.get("CamelFileName");
     String[] splitFileName = messageFileName.split("_");
     String senderClientCode = splitFileName[0];
     String recipientClientCode = splitFileName[3];
     String senderPacketName = "from" + senderClientCode + "_HeaderPacket";
+    parsedFileNameData.put("senderPacketName", senderPacketName);
     String recipientPacketName = "to" + recipientClientCode + "_HeaderPacket";
-    // Pull message ID and file extension and add both as headers
+    parsedFileNameData.put("recipientPacketName", recipientPacketName);
+    // Pull message ID and file extension from the filename
     String[] messageIdAndExtension = splitFileName[4].split("[.]");
     String messageID = messageIdAndExtension[0];
+    parsedFileNameData.put("messageID", messageID);
     String messageExtension = messageIdAndExtension[1];
-    headers.put("MessageId", messageID);
-    headers.put("MessageExtension", messageExtension);
-    // Set date and time message received as a header
-    LocalDateTime timeReceived = LocalDateTime.now();
-    DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    String formattedDate = timeReceived.format(dateTimeFormat);
-    headers.put("DateReceived",formattedDate);
-    // Bring in headerPackets file as string and use Jackson JsonNode so only have to deserialize relevant packet
-    // rather than full file. Then add each packet's JSON key/value pairs as a headers
-    ObjectMapper mapper = new ObjectMapper();
-    JsonNode rootNode = mapper.readTree(new File(headerPacketFileLocation));
-    // Add sender header packet
-    JsonNode senderPacketNode = rootNode.path(senderPacketName);
-    HashMap<String, String> senderHeadersMap = mapper.convertValue(senderPacketNode, new TypeReference<>() {});
+    parsedFileNameData.put("messageExtension", messageExtension);
+    return parsedFileNameData;
+  }
+
+  public void attachHeaderPackets(Map<String, String> headers, String senderHeaderPacketName, String recipientHeaderPacketName) {
+    // Add sender header packet's key/value pairs as a headers
+    HashMap<String, String> senderHeadersMap = headerPackets.get(senderHeaderPacketName);
     senderHeadersMap.keySet().forEach(key -> headers.put(key, senderHeadersMap.get(key)));
-    // Add recipient header packet
-    JsonNode recipientPacketNode = rootNode.path(recipientPacketName);
-    HashMap<String, String> recipientHeadersMap = mapper.convertValue(recipientPacketNode, new TypeReference<>() {});
+    // Add recipient header packet's key/value pairs as a headers
+    HashMap<String, String> recipientHeadersMap = headerPackets.get(recipientHeaderPacketName);
     recipientHeadersMap.keySet().forEach(key -> headers.put(key, recipientHeadersMap.get(key)));
   }
 }

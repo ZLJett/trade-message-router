@@ -1,7 +1,10 @@
 package com.github.zljett.beans;
 
+import org.apache.camel.test.spring.junit5.CamelSpringBootTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -9,9 +12,12 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
+@CamelSpringBootTest
 class RouteInstructionsBeanTest {
 
-  private final String headerPacketFileLocation = "src/main/resources/JsonFiles/HeaderPackets.json";
+  @Autowired
+  RouteInstructionsBean routeInstructionsBean;
 
   @Test
   @DisplayName("Should Attach the Correct Headers for all Message")
@@ -20,8 +26,7 @@ class RouteInstructionsBeanTest {
     Map<String, String> inputHeaders = new HashMap<>();
     inputHeaders.put("CamelFileName", "BOC_STD_MSG_ZSE_0123456789.xml");
     // Give bean minimum required information to test its core function of attaching correct header packet for fromBOC
-    RouteInstructionsBean routeInstructionsBean = new RouteInstructionsBean(headerPacketFileLocation);
-    routeInstructionsBean.attachHeadersPacket("", inputHeaders);
+    routeInstructionsBean.attachFilenameDataAndHeaderPacketsToMessage("", inputHeaders);
     // Checks that the headers attached by the bean itself where added correctly
     assertTrue(inputHeaders.get("MessageId").equals("0123456789"));
     assertTrue(inputHeaders.get("MessageExtension").equals("xml"));
@@ -35,8 +40,7 @@ class RouteInstructionsBeanTest {
     Map<String, String> inputHeaders = new HashMap<>();
     inputHeaders.put("CamelFileName", "BOC_STD_MSG_ZSE_0123456789.xml");
     // Give bean minimum required information to test its core function of attaching correct header packet for fromBOC
-    RouteInstructionsBean routeInstructionsBean = new RouteInstructionsBean(headerPacketFileLocation);
-    routeInstructionsBean.attachHeadersPacket("", inputHeaders);
+    routeInstructionsBean.attachFilenameDataAndHeaderPacketsToMessage("", inputHeaders);
     // Checks that the headers from the fromBOC header packet where added correctly
     assertTrue((inputHeaders.get("ToInternalTranslationInstructions")).equals("xslt-saxon:XsltTemplates/BocToInternalXsltTemplate.xsl"));
   }
@@ -48,8 +52,7 @@ class RouteInstructionsBeanTest {
     Map<String, String> inputHeaders = new HashMap<>();
     inputHeaders.put("CamelFileName", "ZSE_TRD_MSG_BOC_987654321.xml");
     // Give bean minimum required information to test its core function of attaching correct header packet for toBOC
-    RouteInstructionsBean routeInstructionsBean = new RouteInstructionsBean(headerPacketFileLocation);
-    routeInstructionsBean.attachHeadersPacket("", inputHeaders);
+    routeInstructionsBean.attachFilenameDataAndHeaderPacketsToMessage("", inputHeaders);
     // Checks that the headers from the toBOC header packet where added correctly
     assertTrue(inputHeaders.get("RoutingPath").equals("direct:PersistFullMessageRoute,direct:ToInternalTranslationRoute,direct:PersistMessageAndTradeDataRoute,direct:ToRecipientFilenameFormatRoute,direct:ToRecipientTranslationRoute,direct:ExitRoute"));
     assertTrue(inputHeaders.get("ToRecipientTranslationInstructions").equals("xslt-saxon:XsltTemplates/InternalToBocXsltTemplate.xsl"));
@@ -65,8 +68,7 @@ class RouteInstructionsBeanTest {
     Map<String, String> inputHeaders = new HashMap<>();
     inputHeaders.put("CamelFileName", "ZSE_TRD_MSG_BOC_987654321.xml");
     // Give bean minimum required information to test its core function of attaching correct header packet for fromZSE
-    RouteInstructionsBean routeInstructionsBean = new RouteInstructionsBean(headerPacketFileLocation);
-    routeInstructionsBean.attachHeadersPacket("", inputHeaders);
+    routeInstructionsBean.attachFilenameDataAndHeaderPacketsToMessage("", inputHeaders);
     // Checks that the headers from the fromZSE header packet where added correctly
     assertTrue(inputHeaders.get("ToInternalTranslationInstructions").equals("xslt-saxon:XsltTemplates/ZseToInternalXsltTemplate.xsl"));
   }
@@ -78,8 +80,7 @@ class RouteInstructionsBeanTest {
     Map<String, String> inputHeaders = new HashMap<>();
     inputHeaders.put("CamelFileName", "BOC_STD_MSG_ZSE_0123456789.xml");
     // Give bean minimum required information to test its core function of attaching correct header packet for toZSE
-    RouteInstructionsBean routeInstructionsBean = new RouteInstructionsBean(headerPacketFileLocation);
-    routeInstructionsBean.attachHeadersPacket("", inputHeaders);
+    routeInstructionsBean.attachFilenameDataAndHeaderPacketsToMessage("", inputHeaders);
     // Checks that the headers from the toZSE header packet where added correctly
     assertTrue(inputHeaders.get("RoutingPath").equals("direct:PersistFullMessageRoute,direct:ToInternalTranslationRoute,direct:PersistMessageAndTradeDataRoute,direct:ToRecipientFilenameFormatRoute,direct:ToRecipientTranslationRoute,direct:ExitRoute"));
     assertTrue(inputHeaders.get("ToRecipientTranslationInstructions").equals("xslt-saxon:XsltTemplates/InternalToZseXsltTemplate.xsl"));
