@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
@@ -20,6 +21,7 @@ import java.util.Map;
 import static java.nio.file.Files.readString;
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestPropertySource("file:src/test/resources/test.properties")
 @SpringBootTest(properties = {"spring.jpa.properties.hibernate.enable_lazy_load_no_trans=true"})
 @CamelSpringBootTest
 @UseAdviceWith

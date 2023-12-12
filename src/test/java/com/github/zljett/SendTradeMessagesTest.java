@@ -17,6 +17,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -35,9 +36,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Integration Test for the complete message processing system and its associated message data persistence SEDA route.
  * This tests the full system from inbound message pickup to final delivery, including message and trade data persistence.
  */
-@SpringBootTest(properties =
-    {"full.message.persistence.folder.filepath=file:src/test/resources/TestFullMessagePersistenceFolder",
-     "spring.jpa.properties.hibernate.enable_lazy_load_no_trans=true"})
+@TestPropertySource("file:src/test/resources/test.properties")
+@SpringBootTest(properties = {"spring.jpa.properties.hibernate.enable_lazy_load_no_trans=true"})
 @CamelSpringBootTest
 @UseAdviceWith
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -78,11 +78,8 @@ public class SendTradeMessagesTest {
     String expectedMessageFormattedDate = "2023-10-10 09:37:52";
     long expectedMessageFileLength = expectedMessagesFileLengths.get(testMessageName);
     int expectedMessageNumTrades = expectedMessagesTradeCount.get(testMessageName);
-    String recipientAddress = "file:src/test/resources/TestRecipientFolder";
     AdviceWith.adviceWith(camelContext, "entry-route", r -> {
           r.replaceFromWith("file:src/test/resources/TestInboundFolder?fileName=" + testMessageName + "&noop=true");
-          // Change destination address header to point to test recipient directory
-          r.weaveByType(RoutingSlipDefinition.class).before().setHeader("RecipientAddress", constant(recipientAddress));
           r.weaveByType(RoutingSlipDefinition.class).before().setHeader("DateReceived", constant(expectedMessageFormattedDate));
         }
     );

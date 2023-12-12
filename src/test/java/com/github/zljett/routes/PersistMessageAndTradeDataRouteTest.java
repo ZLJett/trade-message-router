@@ -16,6 +16,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -29,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Integration Test for whole message data persistence asynchronous system. This tests both routes for persisting
  * a message's metadata and trades in the database.
  */
+@TestPropertySource("file:src/test/resources/test.properties")
 @SpringBootTest(properties = {"spring.jpa.properties.hibernate.enable_lazy_load_no_trans=true"})
 @CamelSpringBootTest
 @UseAdviceWith

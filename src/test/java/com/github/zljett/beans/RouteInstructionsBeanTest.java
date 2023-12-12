@@ -5,13 +5,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestPropertySource("file:src/test/resources/test.properties")
 @SpringBootTest
 @CamelSpringBootTest
 class RouteInstructionsBeanTest {
@@ -21,7 +22,7 @@ class RouteInstructionsBeanTest {
 
   @Test
   @DisplayName("Should Attach the Correct Headers for all Message")
-  public void shouldAttachCorrectHeadersFor_allMessages() throws IOException {
+  public void shouldAttachCorrectHeadersFor_allMessages() {
     // Setup bean input so that it works on a message specifically coming from BOC
     Map<String, String> inputHeaders = new HashMap<>();
     inputHeaders.put("CamelFileName", "BOC_STD_MSG_ZSE_0123456789.xml");
@@ -35,7 +36,7 @@ class RouteInstructionsBeanTest {
 
   @Test
   @DisplayName("Should Attach the Correct Headers for Message Coming from BOC")
-  public void shouldAttachCorrectHeadersFor_fromBocRoute() throws IOException {
+  public void shouldAttachCorrectHeadersFor_fromBocRoute() {
     // Setup bean input so that it works on a message specifically coming from BOC
     Map<String, String> inputHeaders = new HashMap<>();
     inputHeaders.put("CamelFileName", "BOC_STD_MSG_ZSE_0123456789.xml");
@@ -47,7 +48,7 @@ class RouteInstructionsBeanTest {
 
   @Test
   @DisplayName("Should Attach the Correct Headers for Message Going to BOC")
-  public void shouldAttachCorrectHeadersFor_toBocRoute() throws IOException {
+  public void shouldAttachCorrectHeadersFor_toBocRoute() {
     // Setup bean input so that it works on a message specifically going to BOC
     Map<String, String> inputHeaders = new HashMap<>();
     inputHeaders.put("CamelFileName", "ZSE_TRD_MSG_BOC_987654321.xml");
@@ -58,12 +59,12 @@ class RouteInstructionsBeanTest {
     assertTrue(inputHeaders.get("ToRecipientTranslationInstructions").equals("xslt-saxon:XsltTemplates/InternalToBocXsltTemplate.xsl"));
     assertTrue(inputHeaders.get("RecipientClientCode").equals("BOC"));
     assertTrue(inputHeaders.get("RecipientFilenameFormat").equals("BOC_STD_MSG"));
-    assertTrue(inputHeaders.get("RecipientAddress").equals("file:src/main/resources/RecipientFolder"));
+    assertTrue(inputHeaders.get("RecipientAddress").equals("file:src/test/resources/TestRecipientFolder"));
   }
 
   @Test
   @DisplayName("Should Attach the Correct Headers for Message Coming from ZSE")
-  public void shouldAttachCorrectHeadersFor_fromZseRoute() throws IOException {
+  public void shouldAttachCorrectHeadersFor_fromZseRoute() {
     // Setup bean input so that it works on a message specifically coming from ZSE
     Map<String, String> inputHeaders = new HashMap<>();
     inputHeaders.put("CamelFileName", "ZSE_TRD_MSG_BOC_987654321.xml");
@@ -75,7 +76,7 @@ class RouteInstructionsBeanTest {
 
   @Test
   @DisplayName("Should Attach the Correct Headers for Message Going to ZSE")
-  public void shouldAttachCorrectHeadersFor_toZseRoute() throws IOException {
+  public void shouldAttachCorrectHeadersFor_toZseRoute() {
     // Setup bean input so that it works on a message specifically going to ZSE
     Map<String, String> inputHeaders = new HashMap<>();
     inputHeaders.put("CamelFileName", "BOC_STD_MSG_ZSE_0123456789.xml");
@@ -86,6 +87,6 @@ class RouteInstructionsBeanTest {
     assertTrue(inputHeaders.get("ToRecipientTranslationInstructions").equals("xslt-saxon:XsltTemplates/InternalToZseXsltTemplate.xsl"));
     assertTrue(inputHeaders.get("RecipientClientCode").equals("ZSE"));
     assertTrue(inputHeaders.get("RecipientFilenameFormat").equals("ZSE_TRD_MSG"));
-    assertTrue(inputHeaders.get("RecipientAddress").equals("file:src/main/resources/RecipientFolder"));
+    assertTrue(inputHeaders.get("RecipientAddress").equals("file:src/test/resources/TestRecipientFolder"));
   }
 }

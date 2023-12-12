@@ -10,13 +10,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 import java.io.File;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(properties = {"full.message.persistence.folder.filepath=file:src/test/resources/TestFullMessagePersistenceFolder"})
+@TestPropertySource("file:src/test/resources/test.properties")
+@SpringBootTest
 @CamelSpringBootTest
 @UseAdviceWith
 class PersistFullMessageRouteTest {

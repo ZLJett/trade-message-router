@@ -2,4 +2,4 @@
 /target/
 
 # Ignore secret properties file
-/src/main/resources/secrets.properties
+# /configuration/secrets.properties

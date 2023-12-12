@@ -4,7 +4,6 @@ import org.apache.camel.CamelContext;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.AdviceWith;
 import org.apache.camel.component.mock.MockEndpoint;
-import org.apache.camel.model.RoutingSlipDefinition;
 import org.apache.camel.test.spring.junit5.CamelSpringBootTest;
 import org.apache.camel.test.spring.junit5.UseAdviceWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,6 +11,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -21,14 +21,14 @@ import java.util.logging.Logger;
 
 import static java.nio.file.Files.readString;
 import static java.util.Map.entry;
-import static org.apache.camel.language.constant.ConstantLanguage.constant;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Integration Test for whole message processing route excluding the message data persistence SEDA route. This tests
  * the full message processing route from inbound message pickup to final delivery.
  */
-@SpringBootTest(properties = {"full.message.persistence.folder.filepath=file:src/test/resources/TestFullMessagePersistenceFolder"})
+@TestPropertySource("file:src/test/resources/test.properties")
+@SpringBootTest
 @CamelSpringBootTest
 @UseAdviceWith
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -47,11 +47,8 @@ public class SendTradeMessagesWithoutDataPersistenceTest {
   @ValueSource(strings = {"ZSE_TRD_MSG_BOC_987654321.xml", "BOC_STD_MSG_ZSE_0123456789.xml"})
   public void shouldProduceCorrectOutputForEachSentMessage(String testMessageName) throws Exception {
     String expectedMessageName = expectedMessageNames.get(testMessageName);
-    String recipientAddress = "file:src/test/resources/TestRecipientFolder";
     AdviceWith.adviceWith(camelContext, "entry-route", r -> {
           r.replaceFromWith("file:src/test/resources/TestInboundFolder?fileName=" + testMessageName + "&noop=true");
-          // Change destination address header to point to test recipient directory
-          r.weaveByType(RoutingSlipDefinition.class).before().setHeader("RecipientAddress", constant(recipientAddress));
         }
     );
     // This stops message data persistence route(s) from running

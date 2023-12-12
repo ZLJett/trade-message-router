@@ -9,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 import java.io.File;
 import java.util.logging.Logger;
@@ -16,6 +17,7 @@ import java.util.logging.Logger;
 import static org.apache.camel.language.constant.ConstantLanguage.constant;
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestPropertySource("file:src/test/resources/test.properties")
 @SpringBootTest
 @CamelSpringBootTest
 @UseAdviceWith
@@ -29,7 +31,6 @@ class ExitRouteTest {
   public void shouldPutMessageIntoRecipientDirectory(String testMessageName) throws Exception {
     AdviceWith.adviceWith(camelContext, "exit-route", r -> {
           r.replaceFromWith("file:src/test/resources/TestInboundFolder?fileName=" + testMessageName + "&noop=true");
-          // Add header needed to tell the .toD endpoint where to 'send' the message, i.e. the recipient's "address"
           r.weaveAddFirst().setHeader("RecipientAddress", constant("file:src/test/resources/TestRecipientFolder"));
           r.weaveAddLast().to("mock:RouteResult");
         }

@@ -11,9 +11,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+@TestPropertySource("file:src/test/resources/test.properties")
 @SpringBootTest
 @CamelSpringBootTest
 @UseAdviceWith
@@ -72,7 +74,7 @@ class EntryRouteTest {
     mock.expectedHeaderReceived("ToRecipientTranslationInstructions","xslt-saxon:XsltTemplates/InternalToBocXsltTemplate.xsl");
     mock.expectedHeaderReceived("RecipientClientCode","BOC");
     mock.expectedHeaderReceived("RecipientFilenameFormat","BOC_STD_MSG");
-    mock.expectedHeaderReceived("RecipientAddress","file:src/main/resources/RecipientFolder");
+    mock.expectedHeaderReceived("RecipientAddress","file:src/test/resources/TestRecipientFolder");
     mock.assertIsSatisfied();
   }
 
@@ -108,7 +110,7 @@ class EntryRouteTest {
     mock.expectedHeaderReceived("ToRecipientTranslationInstructions","xslt-saxon:XsltTemplates/InternalToZseXsltTemplate.xsl");
     mock.expectedHeaderReceived("RecipientClientCode","ZSE");
     mock.expectedHeaderReceived("RecipientFilenameFormat","ZSE_TRD_MSG");
-    mock.expectedHeaderReceived("RecipientAddress","file:src/main/resources/RecipientFolder");
+    mock.expectedHeaderReceived("RecipientAddress","file:src/test/resources/TestRecipientFolder");
     mock.assertIsSatisfied();
   }
 }
