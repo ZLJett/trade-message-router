@@ -1,6 +1,7 @@
 package com.github.zljett.beans;
 
 import com.github.zljett.entitiesandrepositories.MessageEntity;
+import com.github.zljett.entitiesandrepositories.MessageRepository;
 import com.github.zljett.entitiesandrepositories.TradeEntity;
 import org.apache.camel.CamelContext;
 import org.apache.camel.test.spring.junit5.CamelSpringBootTest;
@@ -11,8 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
+import java.io.StringReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -31,7 +37,7 @@ class AddParentMessagePrimaryKeyToTradeEntityBeanTest {
   private CamelContext camelContext;
 
   @Autowired
-  private MessageDataPersistenceBean messageDataPersistenceBean;
+  private MessageRepository messageRepository;
 
   @Autowired
   private AddParentMessagePrimaryKeyToTradeEntityBean addParentMessagePrimaryKeyToTradeEntityBean;
@@ -65,17 +71,41 @@ class AddParentMessagePrimaryKeyToTradeEntityBeanTest {
     assertTrue(testTradeEntity.equals(expectedTradeEntity));
   }
 
-  /**
-   * This method uses the messageDataPersistenceBean class as an expedient way to persist a 'parent message'
-   */
   private String persistTestMessageEntity(Path testMessageBodyFilepath, String testMessageName, String testFormattedDate, Long testFileLength) throws IOException, XMLStreamException {
+    // Remove file extension from test message name
+    String[] splitFileName = testMessageName.split("\\.");
+    String messageName = splitFileName[0];
+    // Find number of trades in the test message
     String testMessageBody = readString(testMessageBodyFilepath);
-    Map<String, String> testMessageHeaders = new HashMap<>();
-    testMessageHeaders.put("CamelFileName", testMessageName);
-    testMessageHeaders.put("DateReceived", testFormattedDate);
-    messageDataPersistenceBean.persistMessageData(testMessageBody, testMessageHeaders, testFileLength);
-    String persistedMessagePrimaryKey = testMessageHeaders.get("MessagePrimaryKey");
+    int numberOfTrades = countTradesInMessage(testMessageBody);
+    // Add test message data to test message entity
+    MessageEntity messageEntity = new MessageEntity();
+    messageEntity.setMessageName(messageName);
+    messageEntity.setDateReceived(testFormattedDate);
+    messageEntity.setNumberOfTrades(numberOfTrades);
+    messageEntity.setFileSizeInBytes(testFileLength);
+    // Persist test message entity in database
+    MessageEntity persistedEntity = messageRepository.save(messageEntity);
+    // Get the primary key of the persisted test message
+    String persistedMessagePrimaryKey = String.valueOf(persistedEntity.getMessageId());
     return persistedMessagePrimaryKey;
+  }
+
+  private int countTradesInMessage (String messageBody) throws XMLStreamException {
+    // Stream message XML string to count number of trades in each message
+    XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+    XMLEventReader xmlEventReader = xmlInputFactory.createXMLEventReader(new StringReader(messageBody));
+    int numberOfTrades = 0;
+    while (xmlEventReader.hasNext()) {
+      XMLEvent nextEvent = xmlEventReader.nextEvent();
+      if (nextEvent.isStartElement()) {
+        StartElement startElement = nextEvent.asStartElement();
+        if (startElement.getName().getLocalPart().equalsIgnoreCase("trade")) {
+          numberOfTrades += 1;
+        }
+      }
+    }
+    return numberOfTrades;
   }
 
   private static TradeEntity createTestTradeEntity() {
