@@ -37,7 +37,7 @@ public class SendTradeMessagesWithoutDataPersistenceTest {
   @Autowired
   private CamelContext camelContext;
 
-  private final Map<String, String> expectedMessageNames = Map.ofEntries(
+  private static final Map<String, String> expectedMessageNames = Map.ofEntries(
       // Name of each sent test message and the corresponding name of its resulting expected message
       entry("ZSE_TRD_MSG_BOC_987654321.xml", "BOC_STD_MSG_BOC_987654321.xml"),
       entry("BOC_STD_MSG_ZSE_0123456789.xml", "ZSE_TRD_MSG_ZSE_0123456789.xml")

@@ -29,7 +29,7 @@ class ToRecipientTranslationRouteTest {
   @Autowired
   private CamelContext camelContext;
 
-  private final String testMessageName = "TestMessageInInternalXmlFormat.xml";
+  private static final String testMessageName = "TestMessageInInternalXmlFormat.xml";
 
   @Test
   @DisplayName("Should Translate Internal XML Format Message to BOC XML Format")

@@ -37,7 +37,7 @@ class MessageDataPersistenceBeanTest {
   @Autowired
   private MessageDataPersistenceBean messageDataPersistenceBean;
 
-  final Path testMessageBodyFilepath = Paths.get("src/test/resources/TestInternalXmlFormatMessages/TestMessageInInternalXmlFormat.xml");
+  private static final Path testMessageBodyFilepath = Paths.get("src/test/resources/TestInternalXmlFormatMessages/TestMessageInInternalXmlFormat.xml");
 
   @ParameterizedTest(name = "Test {index}: Should Persist Message Metadata: {0}, into Database")
   @ValueSource(strings = {"ZSE_TRD_MSG_BOC_987654321.xml", "BOC_STD_MSG_ZSE_0123456789.xml"})

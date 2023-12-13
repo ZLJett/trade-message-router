@@ -46,19 +46,19 @@ class PersistMessageAndTradeDataRouteTest {
   @Autowired
   private TradeRepository tradeRepository;
 
-  private final Map<String, String> testMessagesFilenames = Map.ofEntries(
+  private static final Map<String, String> testMessagesFilenames = Map.ofEntries(
       // Name of each sent test message and the corresponding file to use for the test
       entry("ZSE_TRD_MSG_BOC_987654321.xml", "TestMessageInInternalXmlFormat_fromZSE.xml"),
       entry("BOC_STD_MSG_ZSE_0123456789.xml", "TestMessageInInternalXmlFormat_fromBoc.xml")
   );
 
-  private final Map<String, Long> testMessagesFileLengths  = Map.ofEntries(
+  private static final Map<String, Long> testMessagesFileLengths  = Map.ofEntries(
       // Name of each sent test message and the corresponding size of the test file in bytes
       entry("ZSE_TRD_MSG_BOC_987654321.xml", 1886L),
       entry("BOC_STD_MSG_ZSE_0123456789.xml", 1865L)
   );
 
-  private final Map<String, Integer> testMessagesTradeCount  = Map.ofEntries(
+  private static final Map<String, Integer> testMessagesTradeCount  = Map.ofEntries(
       // Name of each sent test message and the corresponding number of trades in the message
       entry("ZSE_TRD_MSG_BOC_987654321.xml", 6),
       entry("BOC_STD_MSG_ZSE_0123456789.xml", 6)
@@ -144,7 +144,7 @@ class PersistMessageAndTradeDataRouteTest {
     return expectedTradeEntities;
   }
 
-  private static MessageEntity createExpectedMessageEntity(String testMessageName, String testFormattedDate, long testFileLength, int numTradesInTestMessage) {
+  private MessageEntity createExpectedMessageEntity(String testMessageName, String testFormattedDate, long testFileLength, int numTradesInTestMessage) {
     MessageEntity expectedMessageEntity = new MessageEntity();
     // The MessageId field's actual value is generated automatically when the entity is persisted, the value below is
     // what it should be given that this entity is the first item in the test database and is used to make an accurate

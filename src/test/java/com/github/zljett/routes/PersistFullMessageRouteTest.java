@@ -26,9 +26,9 @@ class PersistFullMessageRouteTest {
   @Autowired
   private CamelContext camelContext;
 
-  private final String testMessageName = "BOC_STD_MSG_ZSE_0123456789.xml";
+  private static final String testMessageName = "BOC_STD_MSG_ZSE_0123456789.xml";
 
-  private final File persistedTestMessage = new File("src/test/resources/TestFullMessagePersistenceFolder/" + testMessageName);
+  private static final File persistedTestMessage = new File("src/test/resources/TestFullMessagePersistenceFolder/" + testMessageName);
 
   @Test
   @DisplayName("Should put Message into Full Message Persistence Directory")

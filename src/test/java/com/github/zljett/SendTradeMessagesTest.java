@@ -52,19 +52,19 @@ public class SendTradeMessagesTest {
   @Autowired
   private TradeRepository tradeRepository;
 
-  private final Map<String, String> expectedMessageNames = Map.ofEntries(
+  private static final Map<String, String> expectedMessageNames = Map.ofEntries(
       // Name of each sent test message and the corresponding name of its resulting expected message
       entry("ZSE_TRD_MSG_BOC_987654321.xml", "BOC_STD_MSG_BOC_987654321.xml"),
       entry("BOC_STD_MSG_ZSE_0123456789.xml", "ZSE_TRD_MSG_ZSE_0123456789.xml")
   );
 
-  private final Map<String, Long> expectedMessagesFileLengths  = Map.ofEntries(
+  private static final Map<String, Long> expectedMessagesFileLengths  = Map.ofEntries(
       // Name of each sent test message and the corresponding size of the test file in bytes
       entry("ZSE_TRD_MSG_BOC_987654321.xml", 3281L),
       entry("BOC_STD_MSG_ZSE_0123456789.xml", 2184L)
   );
 
-  private final Map<String, Integer> expectedMessagesTradeCount  = Map.ofEntries(
+  private static final Map<String, Integer> expectedMessagesTradeCount  = Map.ofEntries(
       // Name of each sent test message and the corresponding number of trades in the message
       entry("ZSE_TRD_MSG_BOC_987654321.xml", 6),
       entry("BOC_STD_MSG_ZSE_0123456789.xml", 6)
@@ -173,7 +173,7 @@ public class SendTradeMessagesTest {
     return expectedTradeEntities;
   }
 
-  private static MessageEntity createExpectedMessageEntity(String testMessageName, String testFormattedDate, long testFileLength, int numTradesInTestMessage) {
+  private MessageEntity createExpectedMessageEntity(String testMessageName, String testFormattedDate, long testFileLength, int numTradesInTestMessage) {
     MessageEntity expectedMessageEntity = new MessageEntity();
     // The MessageId field's actual value is generated automatically when the entity is persisted, the value below is
     // what it should be given that this entity is the first item in the test database and is used to make an accurate
