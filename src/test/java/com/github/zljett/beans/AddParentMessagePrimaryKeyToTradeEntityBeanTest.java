@@ -6,6 +6,7 @@ import com.github.zljett.entitiesandrepositories.TradeEntity;
 import org.apache.camel.CamelContext;
 import org.apache.camel.test.spring.junit5.CamelSpringBootTest;
 import org.apache.camel.test.spring.junit5.UseAdviceWith;
+import org.hibernate.Hibernate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static java.nio.file.Files.readString;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestPropertySource("file:src/test/resources/test.properties")
 @SpringBootTest(properties = {"spring.jpa.properties.hibernate.enable_lazy_load_no_trans=true"})
@@ -68,7 +69,15 @@ class AddParentMessagePrimaryKeyToTradeEntityBeanTest {
     // Give bean minimum required information to test its core function
     addParentMessagePrimaryKeyToTradeEntityBean.setTradeForeignKeyToParentMessagePrimaryKey(testTradeEntity, inputMessageHeaders);
     // Check if Trade Entity produced by bean matches the correct Trade Entity
-    assertTrue(testTradeEntity.equals(expectedTradeEntity));
+    // First, check if persisted Trade Entity has the correct parent Message Entity referenced in it messageId field
+    MessageEntity expectedTradeEntityMessageIdField = expectedTradeEntity.getMessageId();
+    MessageEntity testTradeEntityMessageIdField = (MessageEntity) Hibernate.unproxy(testTradeEntity.getMessageId());
+    assertEquals(expectedTradeEntityMessageIdField, testTradeEntityMessageIdField);
+    expectedTradeEntity.setMessageId(null);
+    testTradeEntity.setMessageId(null);
+    // Check if each trade's data (i.e. not the primary or foreign keys) of the persisted Trade Entity matches the
+    // correct data in the expected Trade Entities
+    assertEquals(expectedTradeEntity, testTradeEntity);
   }
 
   private String persistTestMessageEntity(Path testMessageBodyFilepath, String testMessageName, String testFormattedDate, Long testFileLength) throws IOException, XMLStreamException {

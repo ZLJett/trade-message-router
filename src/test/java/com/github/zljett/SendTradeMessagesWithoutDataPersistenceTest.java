@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 
 import static java.nio.file.Files.readString;
 import static java.util.Map.entry;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -76,7 +77,7 @@ public class SendTradeMessagesWithoutDataPersistenceTest {
     String receivedMessageBody = readString(receivedMessageBodyFilepath);
     Path correctExpectedMessageBodyFilepath = Paths.get("src/test/resources/TestCorrectExpectedMessages/" + expectedMessageName);
     String correctExpectedMessageBody = readString(correctExpectedMessageBodyFilepath);
-    assertTrue(receivedMessageBody.equals(correctExpectedMessageBody));
+    assertEquals(correctExpectedMessageBody, receivedMessageBody);
     // Clear out test directories
     removeTestMessagesFromTestDirectories(persistedTestMessage, testMessageName, receivedTestMessage, expectedMessageName);
   }

@@ -29,8 +29,8 @@ class RouteInstructionsBeanTest {
     // Give bean minimum required information to test its core function of attaching correct header packet for fromBOC
     routeInstructionsBean.attachFilenameDataAndHeaderPacketsToMessage("", inputHeaders);
     // Checks that the headers attached by the bean itself where added correctly
-    assertTrue(inputHeaders.get("MessageId").equals("0123456789"));
-    assertTrue(inputHeaders.get("MessageExtension").equals("xml"));
+    assertEquals("0123456789", inputHeaders.get("MessageId"));
+    assertEquals("xml", inputHeaders.get("MessageExtension"));
     assertFalse(inputHeaders.get("DateReceived").isEmpty());
   }
 
@@ -43,7 +43,7 @@ class RouteInstructionsBeanTest {
     // Give bean minimum required information to test its core function of attaching correct header packet for fromBOC
     routeInstructionsBean.attachFilenameDataAndHeaderPacketsToMessage("", inputHeaders);
     // Checks that the headers from the fromBOC header packet where added correctly
-    assertTrue((inputHeaders.get("ToInternalTranslationInstructions")).equals("xslt-saxon:XsltTemplates/BocToInternalXsltTemplate.xsl"));
+    assertEquals("xslt-saxon:XsltTemplates/BocToInternalXsltTemplate.xsl", inputHeaders.get("ToInternalTranslationInstructions"));
   }
 
   @Test
@@ -55,11 +55,11 @@ class RouteInstructionsBeanTest {
     // Give bean minimum required information to test its core function of attaching correct header packet for toBOC
     routeInstructionsBean.attachFilenameDataAndHeaderPacketsToMessage("", inputHeaders);
     // Checks that the headers from the toBOC header packet where added correctly
-    assertTrue(inputHeaders.get("RoutingPath").equals("direct:PersistFullMessageRoute,direct:ToInternalTranslationRoute,direct:PersistMessageAndTradeDataRoute,direct:ToRecipientFilenameFormatRoute,direct:ToRecipientTranslationRoute,direct:ExitRoute"));
-    assertTrue(inputHeaders.get("ToRecipientTranslationInstructions").equals("xslt-saxon:XsltTemplates/InternalToBocXsltTemplate.xsl"));
-    assertTrue(inputHeaders.get("RecipientClientCode").equals("BOC"));
-    assertTrue(inputHeaders.get("RecipientFilenameFormat").equals("BOC_STD_MSG"));
-    assertTrue(inputHeaders.get("RecipientAddress").equals("file:src/test/resources/TestRecipientFolder"));
+    assertEquals("direct:PersistFullMessageRoute,direct:ToInternalTranslationRoute,direct:PersistMessageAndTradeDataRoute,direct:ToRecipientFilenameFormatRoute,direct:ToRecipientTranslationRoute,direct:ExitRoute", inputHeaders.get("RoutingPath"));
+    assertEquals("xslt-saxon:XsltTemplates/InternalToBocXsltTemplate.xsl", inputHeaders.get("ToRecipientTranslationInstructions"));
+    assertEquals("BOC", inputHeaders.get("RecipientClientCode"));
+    assertEquals("BOC_STD_MSG", inputHeaders.get("RecipientFilenameFormat"));
+    assertEquals("file:src/test/resources/TestRecipientFolder", inputHeaders.get("RecipientAddress"));
   }
 
   @Test
@@ -71,7 +71,7 @@ class RouteInstructionsBeanTest {
     // Give bean minimum required information to test its core function of attaching correct header packet for fromZSE
     routeInstructionsBean.attachFilenameDataAndHeaderPacketsToMessage("", inputHeaders);
     // Checks that the headers from the fromZSE header packet where added correctly
-    assertTrue(inputHeaders.get("ToInternalTranslationInstructions").equals("xslt-saxon:XsltTemplates/ZseToInternalXsltTemplate.xsl"));
+    assertEquals("xslt-saxon:XsltTemplates/ZseToInternalXsltTemplate.xsl", inputHeaders.get("ToInternalTranslationInstructions"));
   }
 
   @Test
@@ -83,10 +83,10 @@ class RouteInstructionsBeanTest {
     // Give bean minimum required information to test its core function of attaching correct header packet for toZSE
     routeInstructionsBean.attachFilenameDataAndHeaderPacketsToMessage("", inputHeaders);
     // Checks that the headers from the toZSE header packet where added correctly
-    assertTrue(inputHeaders.get("RoutingPath").equals("direct:PersistFullMessageRoute,direct:ToInternalTranslationRoute,direct:PersistMessageAndTradeDataRoute,direct:ToRecipientFilenameFormatRoute,direct:ToRecipientTranslationRoute,direct:ExitRoute"));
-    assertTrue(inputHeaders.get("ToRecipientTranslationInstructions").equals("xslt-saxon:XsltTemplates/InternalToZseXsltTemplate.xsl"));
-    assertTrue(inputHeaders.get("RecipientClientCode").equals("ZSE"));
-    assertTrue(inputHeaders.get("RecipientFilenameFormat").equals("ZSE_TRD_MSG"));
-    assertTrue(inputHeaders.get("RecipientAddress").equals("file:src/test/resources/TestRecipientFolder"));
+    assertEquals("direct:PersistFullMessageRoute,direct:ToInternalTranslationRoute,direct:PersistMessageAndTradeDataRoute,direct:ToRecipientFilenameFormatRoute,direct:ToRecipientTranslationRoute,direct:ExitRoute", inputHeaders.get("RoutingPath"));
+    assertEquals("xslt-saxon:XsltTemplates/InternalToZseXsltTemplate.xsl", inputHeaders.get("ToRecipientTranslationInstructions"));
+    assertEquals("ZSE", inputHeaders.get("RecipientClientCode"));
+    assertEquals("ZSE_TRD_MSG", inputHeaders.get("RecipientFilenameFormat"));
+    assertEquals("file:src/test/resources/TestRecipientFolder", inputHeaders.get("RecipientAddress"));
   }
 }

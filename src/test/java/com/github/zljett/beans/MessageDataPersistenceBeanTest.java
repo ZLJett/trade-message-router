@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static java.nio.file.Files.readString;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestPropertySource("file:src/test/resources/test.properties")
 @SpringBootTest
@@ -59,9 +59,9 @@ class MessageDataPersistenceBeanTest {
     messageDataPersistenceBean.persistMessageData(testMessageBody, testMessageHeaders, testFileLength);
     Optional<MessageEntity> persistedMessageEntity = messageRepository.findById(1L);
     // The orElse method pulls the Message Entity out of its Optional object wrapper, or if null a blank Message Entity
-    assertTrue((persistedMessageEntity.orElse(new MessageEntity())).equals(expectedMessageEntity));
+    assertEquals(expectedMessageEntity, persistedMessageEntity.orElse(new MessageEntity()));
     // The value the header is compared to is the value that should be generated for the MessageId field, see the above comment
-    assertTrue((testMessageHeaders.get("MessagePrimaryKey")).equals("1"));
+    assertEquals("1", testMessageHeaders.get("MessagePrimaryKey"));
   }
 
   @Test
@@ -70,7 +70,7 @@ class MessageDataPersistenceBeanTest {
     String testMessageBody = readString(testMessageBodyFilepath);
     int tradesInTestMessage = messageDataPersistenceBean.countTradesInMessage(testMessageBody);
     // The input test message has 6 trades
-    assertEquals(tradesInTestMessage,6);
+    assertEquals(6, tradesInTestMessage);
   }
 
   private static MessageEntity createExpectedMessageEntity(String testMessageName, String testFormattedDate, long testFileLength) {

@@ -17,7 +17,7 @@ import java.nio.file.Paths;
 
 import static java.nio.file.Files.readString;
 import static org.apache.camel.language.constant.ConstantLanguage.constant;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestPropertySource("file:src/test/resources/test.properties")
 @SpringBootTest
@@ -54,7 +54,7 @@ class ToRecipientTranslationRouteTest {
     String testOutputXml = (String) mock.getExchanges().get(0).getIn().getBody();
     Path correctXmlTranslationFilepath = Paths.get("src/test/resources/TestInternalToRecipientComparisonXmlFiles/InternalToBocCorrectTranslation.xml");
     String correctTranslationInternalToBocXml = readString(correctXmlTranslationFilepath);
-    assertTrue(testOutputXml.equals(correctTranslationInternalToBocXml));
+    assertEquals(correctTranslationInternalToBocXml, testOutputXml);
   }
 
   @Test
@@ -80,6 +80,6 @@ class ToRecipientTranslationRouteTest {
     String testOutputXml = (String) mock.getExchanges().get(0).getIn().getBody();
     Path correctXmlTranslationFilepath = Paths.get("src/test/resources/TestInternalToRecipientComparisonXmlFiles/InternalToZseCorrectTranslation.xml");
     String correctTranslationInternalToZseXml = readString(correctXmlTranslationFilepath);
-    assertTrue(testOutputXml.equals(correctTranslationInternalToZseXml));
+    assertEquals(correctTranslationInternalToZseXml, testOutputXml);
   }
 }

@@ -11,6 +11,7 @@ import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.model.ToDefinition;
 import org.apache.camel.test.spring.junit5.CamelSpringBootTest;
 import org.apache.camel.test.spring.junit5.UseAdviceWith;
+import org.hibernate.Hibernate;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,34 +94,37 @@ class PersistMessageAndTradeDataRouteTest {
     MockEndpoint tradesAfterPersistenceMock = camelContext.getEndpoint("mock:RouteResult", MockEndpoint.class);
     tradesAfterPersistenceMock.expectedMessageCount(1);
     tradesAfterPersistenceMock.assertIsSatisfied();
+
     // Check if persisted message metadata matches the correct data in the expected Message Entity
-    MessageEntity expectedMessageEntity = createExpectedMessageEntity(testMessageName, testFormattedDate,testMessageFileLength, numTradesInTestMessage);
+    MessageEntity correctExpectedMessageEntity = createExpectedMessageEntity(testMessageName, testFormattedDate,testMessageFileLength, numTradesInTestMessage);
     // As the Message Entity is always the first item in the test database its primary key is always 1
     Optional<MessageEntity> persistedMessage = messageRepository.findById(1L);
     MessageEntity persistedMessageEntity = persistedMessage.orElse(new MessageEntity());
-    assertTrue(persistedMessageEntity.equals(expectedMessageEntity));
+    assertEquals(correctExpectedMessageEntity, persistedMessageEntity);
+
+    // Check if persisted data of each trade in the message matches the correct trade data for the test message
+    ArrayList<TradeEntity> correctPersistedTradeEntities = createExpectedTradeEntitiesList(tradesBeforePersistenceMock);
     /* The messageId field of the expected Trade Entities is set to a Message Entity representing the parent message of the
        persisted trades. The actual value contained in the messageId field is normally set by the .getReferenceByID method
        in the AddForeignKeyToTradeEntityBean which returns an entity proxy and not the message entity itself. But to test that
        a value is added to the field in the persisted entity, the property 'hibernate.enable_lazy_load_no_trans' is set to
-       'true', which allows a copy of the entity refenced in the proxy to be pulled and placed into the persisted entity
-       Note: this 'field' of the expected Trade Entities is kept separate from the actual Trade Entity objects as the messageId
+       'true', which allows a copy of the entity refenced in the proxy to be pulled and placed into the persisted entity. */
+    /* Note: this 'field' of the expected Trade Entities is kept separate from the actual Trade Entity objects as the messageId
        field in both persisted and expected should be the same for all trades. */
-    MessageEntity expectedMessageIdField = expectedMessageEntity;
-    ArrayList<TradeEntity> expectedTradeEntities = createExpectedTradeEntitiesList(tradesBeforePersistenceMock);
+    MessageEntity expectedTradeMessageIdField = correctExpectedMessageEntity;
     // Iterate through each persisted Trade. As the message metadata was persisted first, the first primary key for the trades is 2
-    for (long primaryKey = 2; primaryKey < expectedTradeEntities.size() + 2 ; primaryKey++) {
+    for (long primaryKey = 2; primaryKey < correctPersistedTradeEntities.size() + 2 ; primaryKey++) {
       Optional<TradeEntity> persistedTrade = tradeRepository.findById(primaryKey);
       TradeEntity persistedTradeEntity = persistedTrade.orElse(new TradeEntity());
       // Check if persisted trade has the correct parent Message Entity referenced in it messageId field
-      MessageEntity persistedTradeMessageIdField = persistedTradeEntity.getMessageId();
-      assertTrue(persistedTradeMessageIdField.equals(expectedMessageIdField));
+      MessageEntity persistedTradeMessageIdField = (MessageEntity) Hibernate.unproxy(persistedTradeEntity.getMessageId());
+      assertEquals(expectedTradeMessageIdField, persistedTradeMessageIdField);
       persistedTradeEntity.setMessageId(null);
       // Primary key of persisted trade is irrelevant to testing the trade's data
       persistedTradeEntity.setTradeId(null);
       // Check if each trade's data (i.e. not the primary or foreign keys) of the persisted Trade Entities matches the
       // correct data in the expected Trade Entities
-      assertTrue(compareTrades(persistedTradeEntity, expectedTradeEntities));
+      assertTrue(compareTrades(persistedTradeEntity, correctPersistedTradeEntities));
     }
   }
 
