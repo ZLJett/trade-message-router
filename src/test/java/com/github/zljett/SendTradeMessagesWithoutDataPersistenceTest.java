@@ -49,7 +49,7 @@ public class SendTradeMessagesWithoutDataPersistenceTest {
   public void shouldProduceCorrectOutputForEachSentMessage(String testMessageName) throws Exception {
     String expectedMessageName = expectedMessageNames.get(testMessageName);
     AdviceWith.adviceWith(camelContext, "entry-route", r -> {
-          r.replaceFromWith("file:src/test/resources/TestInboundFolder?fileName=" + testMessageName + "&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestInboundDirectory?fileName=" + testMessageName + "&noop=true");
         }
     );
     // This stops message data persistence route(s) from running
@@ -67,10 +67,10 @@ public class SendTradeMessagesWithoutDataPersistenceTest {
     mock.expectedMessageCount(1);
     mock.assertIsSatisfied();
     // Check if correct test message is in test full message persistence directory
-    final File persistedTestMessage = new File("src/test/resources/TestFullMessagePersistenceFolder/" + testMessageName);
+    final File persistedTestMessage = new File("src/test/resources/TestFullMessagePersistenceDirectory/" + testMessageName);
     assertTrue(persistedTestMessage.exists());
     // Check if correct test message is in test recipient directory
-    final File receivedTestMessage = new File("src/test/resources/TestRecipientFolder/" + expectedMessageName);
+    final File receivedTestMessage = new File("src/test/resources/TestRecipientDirectory/" + expectedMessageName);
     assertTrue(receivedTestMessage.exists());
     // Check if the XML string in the message's body matches the correct XML for test message
     Path receivedMessageBodyFilepath = Paths.get(receivedTestMessage.toString());

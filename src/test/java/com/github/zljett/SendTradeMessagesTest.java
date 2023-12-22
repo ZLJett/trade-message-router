@@ -80,7 +80,7 @@ public class SendTradeMessagesTest {
     long expectedMessageFileLength = expectedMessagesFileLengths.get(testMessageName);
     int expectedMessageNumTrades = expectedMessagesTradeCount.get(testMessageName);
     AdviceWith.adviceWith(camelContext, "entry-route", r -> {
-          r.replaceFromWith("file:src/test/resources/TestInboundFolder?fileName=" + testMessageName + "&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestInboundDirectory?fileName=" + testMessageName + "&noop=true");
           r.weaveByType(RoutingSlipDefinition.class).before().setHeader("DateReceived", constant(expectedMessageFormattedDate));
         }
     );
@@ -104,7 +104,7 @@ public class SendTradeMessagesTest {
     tradesAfterDataPersistenceMock.assertIsSatisfied();
 
     // Check if correct test message is in test full message persistence directory
-    final File persistedTestMessage = new File("src/test/resources/TestFullMessagePersistenceFolder/" + testMessageName);
+    final File persistedTestMessage = new File("src/test/resources/TestFullMessagePersistenceDirectory/" + testMessageName);
     assertTrue(persistedTestMessage.exists());
 
     // Check if persisted message metadata matches the correct metadata for the test message
@@ -140,7 +140,7 @@ public class SendTradeMessagesTest {
     }
 
     // Check if correct test message is in test recipient directory
-    final File receivedTestMessage = new File("src/test/resources/TestRecipientFolder/" + expectedMessageName);
+    final File receivedTestMessage = new File("src/test/resources/TestRecipientDirectory/" + expectedMessageName);
     assertTrue(receivedTestMessage.exists());
 
     // Check if the XML string in the message's body matches the correct XML for test message

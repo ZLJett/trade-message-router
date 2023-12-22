@@ -7,7 +7,7 @@
     "ToRecipientTranslationInstructions": "xslt-saxon:XsltTemplates/InternalToBocXsltTemplate.xsl",
     "RecipientClientCode":"BOC",
     "RecipientFilenameFormat":"BOC_STD_MSG",
-    "RecipientAddress":"file:src/test/resources/TestRecipientFolder"
+    "RecipientAddress":"file:src/test/resources/TestRecipientDirectory"
   },
   "fromZSE_HeaderPacket": {
     "ToInternalTranslationInstructions": "xslt-saxon:XsltTemplates/ZseToInternalXsltTemplate.xsl"
@@ -17,6 +17,6 @@
     "ToRecipientTranslationInstructions": "xslt-saxon:XsltTemplates/InternalToZseXsltTemplate.xsl",
     "RecipientClientCode":"ZSE",
     "RecipientFilenameFormat":"ZSE_TRD_MSG",
-    "RecipientAddress":"file:src/test/resources/TestRecipientFolder"
+    "RecipientAddress":"file:src/test/resources/TestRecipientDirectory"
   }
 }

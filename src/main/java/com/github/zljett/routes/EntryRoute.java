@@ -12,7 +12,7 @@ public class EntryRoute extends RouteBuilder {
 
     @Override
     public void configure() {
-        from("{{message.inbound.folder}}").routeId("entry-route")
+        from("{{inbound.message.location.uri}}").routeId("entry-route")
             .log(LoggingLevel.INFO, "com.github.zljett.routes.EntryRoute", "Route: ${routeId}, received Message: ${header.CamelFileName}")
             .log(LoggingLevel.INFO, "com.github.zljett.routes.EntryRoute", "Route: ${routeId}, passed Message: ${header.CamelFileName}, to RouteInstructionsBean")
             .bean("RouteInstructionsBean","attachFilenameDataAndHeaderPacketsToMessage")

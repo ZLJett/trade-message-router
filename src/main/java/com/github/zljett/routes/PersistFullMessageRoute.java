@@ -14,7 +14,7 @@ public class PersistFullMessageRoute extends RouteBuilder {
   public void configure() {
     from("direct:PersistFullMessageRoute").routeId("persist-full-message-route")
         .log(LoggingLevel.INFO, "com.github.zljett.routes.PersistFullMessageRoute", "Route: ${routeId}, received Message: ${header.CamelFileName}")
-        .to("{{full.message.persistence.folder.filepath}}")
+        .to("{{full.message.persistence.directory.filepath}}")
         .log(LoggingLevel.INFO, "com.github.zljett.routes.PersistFullMessageRoute", "Route: ${routeId}, finished with Message: ${header.CamelFileName}");
   }
 }

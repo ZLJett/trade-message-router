@@ -34,7 +34,7 @@ class ToInternalTranslationRouteTest {
   public void shouldTranslate_BocXmlFormatMessageTo_InternalXmlFormat() throws Exception {
     AdviceWith.adviceWith(camelContext, "to-internal-translation-route", r -> {
           // Pulls specifically a message coming from BOC
-          r.replaceFromWith("file:src/test/resources/TestInboundFolder?fileName=BOC_STD_MSG_ZSE_0123456789.xml&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestInboundDirectory?fileName=BOC_STD_MSG_ZSE_0123456789.xml&noop=true");
           // Add header needed to give route's XSLT endpoint the appropriate XSLT template for this test message
           r.weaveAddFirst().setHeader("ToInternalTranslationInstructions", constant("xslt-saxon:XsltTemplates/BocToInternalXsltTemplate.xsl"));
           r.weaveAddLast().to("mock:RouteResult");
@@ -60,7 +60,7 @@ class ToInternalTranslationRouteTest {
   public void shouldTranslate_ZseXmlFormatMessageTo_InternalXmlFormat() throws Exception {
     AdviceWith.adviceWith(camelContext, "to-internal-translation-route", r -> {
           // Pulls specifically a message coming from ZSE
-          r.replaceFromWith("file:src/test/resources/TestInboundFolder?fileName=ZSE_TRD_MSG_BOC_987654321.xml&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestInboundDirectory?fileName=ZSE_TRD_MSG_BOC_987654321.xml&noop=true");
           // Add header needed to give route's XSLT endpoint the appropriate XSLT template for this test message
           r.weaveAddFirst().setHeader("ToInternalTranslationInstructions", constant("xslt-saxon:XsltTemplates/ZseToInternalXsltTemplate.xsl"));
           r.weaveAddLast().to("mock:RouteResult");

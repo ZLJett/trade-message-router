@@ -30,8 +30,8 @@ class ExitRouteTest {
   @ValueSource(strings = {"ZSE_TRD_MSG_BOC_987654321.xml", "BOC_STD_MSG_ZSE_0123456789.xml"})
   public void shouldPutMessageIntoRecipientDirectory(String testMessageName) throws Exception {
     AdviceWith.adviceWith(camelContext, "exit-route", r -> {
-          r.replaceFromWith("file:src/test/resources/TestInboundFolder?fileName=" + testMessageName + "&noop=true");
-          r.weaveAddFirst().setHeader("RecipientAddress", constant("file:src/test/resources/TestRecipientFolder"));
+          r.replaceFromWith("file:src/test/resources/TestInboundDirectory?fileName=" + testMessageName + "&noop=true");
+          r.weaveAddFirst().setHeader("RecipientAddress", constant("file:src/test/resources/TestRecipientDirectory"));
           r.weaveAddLast().to("mock:RouteResult");
         }
     );
@@ -44,7 +44,7 @@ class ExitRouteTest {
     mock.expectedMessageCount(1);
     mock.assertIsSatisfied();
     // Check if correct test message is in test recipient directory
-    final File receivedTestMessage = new File("src/test/resources/TestRecipientFolder/" + testMessageName);
+    final File receivedTestMessage = new File("src/test/resources/TestRecipientDirectory/" + testMessageName);
     assertTrue(receivedTestMessage.exists());
     removeTestFilesFromTestDirectory(receivedTestMessage, testMessageName);
   }

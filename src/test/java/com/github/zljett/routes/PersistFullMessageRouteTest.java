@@ -28,13 +28,13 @@ class PersistFullMessageRouteTest {
 
   private static final String testMessageName = "BOC_STD_MSG_ZSE_0123456789.xml";
 
-  private static final File persistedTestMessage = new File("src/test/resources/TestFullMessagePersistenceFolder/" + testMessageName);
+  private static final File persistedTestMessage = new File("src/test/resources/TestFullMessagePersistenceDirectory/" + testMessageName);
 
   @Test
   @DisplayName("Should put Message into Full Message Persistence Directory")
   public void shouldPutMessageIntoFullMessagePersistenceDirectory() throws Exception {
     AdviceWith.adviceWith(camelContext, "persist-full-message-route", r -> {
-          r.replaceFromWith("file:src/test/resources/TestInboundFolder?fileName=" + testMessageName + "&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestInboundDirectory?fileName=" + testMessageName + "&noop=true");
           r.weaveAddLast().to("mock:RouteResult");
         }
     );

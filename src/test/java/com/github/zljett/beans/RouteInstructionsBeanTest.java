@@ -59,7 +59,7 @@ class RouteInstructionsBeanTest {
     assertEquals("xslt-saxon:XsltTemplates/InternalToBocXsltTemplate.xsl", inputHeaders.get("ToRecipientTranslationInstructions"));
     assertEquals("BOC", inputHeaders.get("RecipientClientCode"));
     assertEquals("BOC_STD_MSG", inputHeaders.get("RecipientFilenameFormat"));
-    assertEquals("file:src/test/resources/TestRecipientFolder", inputHeaders.get("RecipientAddress"));
+    assertEquals("file:src/test/resources/TestRecipientDirectory", inputHeaders.get("RecipientAddress"));
   }
 
   @Test
@@ -87,6 +87,6 @@ class RouteInstructionsBeanTest {
     assertEquals("xslt-saxon:XsltTemplates/InternalToZseXsltTemplate.xsl", inputHeaders.get("ToRecipientTranslationInstructions"));
     assertEquals("ZSE", inputHeaders.get("RecipientClientCode"));
     assertEquals("ZSE_TRD_MSG", inputHeaders.get("RecipientFilenameFormat"));
-    assertEquals("file:src/test/resources/TestRecipientFolder", inputHeaders.get("RecipientAddress"));
+    assertEquals("file:src/test/resources/TestRecipientDirectory", inputHeaders.get("RecipientAddress"));
   }
 }

@@ -29,7 +29,7 @@ class EntryRouteTest {
   @DisplayName("Should Have the Correct Headers Common to all Messages")
   public void shouldHaveCorrectHeadersFor_allMessages() throws Exception {
     AdviceWith.adviceWith(camelContext, "entry-route", r -> {
-          r.replaceFromWith("file:src/test/resources/TestInboundFolder?fileName=BOC_STD_MSG_ZSE_0123456789.xml&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestInboundDirectory?fileName=BOC_STD_MSG_ZSE_0123456789.xml&noop=true");
           r.weaveByType(RoutingSlipDefinition.class).replace().to("mock:RouteResult");
         }
     );
@@ -48,7 +48,7 @@ class EntryRouteTest {
   public void shouldHaveCorrectHeadersFor_fromBocRoute() throws Exception {
     AdviceWith.adviceWith(camelContext, "entry-route", r -> {
           // Pulls specifically a message coming from BOC
-          r.replaceFromWith("file:src/test/resources/TestInboundFolder?fileName=BOC_STD_MSG_ZSE_0123456789.xml&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestInboundDirectory?fileName=BOC_STD_MSG_ZSE_0123456789.xml&noop=true");
           r.weaveByType(RoutingSlipDefinition.class).replace().to("mock:RouteResult");
         }
     );
@@ -64,7 +64,7 @@ class EntryRouteTest {
   public void shouldHaveCorrectHeadersFor_toBocRoute() throws Exception {
     AdviceWith.adviceWith(camelContext, "entry-route", r -> {
           // Pulls specifically a message going to BOC
-          r.replaceFromWith("file:src/test/resources/TestInboundFolder?fileName=ZSE_TRD_MSG_BOC_987654321.xml&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestInboundDirectory?fileName=ZSE_TRD_MSG_BOC_987654321.xml&noop=true");
           r.weaveByType(RoutingSlipDefinition.class).replace().to("mock:RouteResult");
         }
     );
@@ -74,7 +74,7 @@ class EntryRouteTest {
     mock.expectedHeaderReceived("ToRecipientTranslationInstructions","xslt-saxon:XsltTemplates/InternalToBocXsltTemplate.xsl");
     mock.expectedHeaderReceived("RecipientClientCode","BOC");
     mock.expectedHeaderReceived("RecipientFilenameFormat","BOC_STD_MSG");
-    mock.expectedHeaderReceived("RecipientAddress","file:src/test/resources/TestRecipientFolder");
+    mock.expectedHeaderReceived("RecipientAddress","file:src/test/resources/TestRecipientDirectory");
     mock.assertIsSatisfied();
   }
 
@@ -83,7 +83,7 @@ class EntryRouteTest {
   public void shouldHaveCorrectHeadersFor_fromZseRoute() throws Exception {
     AdviceWith.adviceWith(camelContext, "entry-route", r -> {
           // Pulls specifically a message coming from ZSE
-          r.replaceFromWith("file:src/test/resources/TestInboundFolder?fileName=ZSE_TRD_MSG_BOC_987654321.xml&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestInboundDirectory?fileName=ZSE_TRD_MSG_BOC_987654321.xml&noop=true");
           r.weaveByType(RoutingSlipDefinition.class).replace().to("mock:RouteResult");
         }
     );
@@ -99,7 +99,7 @@ class EntryRouteTest {
   public void shouldHaveCorrectHeadersFor_ToZseRoute() throws Exception {
     AdviceWith.adviceWith(camelContext, "entry-route", r -> {
           // Pulls specifically a message going to ZSE
-          r.replaceFromWith("file:src/test/resources/TestInboundFolder?fileName=BOC_STD_MSG_ZSE_0123456789.xml&noop=true");
+          r.replaceFromWith("file:src/test/resources/TestInboundDirectory?fileName=BOC_STD_MSG_ZSE_0123456789.xml&noop=true");
           r.weaveByType(RoutingSlipDefinition.class).replace().to("mock:RouteResult");
         }
     );
@@ -110,7 +110,7 @@ class EntryRouteTest {
     mock.expectedHeaderReceived("ToRecipientTranslationInstructions","xslt-saxon:XsltTemplates/InternalToZseXsltTemplate.xsl");
     mock.expectedHeaderReceived("RecipientClientCode","ZSE");
     mock.expectedHeaderReceived("RecipientFilenameFormat","ZSE_TRD_MSG");
-    mock.expectedHeaderReceived("RecipientAddress","file:src/test/resources/TestRecipientFolder");
+    mock.expectedHeaderReceived("RecipientAddress","file:src/test/resources/TestRecipientDirectory");
     mock.assertIsSatisfied();
   }
 }
