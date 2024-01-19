@@ -1,0 +1,21 @@
+--------------------------------------------------
+Message: 04/25/2023
+
+"The client says it's fine to just put the rounded value without modification. The clients say that BOC has a policy to retain fractional values up to 3 digits of precision in their data and sometimes drop trailing zeroes, but their systems know to apply the proper financial rounding when needed. ZSE on the other hand only deals with systems that allow two digits of fractional precision on currency values so they enforce that in their data."
+
+
+--------------------------------------------------
+Message: 05/25/2023
+
+Your project manager talked to the CCO (Chief Compliance Officer) and says for now that you need to be able to access a log of all asset trades conducted in the last month.
+
+At the end of each month they need a report with the number transactions made of a given asset ('AssetType', 'AssetName', and 'AssetStandardIDNumber' on the BOC message type) as well as the Net Value traded (a BUY on an incoming message is a negative value trade, a SELL is positive)
+
+They would also like to be able to generate a list of the individual trades of a particular asset, grouped by sender and recipient (as one combined identifier; TradeInfo['from', 'to'] in the BOC message); or a list of all assets traded between a sender/recipient pair.
+
+Then if further detail is needed, they would like to be able to pull up unmodified copies of the messages those trades came from.
+
+**For now, your project manager says that one of the business analysts will handle compiling the reports manually, as long as you can explain to them how to query the database you're using to persist that information.**
+
+
+--------------------------------------------------
